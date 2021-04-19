@@ -6,7 +6,7 @@ data_play/
 __pycache__/
 *.py[cod]
 *$py.class
-
+data_play/
 # C extensions
 *.so
 

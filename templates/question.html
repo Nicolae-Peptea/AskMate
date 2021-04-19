@@ -18,8 +18,8 @@
             <div><h1>{{ my_question['title'] }}</h1></div>
             <div>Viewed: {{ my_question["view_number"] }} times</div>
             <div><a href="">(-)</a> {{ my_question["vote_number"] }} votes <a href="">(+)</a></div>
-            <form action="">
-                <input type="button" value="Answer Question">
+            <form action="/question/{{ my_question['id'] }}/new-answer">
+                <input type="submit" value="Answer Question">
             </form>
             <hr>
             <div>{{ my_question['message'] }}</div>

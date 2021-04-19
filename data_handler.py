@@ -10,6 +10,6 @@ def generate_list(parameter):
     return [line for line in parameter]
 
 
-def read_questions():
+def get_questions():
     questions = connection.read_elem_from_file('question')
     return generate_list(questions)
