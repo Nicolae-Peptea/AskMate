@@ -10,21 +10,55 @@
                 width: 90%;
                 border: 1px solid black;
             }
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+            }
+            .navbar {
+                overflow: hidden;
+                background-color: #333;
+                float: right;
+                font-size: 16px;
+                color: white;
+                text-align: center;
+                padding: 1px 1px;
+                margin-right: 10px;
+                text-decoration: none;
+            }
+            .navbar a {
+                float: left;
+                font-size: 16px;
+                color: white;
+                text-align: center;
+                padding: 10px 10px;
+                text-decoration: none;
+                border: 1px solid white;
+            }
+            .navbar a:hover, .subnav:hover .subnavbtn {
+                background-color: gray;
+            }
         </style>
     </head>
 
-    <body>
+    <body>      
         <div class="center">
-            <div><h1>{{ my_question['title'] }}</h1></div>
-            <div>Viewed: {{ my_question["view_number"] }} times</div>
-            <div><a href="">(-)</a> {{ my_question["vote_number"] }} votes <a href="">(+)</a></div>
-            <form action="/question/{{ my_question['id'] }}/new-answer">
-                <input type="submit" value="Answer Question">
-            </form>
+            <div><h1 style="padding-left: 10px;text-decoration: underline;">{{ my_question['title'] }}</h1></div>
+            <div class="navbar">
+                <a href="{{ url_for('route_list') }}">Home</a>
+                <a href="{{ url_for('answer_question', question_id=my_question['id']) }}">Answer Question</a>
+                <a href="/question/{{ my_question['id'] }}/edit">Edit Question</a>
+                <a href="/question/{{ my_question['id'] }}/delete">Delete Question</a>
+            </div>
+
+            <div style="padding: 0px 10px 0px 50px;">
+                <form action=""></form>
+                <button onclick="decrement()">-</button> {{ my_question["vote_number"] }} votes <button onclick="increment()">+</button>
+                <p>Viewed: {{ my_question["view_number"] }} times</p>
+            </div>
             <hr>
-            <div>{{ my_question['message'] }}</div>
+            <div style="padding-left: 10px;">{{ my_question['message'] }}</div>
             <hr>
-            <div>X Answers</div>
+            <div style="padding-left: 10px;">X Answers</div>
         </div>
     </body>
 

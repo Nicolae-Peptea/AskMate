@@ -16,9 +16,9 @@ def route_list():
 def ask_question():
     if request.method == "GET":
         return render_template('post_question.html')
-    elif request.method == "POST":
+    if request.method == "POST":
         # get id_
-        return redirect('/question/<question_id>')
+        return redirect(url_for("display_question", question_id=1))
     pass
 
 
@@ -32,8 +32,11 @@ def display_question(question_id):
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
-def answer_question():
-    return render_template("post_answer.html")
+def answer_question(question_id):
+    if request.method == "GET":
+        return render_template("post_answer.html")
+    if request.method == "POST":
+        return redirect()
 
 
 if __name__ == "__main__":
