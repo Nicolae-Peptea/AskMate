@@ -5,40 +5,41 @@
         <meta charset="utf-8">
         <title>Welcome! | ASK-MATE-1</title>
         <style>
-            th {
-            border: 1px solid black;
-            }
-
-            th, td {
-            padding: 10px;
+            .center {
+                margin: auto;
+                width: 90%;
+                border: 1px solid black;
             }
         </style>
     </head>
 
     <body>
-        <div><h1>ASK-MATE-1</h1></div>
+        <div><h1>All Questions</h1></div>
         <hr>
-        <div><a href='/add-question' title="Add Question">(+) Add new question</a></div>
-        <hr>
+        <div style="text-align: right;">
+            <form action="{{ url_for('ask_question') }}">
+                <input type="submit" value="Ask Question">
+            </form>
+            <hr>
+        </div>
+
         <div>
-            <table>
-                <tr style="border: 1px;">
-                    <th>Title</th>
-                    <th>Message</th>
-                    <th>Views</th>
-                    <th>Votes</th>
-                </tr>
-                {% for question in questions %}
-                    <tr>
-                        <td style="width:30%"><a href="/question/{{question['id']}}" title="'{{ question['submission_time'] }}'">
-                            {% autoescape false %}{{ question['title'] }}{% endautoescape %}</a>
-                        </td>
-                        <td style="width:50%">{% autoescape false %}{{ question['message'][:100] }}...{% endautoescape %}</td>
-                        <td style="text-align: center; vertical-align: middle;width:10%">{{ question["view_number"] }}</td>
-                        <td style="text-align: center; vertical-align: middle;width:10%">{{ question["vote_number"] }}</td>
-                    </tr>
-                {% endfor %}
-              </table>
+            {% for question in questions %}
+                <div class="center">
+                    <div>
+                        <a href="/question/{{ question['id'] }}" title="'{{ question['submission_time'] }}'">
+                            {% autoescape false %}{{ question['title'] }}{% endautoescape %}
+                        </a>
+                        <p style="width:90%">{% autoescape false %}{{ question['message'][:200] }}...{% endautoescape %}</p>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <div>{{ question["view_number"] }} views</div>
+                        <div>{{ question["vote_number"] }} votes</div>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
         </div>
     </body>
 
