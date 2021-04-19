@@ -12,8 +12,8 @@ def get_answers(id_elem: str):
 
 
 def add_entry(old_entries, new_entry, question_or_answer):
-    new_story = util.add_id(dbase_len=old_entries,
-                            elem_to_add=new_entry)
+    new_story = util.add_initial_attributes(dbase_len=old_entries,
+                                            elem_to_add=new_entry)
     old_entries.append(new_story)
     connection.write_elem_from_file(entries=old_entries,
                                     question_or_answer=question_or_answer)
