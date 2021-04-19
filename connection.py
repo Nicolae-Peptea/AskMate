@@ -25,8 +25,8 @@ def read_elem_from_file(question_or_answer):
     file_path = get_path(question_or_answer)
     with open(file_path, 'r') as file:
         reader = csv.DictReader(file)
-    for elem in reader:
-        yield elem
+        for elem in reader:
+            yield elem
 
 
 def modify_stuff():
