@@ -8,9 +8,9 @@ DATA_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 
 
 def read_from_file(file_name):
     with open(file_name) as file:
-        input_file = list(csv.DictReader(file))
-    for line in input_file:
-        yield line
+        input_file = csv.DictReader(file)
+        for line in input_file:
+            yield line
 
 
 def generate_list(questions):
