@@ -1,8 +1,8 @@
 import csv
 
 
-ANSWERS_PATH = "answer.csv"
-QUESTIONS_PATH = "question.csv"
+ANSWERS_PATH = "data_play/answer.csv"
+QUESTIONS_PATH = "data_play/question.csv"
 DATA_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 
 
