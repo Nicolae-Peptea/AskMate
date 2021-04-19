@@ -1,27 +1,15 @@
-import csv
+import connection
 
 
-ANSWERS_PATH = "data_play/answer.csv"
-QUESTIONS_PATH = "data_play/question.csv"
-DATA_HEADERS = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+def get_answers(id_elem: str):
+    answers = connection.read_elem_from_file('answer')
+    return [answer for answer in answers if answer['question_id'] == id_elem]
 
 
-def read_from_file(file_name):
-    with open(file_name) as file:
-        input_file = csv.DictReader(file)
-        for line in input_file:
-            yield line
-
-
-def generate_list(questions):
-    return [line for line in questions]
+def generate_list(parameter):
+    return [line for line in parameter]
 
 
 def read_questions():
-    questions = read_from_file(QUESTIONS_PATH)
+    questions = connection.read_elem_from_file('question')
     return generate_list(questions)
-
-
-def read_answers():
-    answers = read_from_file(ANSWERS_PATH)
-    return generate_list(answers)

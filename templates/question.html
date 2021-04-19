@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>{{ my_question['title'] }} | ASK-MATE-1</title>
+        <style>
+            .center {
+                margin: auto;
+                width: 90%;
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="center">
+            <div><h1>{{ my_question['title'] }}</h1></div>
+            <div>Viewed: {{ my_question["view_number"] }} times</div>
+            <div><a href="">(-)</a> {{ my_question["vote_number"] }} votes <a href="">(+)</a></div>
+            <form action="">
+                <input type="button" value="Answer Question">
+            </form>
+            <hr>
+            <div>{{ my_question['message'] }}</div>
+            <hr>
+            <div>X Answers</div>
+        </div>
+    </body>
+
+</html>
