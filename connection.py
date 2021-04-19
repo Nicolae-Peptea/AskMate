@@ -3,9 +3,9 @@ import csv
 
 def get_path(param: str):
     if param == 'question':
-        return 'sample_data/question.csv'
+        return 'data_play/question.csv'
     elif param == 'answer':
-        return 'sample_data/answer.csv'
+        return 'data_play/answer.csv'
     else:
         return
 

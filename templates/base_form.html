@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <h1 id="form_title">{% block form_title %}{% endblock %}</h1>
+    <form action="{{ url_for('ask_question') }}" method="post">
+        <p id="first_form">
+            {% block first_form %}{% endblock %}
+            </p>
+        <p id="second_form">
+            {% block second_form %}{% endblock %}
+            </p>
+        <p id="button">
+            {% block button %}{% endblock %}
+            </p>
+        <p>
+            <button type="submit">POST</button>
+            </p>
+
+
+    </form>
+</body>
+</html>
