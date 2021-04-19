@@ -42,7 +42,7 @@
 
     <body>      
         <div class="center">
-            <div><h1 style="padding-left: 10px;text-decoration: underline;">{{ my_question['title'] }}</h1></div>
+            <div><h1 style="padding-left: 10px;text-decoration: underline;width: 60%;">{{ my_question['title'] }}</h1></div>
             <div class="navbar">
                 <a href="{{ url_for('route_list') }}">Home</a>
                 <a href="{{ url_for('answer_question', question_id=my_question['id']) }}">Answer Question</a>
@@ -56,10 +56,26 @@
                 <p>Viewed: {{ my_question["view_number"] }} times</p>
             </div>
             <hr>
+            <div><h3 style="padding-left: 10px;text-decoration: underline;">Message:</h3></div>
             <div style="padding-left: 10px;">{{ my_question['message'] }}</div>
             <hr>
-            <div style="padding-left: 10px;">X Answers</div>
+            <div style="padding-left: 10px;">{{ num_of_answers }} Answers</div><br><br>
+            <div>
+                {% for answer in answers %}
+                    <div style="border: 1px solid black">
+                        <div style="padding: 5px 10px;">
+                            <p style="width:90%">{% autoescape false %}{{ answer['message'] }}{% endautoescape %}</p>
+                        </div>
+    
+                        <div style="text-align: right;padding: 5px 10px;">
+                            <div>{{ answer["vote_number"] }} votes</div>
+                        </div>
+                    </div>
+                    <br>
+                {% endfor %}
+            </div>
         </div>
+
     </body>
 
 </html>
