@@ -14,12 +14,17 @@ def route_list():
 
 @app.route('/add-question', methods=["GET", "POST"])
 def ask_question():
+    question_db = data_handler.get_questions()
+
     if request.method == "GET":
         return render_template('post_question.html')
     elif request.method == "POST":
-        # get id_
-        return redirect('/question/<question_id>')
-    pass
+        data_handler.add_entry(old_entries=question_db,
+                               new_entry=list(request.form.items()),
+                               question_or_answer='question')
+        # return redirect('/question/<question_id>')
+        return redirect('/')
+
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
@@ -28,11 +33,6 @@ def display_question(question_id):
         if question["id"] == str(question_id):
             my_question = question
     return render_template("question.html", my_question=my_question)
-
-
-@app.route("/add-question", methods=["GET", "POST"])
-def ask_question():
-    pass
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
