@@ -22,13 +22,13 @@ def ask_question():
         data_handler.add_entry(old_entries=question_db,
                                new_entry=list(request.form.items()),
                                question_or_answer='question')
-        # return redirect('/question/<question_id>')
-        return redirect('/')
+        return redirect(f'/question/{data_handler.get_id()}')
+        # return redirect('/')
 
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
-    questions = data_handler.read_questions()
+    questions = data_handler.get_questions()
     for question in questions:
         if question["id"] == str(question_id):
             my_question = question

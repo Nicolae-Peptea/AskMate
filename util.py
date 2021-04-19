@@ -17,4 +17,6 @@ def add_initial_attributes(dbase_len, elem_to_add):
     view_number = ('view_number', 0)
     vote_number = ('vote_number', 0)
     return pack_variables(elem_to_add, new_id, submission_time,
-                          view_number,vote_number)
+                          view_number, vote_number)
+
+

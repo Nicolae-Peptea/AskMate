@@ -17,3 +17,8 @@ def add_entry(old_entries, new_entry, question_or_answer):
     old_entries.append(new_story)
     connection.write_elem_from_file(entries=old_entries,
                                     question_or_answer=question_or_answer)
+
+
+def get_id():
+    questions = get_questions()
+    return questions[-1]['id']
