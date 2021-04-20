@@ -17,7 +17,7 @@ def get_answers(id_elem: str):
     return [answer for answer in answers if answer['question_id'] == str(id_elem)]
 
 
-def get_answer(questions, question_id):
+def get_question(questions, question_id):
     for question in questions:
         if question["id"] == str(question_id):
             return question
@@ -33,6 +33,27 @@ def add_question(new_entry):
     new_question.update(new_entry)
     add_id = write_elem_to_file(new_question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
     return add_id
+
+
+def add_answer(new_entry, question_id):
+    new_question = {
+        'id': get_next_id(ANSWER_PATH),
+        'question_id': question_id,
+        'vote_number': 0,
+        'submission_time': round(datetime.timestamp(datetime.now())),
+    }
+    new_question.update(new_entry)
+    write_elem_to_file(new_question, ANSWER_PATH, ANSWER_DATA_HEADER)
+
+
+def delete_question(question_id):
+    delete_entry(entry_id=question_id, file_path=QUESTIONS_PATH, file_header=QUESTIONS_DATA_HEADER)
+
+
+def delete_answer(answer_id):
+    delete_entry(entry_id=answer_id, file_path=ANSWER_PATH, file_header=ANSWER_DATA_HEADER)
+
+
 
 # CONNECTION
 
@@ -65,3 +86,17 @@ def write_elem_to_file(elem, file_path, file_header):
             updated_id = elem['id']
 
     return updated_id
+
+
+def delete_entry(entry_id, file_path, file_header):
+    entries = list(read_file(file_path))
+    with open(QUESTIONS_PATH, 'w') as file:
+        dict_writer = csv.DictWriter(file, fieldnames=file_header)
+        dict_writer.writeheader()
+        for elem in entries:
+            if int(elem['id']) == entry_id:
+                continue
+            dict_writer.writerow(elem)
+
+
+delete_question(3)
