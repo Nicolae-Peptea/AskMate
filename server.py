@@ -45,11 +45,16 @@ def answer_question(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
 
-@app.route('/question/<int:question_id>/delete', methods=["GET"])
+@app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
     data_handler.delete_question(question_id)
     return redirect('/')
 
+
+@app.route('/answer/<int:answer_id>/delete')
+def delete_answer(answer_id):
+    data_handler.delete_answer(answer_id)
+    return redirect('/')
 
 
 if __name__ == "__main__":
