@@ -17,19 +17,21 @@
 <body>
     <div class="center">
         <h1 id="form_title">{% block form_title %}{% endblock %}</h1>
-        <form action="{{ url_for('ask_question') }}" method="post">
+        <form action="{{ address }}" method="post">
             <p id="first_form">
                 {% block first_form %}{% endblock %}
-                </p>
+            </p>
             <p id="second_form">
                 {% block second_form %}{% endblock %}
-                </p>
+            </p>
             <p id="button">
                 {% block button %}{% endblock %}
-                </p>
-            <p>
-                <button type="submit">POST</button>
-                </p>
+            </p>
+            <label for="filename">Click on the "Choose File" button to upload a file:</label><br>
+            <input type="file" id="myFile" name="filename"><br><br>
+
+            <button type="submit" style="margin-left: 30%;">POST</button>
+
         </form>
     </div>
 </body>

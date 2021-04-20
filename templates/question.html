@@ -25,7 +25,29 @@
                 margin-right: 10px;
                 text-decoration: none;
             }
+            .answer_buttons {
+                overflow: hidden;
+                background-color: #333;
+                float: right;
+                font-size: 16px;
+                color: white;
+                text-align: center;
+                padding: 1px 1px;
+                margin-right: 10px;
+                text-decoration: none;
+                position: relative;
+                top: -80px;
+            }
             .navbar a {
+                float: left;
+                font-size: 16px;
+                color: white;
+                text-align: center;
+                padding: 10px 10px;
+                text-decoration: none;
+                border: 1px solid white;
+            }
+            .answer_buttons a {
                 float: left;
                 font-size: 16px;
                 color: white;
@@ -67,8 +89,12 @@
                             <p style="width:90%">{% autoescape false %}{{ answer['message'] }}{% endautoescape %}</p>
                         </div>
     
-                        <div style="text-align: right;padding: 5px 10px;">
+                        <div style="text-align: right;margin: 5px 10px;">
                             <div>{{ answer["vote_number"] }} votes</div>
+                        </div>
+                        <div class="answer_buttons">
+                            <a href="/answer/{{ answer['id'] }}/edit">Edit</a>
+                            <a href="/answer/{{ answer['id'] }}/delete">Delete</a>
                         </div>
                     </div>
                     <br>
