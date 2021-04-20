@@ -42,7 +42,7 @@
 
     <body>      
         <div class="center">
-            <div><h1 style="padding-left: 10px;text-decoration: underline;width: 60%;">{{ my_question['title'] }}</h1></div>
+            <div><h1 style="padding-left: 10px;">{{ my_question['title'] }}</h1></div>
             <div class="navbar">
                 <a href="{{ url_for('route_list') }}">Home</a>
                 <a href="{{ url_for('answer_question', question_id=my_question['id']) }}">Answer Question</a>
