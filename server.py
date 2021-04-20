@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import data_handler
 
 app = Flask(__name__)
+question_path = ''
 
 
 @app.route("/")
@@ -24,10 +25,12 @@ def ask_question():
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
+    global question_path
     questions = data_handler.get_questions()
     answers = data_handler.get_answers(question_id)
     num_of_answers = len(answers)
     my_question = data_handler.get_question(questions, question_id)
+    question_path = url_for('display_question', question_id=question_id)
     return render_template("question.html",
                            my_question=my_question,
                            answers=answers,
@@ -54,7 +57,7 @@ def delete_question(question_id):
 @app.route('/answer/<int:answer_id>/delete')
 def delete_answer(answer_id):
     data_handler.delete_answer(answer_id)
-    return redirect('/')
+    return redirect(question_path)
 
 
 if __name__ == "__main__":
