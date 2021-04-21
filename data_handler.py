@@ -79,7 +79,9 @@ def edit_question(new_entry, question_id):
     write_elem_to_file(question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
 
 
-def delete_question(question_id):
+def delete_question(question_id, app):
+    my_question = dict(get_single_question(question_id))
+    delete_image(my_question, app)
     delete_entry(entry_id=question_id, file_path=QUESTIONS_PATH, file_header=QUESTIONS_DATA_HEADER)
 
 
@@ -118,6 +120,14 @@ def delete_answer(answer_id):
     delete_entry(entry_id=answer_id, file_path=ANSWER_PATH, file_header=ANSWER_DATA_HEADER)
 
 
+def delete_answers(question_id, app):
+    answers = get_answers_for_question(question_id)
+    for answer in answers:
+        if int(answer['question_id']) == question_id:
+            delete_image(answer, app)
+            delete_answer(int(answer['id']))
+
+
 def vote_answer(answer_id, vote):
     return vote_entry(file_path=ANSWER_PATH,
                       file_headers=ANSWER_DATA_HEADER,
@@ -126,6 +136,14 @@ def vote_answer(answer_id, vote):
 
 
 # CONNECTION
+
+
+def delete_image(location, app):
+    if location['image']:
+        filename = location['image']
+        files = os.listdir(app.config['UPLOAD_PATH'])
+        if filename in files:
+            os.unlink(os.path.join(app.config['UPLOAD_PATH'], filename))
 
 
 def read_file(file_path):
