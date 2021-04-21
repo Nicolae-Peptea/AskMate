@@ -54,6 +54,10 @@ def delete_answer(answer_id):
     delete_entry(entry_id=answer_id, file_path=ANSWER_PATH, file_header=ANSWER_DATA_HEADER)
 
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 # CONNECTION
 
 
@@ -89,10 +93,21 @@ def write_elem_to_file(elem, file_path, file_header):
 
 def delete_entry(entry_id, file_path, file_header):
     entries = list(read_file(file_path))
+<<<<<<< Updated upstream
     with open(file_path, 'w') as file:
+=======
+    with open(QUESTIONS_PATH, 'w') as file:
+>>>>>>> Stashed changes
         dict_writer = csv.DictWriter(file, fieldnames=file_header)
         dict_writer.writeheader()
         for elem in entries:
             if int(elem['id']) == entry_id:
                 continue
+<<<<<<< Updated upstream
             dict_writer.writerow(elem)
+=======
+            dict_writer.writerow(elem)
+
+
+delete_question(3)
+>>>>>>> Stashed changes

@@ -30,7 +30,6 @@ def display_question(question_id):
     answers = data_handler.get_answers(question_id)
     num_of_answers = len(answers)
     my_question = data_handler.get_question(questions, question_id)
-    question_path = url_for('display_question', question_id=question_id)
     return render_template("question.html",
                            my_question=my_question,
                            answers=answers,
@@ -51,13 +50,7 @@ def answer_question(question_id):
 @app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
     data_handler.delete_question(question_id)
-    return redirect('/')
-
-
-@app.route('/answer/<int:answer_id>/delete')
-def delete_answer(answer_id):
-    data_handler.delete_answer(answer_id)
-    return redirect(question_path)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 if __name__ == "__main__":
