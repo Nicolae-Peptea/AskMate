@@ -133,13 +133,13 @@ def delete_question(question_id):
 @app.route('/question/<int:question_id>/vote_up')
 def up_vote_question(question_id):
     data_handler.vote_question(question_id, vote='up')
-    return redirect(url_for('display_question', question_id=question_id))
+    return redirect(url_for('route_list'))
 
 
 @app.route('/question/<int:question_id>/vote_down')
 def down_vote_question(question_id):
     data_handler.vote_question(question_id, vote='down')
-    return redirect(url_for('display_question', question_id=question_id))
+    return redirect(url_for('route_list'))
 
 
 @app.route('/answer/<int:answer_id>/vote_up')
