@@ -109,6 +109,18 @@ def delete_answer(answer_id):
 
 @app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
+    my_question = dict(data_handler.get_single_question(question_id))
+    if my_question['image']:
+        filename = my_question['image']
+        os.unlink(os.path.join(app.config['UPLOAD_PATH'], filename))
+    answers = data_handler.get_answers_for_question(question_id)
+    for answer in answers:
+        if answer['question_id'] == question_id:
+            answer_id = answer['id']
+            data_handler.delete_answer(answer_id)
+            if answer['image']:
+                filename = answer['image']
+                os.unlink(os.path.join(app.config['UPLOAD_PATH'], filename))
     data_handler.delete_question(question_id)
     return redirect(url_for('route_list'))
 
