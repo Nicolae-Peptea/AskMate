@@ -13,21 +13,15 @@ def get_questions():
 
 
 def get_ordered_questions(questions, order_by, direction):
-    if order_by == "submission_time":
-        if direction == "asc":
-            return questions
-        else:
-            return questions[::-1]
-    else:
-        for question in questions:
-            for piece in range(len(questions) - 1):
-                if direction == "asc":
-                    if questions[piece][order_by] > questions[piece+1][order_by]:
-                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
-                else:
-                    if questions[piece][order_by] < questions[piece+1][order_by]:
-                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
-        return questions
+    for question in questions:
+        for piece in range(len(questions) - 1):
+            if direction == "asc":
+                if questions[piece][order_by] > questions[piece+1][order_by]:
+                    questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+            else:
+                if questions[piece][order_by] < questions[piece+1][order_by]:
+                    questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+    return questions
 
 
 def get_answers(id_elem: str):
