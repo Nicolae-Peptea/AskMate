@@ -47,6 +47,13 @@
                 text-decoration: none;
                 border: 1px solid white;
             }
+            .vote_button {
+                padding: 2px 6px;
+                border: 1px solid black;
+                text-decoration: none;
+                font-size: 16px;
+                color: black;
+            }
             .answer_buttons a {
                 float: left;
                 font-size: 16px;
@@ -73,15 +80,21 @@
             </div>
 
             <div style="padding: 0px 10px 0px 50px;">
-                <form action=""></form>
-                <button onclick="decrement()">-</button> {{ my_question["vote_number"] }} votes <button onclick="increment()">+</button>
-                <p>Viewed: {{ my_question["view_number"] }} times</p>
+                <a class="vote_button" href="{{ url_for('down_vote_question', question_id=my_question['id']) }}">-</a> {{ my_question["vote_number"] }} votes <a class="vote_button" href="{{ url_for('up_vote_question', question_id=my_question['id']) }}">+</a>
+                <p>Viewed: {{ my_question["view_number"] }} {% if my_question["view_number"] == "1" %}time{% else %}times{%endif%}</p>
             </div>
             <hr>
             <div><h3 style="padding-left: 10px;text-decoration: underline;">Message:</h3></div>
             <div style="padding-left: 10px;">{{ my_question['message'] }}</div>
+            {% if my_question['image'] %}
+                <div>
+                    <a href="{{ url_for('upload_image', filename=my_question['image']) }}">
+                        <img src="{{ url_for('upload_image', filename=my_question['image']) }}" style="width: 256px;margin: 10px 10px;">
+                    </a>
+                </div>
+            {%endif%}
             <hr>
-            <div style="padding-left: 10px;">{{ num_of_answers }} Answers</div><br><br>
+            <div style="padding-left: 10px;">{{ num_of_answers }} {% if num_of_answers == 1 %}Answer{% else %}Answers{%endif%}</div><br><br>
             <div>
                 {% for answer in answers %}
                     <div style="border: 1px solid black">
@@ -90,12 +103,21 @@
                         </div>
     
                         <div style="text-align: right;margin: 5px 10px;">
-                            <div>{{ answer["vote_number"] }} votes</div>
+                            <div>
+                                <a class="vote_button" href="{{ url_for('down_vote_answer', answer_id=answer['id']) }}">-</a> {{ answer["vote_number"] }} votes <a class="vote_button" href="{{ url_for('up_vote_answer', answer_id=answer['id']) }}">+</a>
+                            </div>
                         </div>
                         <div class="answer_buttons">
                             <a href="/answer/{{ answer['id'] }}/edit">Edit</a>
                             <a href="/answer/{{ answer['id'] }}/delete">Delete</a>
                         </div>
+                        {% if answer['image'] %}
+                            <div>
+                                <a href="{{ url_for('upload_image', filename=answer['image']) }}">
+                                    <img src="{{ url_for('upload_image', filename=answer['image']) }}" style="width: 256px;margin: 10px 10px;">
+                                </a>
+                            </div>
+                        {%endif%}
                     </div>
                     <br>
                 {% endfor %}

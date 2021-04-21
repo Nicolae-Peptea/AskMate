@@ -19,10 +19,10 @@ def vote_entry(file_path, file_headers, entry_to_vote, vote):
     vote_as_int = int(entry['vote_number'])
     if vote == 'up':
         vote_as_int += 1
-        entry['vote_number'] = vote_as_int
+        entry['vote_number'] = str(vote_as_int)
     else:
         vote_as_int -= 1
-        entry['vote_number'] = vote_as_int
+        entry['vote_number'] = str(vote_as_int)
     write_elem_to_file(entry_to_vote, file_path, file_headers)
 
 
@@ -95,10 +95,23 @@ def delete_question(question_id):
 
 
 def vote_question(question_id, vote):
-    return vote_entry(file_path= QUESTIONS_PATH,
-                      file_headers = QUESTIONS_DATA_HEADER,
+    return vote_entry(file_path=QUESTIONS_PATH,
+                      file_headers=QUESTIONS_DATA_HEADER,
                       entry_to_vote=get_single_question(question_id=question_id),
                       vote=vote)
+
+
+def increment_views_algorithm(file_path, file_headers, entry):
+    incremented_views = int(entry['view_number']) + 1
+    entry['view_number'] = str(incremented_views)
+    write_elem_to_file(entry, file_path, file_headers)
+
+
+def increment_views(question_id):
+    return increment_views_algorithm(file_path=QUESTIONS_PATH, 
+                                     file_headers=QUESTIONS_DATA_HEADER, 
+                                     entry=get_single_question(question_id=question_id)
+                                     )
 
 
 def add_answer(new_entry, question_id):
