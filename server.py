@@ -10,7 +10,12 @@ question_path = ''
 @app.route("/list")
 def route_list():
     questions = list(data_handler.read_file(data_handler.QUESTIONS_PATH))
-    return render_template('list.html', questions=questions)
+    if request.args:
+        order_by = request.args['order_by']
+        direction = request.args['order_direction']
+        ordered_questions = data_handler.get_ordered_questions(questions, order_by, direction)
+        return render_template('list.html', questions=ordered_questions, order_by=order_by, direction=direction)
+    return render_template('list.html', questions=questions[::-1])
 
 
 @app.route('/add-question', methods=["GET", "POST"])
@@ -62,13 +67,7 @@ def answer_question(question_id):
 @app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
     data_handler.delete_question(question_id)
-    return redirect('/')
-
-
-@app.route('/answer/<int:answer_id>/delete')
-def delete_answer(answer_id):
-    data_handler.delete_answer(answer_id)
-    return redirect(question_path)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route('/question/<int:question_id>/vote_up')
@@ -90,7 +89,7 @@ def up_vote_answer(answer_id):
 
 
 @app.route('/answer/<int:answer_id>/vote_down')
-def up_vote_answer(answer_id):
+def down_vote_answer(answer_id):
     data_handler.vote_answer(answer_id=answer_id, vote='down')
     return redirect(question_path)
 

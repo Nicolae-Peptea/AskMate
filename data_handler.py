@@ -34,6 +34,27 @@ def get_single_answer(answer_id):
     return get_single_entry_by_id(file_path=ANSWER_PATH, entry_id=answer_id)
 
 
+def get_ordered_questions(questions, order_by, direction):
+    integers = ["submission_time", "view_number", "vote_number"]
+    for question in questions:
+        for piece in range(len(questions) - 1):
+            if direction == "asc":
+                if order_by in integers:
+                    if int(questions[piece][order_by]) > int(questions[piece+1][order_by]):
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+                else:
+                    if questions[piece][order_by] > questions[piece+1][order_by]:
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+            else:
+                if order_by in integers:
+                    if int(questions[piece][order_by]) < int(questions[piece+1][order_by]):
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+                else:
+                    if questions[piece][order_by] < questions[piece+1][order_by]:
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+    return questions
+
+
 def get_answers_for_question(id_elem: str):
     answers = read_file(ANSWER_PATH)
     return [answer for answer in answers if answer['question_id'] == str(id_elem)]
