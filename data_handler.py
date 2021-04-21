@@ -1,5 +1,8 @@
 import csv
 import os
+import imghdr
+from flask import request
+from werkzeug.utils import secure_filename
 from datetime import datetime
 
 QUESTIONS_PATH = 'data_play/question.csv'
@@ -80,9 +83,8 @@ def edit_question(new_entry, question_id):
 
 
 def delete_question(question_id, app):
-    my_question = dict(get_single_question(question_id))
-    delete_image(my_question, app)
-    delete_entry(entry_id=question_id, file_path=QUESTIONS_PATH, file_header=QUESTIONS_DATA_HEADER)
+    delete_answers(question_id, app)
+    delete_entry(app, entry_id=question_id, file_path=QUESTIONS_PATH, file_header=QUESTIONS_DATA_HEADER)
 
 
 def vote_question(question_id, vote):
@@ -116,16 +118,15 @@ def add_answer(new_entry, question_id):
     write_elem_to_file(new_question, ANSWER_PATH, ANSWER_DATA_HEADER)
 
 
-def delete_answer(answer_id):
-    delete_entry(entry_id=answer_id, file_path=ANSWER_PATH, file_header=ANSWER_DATA_HEADER)
+def delete_answer(answer_id, app):
+    delete_entry(app, entry_id=answer_id, file_path=ANSWER_PATH, file_header=ANSWER_DATA_HEADER)
 
 
 def delete_answers(question_id, app):
     answers = get_answers_for_question(question_id)
     for answer in answers:
         if int(answer['question_id']) == question_id:
-            delete_image(answer, app)
-            delete_answer(int(answer['id']))
+            delete_answer(int(answer['id']), app)
 
 
 def vote_answer(answer_id, vote):
@@ -177,12 +178,39 @@ def write_elem_to_file(elem, file_path, file_header):
     return updated_id
 
 
-def delete_entry(entry_id, file_path, file_header):
+def delete_entry(app, entry_id, file_path, file_header):
     entries = list(read_file(file_path))
     with open(file_path, 'w') as file:
         dict_writer = csv.DictWriter(file, fieldnames=file_header)
         dict_writer.writeheader()
         for elem in entries:
             if int(elem['id']) == entry_id:
+                delete_image(elem, app)
                 continue
             dict_writer.writerow(elem)
+
+
+def validate_image(stream):
+    header = stream.read(512)
+    stream.seek(0)
+    format = imghdr.what(None, header)
+    if not format:
+        return None
+    return '.' + (format if format != 'jpeg' else 'jpg')
+
+
+def generate_entry_with_image(new_entry, app):
+    uploaded_file = request.files['image']
+    filename = secure_filename(uploaded_file.filename)
+    if filename != '':
+        uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+    new_entry['image'] = filename
+    return new_entry
+
+
+def generate_new_entry(app):
+    if request.files:
+        new_entry = generate_entry_with_image(dict(request.form), app)
+    else:
+        new_entry = dict(request.form)
+    return new_entry
