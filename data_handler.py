@@ -7,18 +7,34 @@ QUESTIONS_DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 
 ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def get_questions():
-    return read_file(QUESTIONS_PATH)
+def get_single_entry_by_id(file_path, entry_id):
+    entries = read_file(file_path)
+    for entry in entries:
+        if int(entry["id"]) == entry_id:
+            return entry
+
+
+def vote_entry(file_path, file_headers, entry_to_vote, vote):
+    entry = entry_to_vote
+    vote_as_int = int(entry['vote_number'])
+    if vote == 'up':
+        vote_as_int += 1
+        entry['vote_number'] = vote_as_int
+    else:
+        vote_as_int -= 1
+        entry['vote_number'] = vote_as_int
+    write_elem_to_file(entry_to_vote, file_path, file_headers)
 
 
 def get_single_question(question_id):
-    questions = list(get_questions())
-    for question in questions:
-        if int(question["id"]) == question_id:
-            return question
+    return get_single_entry_by_id(file_path=QUESTIONS_PATH, entry_id=question_id)
 
 
-def get_answers(id_elem: str):
+def get_single_answer(answer_id):
+    return get_single_entry_by_id(file_path=ANSWER_PATH, entry_id=answer_id)
+
+
+def get_answers_for_question(id_elem: str):
     answers = read_file(ANSWER_PATH)
     return [answer for answer in answers if answer['question_id'] == str(id_elem)]
 
@@ -41,19 +57,15 @@ def edit_question(new_entry, question_id):
     write_elem_to_file(question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
 
 
-def vote_question(question_id, vote='up'):
-    question = get_single_question(question_id=question_id)
-    vote_as_int = int(question['vote_number'])
-    if vote == 'up':
-        vote_as_int += 1
-        question['vote_number'] = vote_as_int
-    else:
-        vote_as_int -= 1
-        question['vote_number'] = vote_as_int
-    # print (question)
-    write_elem_to_file(question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
+def delete_question(question_id):
+    delete_entry(entry_id=question_id, file_path=QUESTIONS_PATH, file_header=QUESTIONS_DATA_HEADER)
 
 
+def vote_question(question_id, vote):
+    return vote_entry(file_path= QUESTIONS_PATH,
+                      file_headers = QUESTIONS_DATA_HEADER,
+                      entry_to_vote=get_single_question(question_id=question_id),
+                      vote=vote,)
 
 
 def add_answer(new_entry, question_id):
@@ -67,12 +79,15 @@ def add_answer(new_entry, question_id):
     write_elem_to_file(new_question, ANSWER_PATH, ANSWER_DATA_HEADER)
 
 
-def delete_question(question_id):
-    delete_entry(entry_id=question_id, file_path=QUESTIONS_PATH, file_header=QUESTIONS_DATA_HEADER)
-
-
 def delete_answer(answer_id):
     delete_entry(entry_id=answer_id, file_path=ANSWER_PATH, file_header=ANSWER_DATA_HEADER)
+
+
+def vote_answer(answer_id, vote):
+    return vote_entry(file_path=ANSWER_PATH,
+                      file_headers=ANSWER_DATA_HEADER,
+                      entry_to_vote=get_single_answer(answer_id=answer_id),
+                      vote=vote,)
 
 
 # CONNECTION
