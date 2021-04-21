@@ -9,13 +9,8 @@ question_path = ''
 @app.route("/")
 @app.route("/list")
 def route_list():
-    questions = list(data_handler.read_file(data_handler.QUESTIONS_PATH))
-    if request.args:
-        order_by = request.args['order_by']
-        direction = request.args['order_direction']
-        ordered_questions = data_handler.get_ordered_questions(questions, order_by, direction)
-        return render_template('list.html', questions=ordered_questions, order_by=order_by, direction=direction)
-    return render_template('list.html', questions=questions[::-1])
+    ordered_questions = data_handler.get_ordered_questions(parameters=request.args)
+    return render_template('list.html', questions=ordered_questions, request_param=request.args)
 
 
 @app.route('/add-question', methods=["GET", "POST"])
@@ -34,7 +29,6 @@ def display_question(question_id):
     answers = data_handler.get_answers_for_question(question_id)
     num_of_answers = len(answers)
     my_question = data_handler.get_single_question(question_id)
-    print (my_question)
     question_path = url_for('display_question', question_id=question_id)
     return render_template("question.html",
                            my_question=my_question,
