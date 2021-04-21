@@ -51,7 +51,6 @@ def edit_question(question_id):
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def answer_question(question_id):
     address = url_for('answer_question', question_id=question_id)
-
     if request.method == "GET":
         return render_template("post_answer.html", address=address)
     elif request.method == "POST":
@@ -69,6 +68,12 @@ def delete_question(question_id):
 def delete_answer(answer_id):
     data_handler.delete_answer(answer_id)
     return redirect(question_path)
+
+
+@app.route('/question/<int:question_id>/vote_up')
+def up_vote(question_id):
+    data_handler.vote_question(question_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 if __name__ == "__main__":

@@ -41,6 +41,21 @@ def edit_question(new_entry, question_id):
     write_elem_to_file(question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
 
 
+def vote_question(question_id, vote='up'):
+    question = get_single_question(question_id=question_id)
+    vote_as_int = int(question['vote_number'])
+    if vote == 'up':
+        vote_as_int += 1
+        question['vote_number'] = vote_as_int
+    else:
+        vote_as_int -= 1
+        question['vote_number'] = vote_as_int
+    # print (question)
+    write_elem_to_file(question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
+
+
+
+
 def add_answer(new_entry, question_id):
     new_question = {
         'id': get_next_id(ANSWER_PATH),
