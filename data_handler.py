@@ -89,6 +89,19 @@ def vote_question(question_id, vote):
                       vote=vote,)
 
 
+def increment_views_algorithm(file_path, file_headers, entry):
+    incremented_views = int(entry['view_number']) + 1
+    entry['view_number'] = str(incremented_views)
+    write_elem_to_file(entry, file_path, file_headers)
+
+
+def increment_views(question_id):
+    return increment_views_algorithm(file_path=QUESTIONS_PATH, 
+                                     file_headers=QUESTIONS_DATA_HEADER, 
+                                     entry=get_single_question(question_id=question_id)
+                                     )
+
+
 def add_answer(new_entry, question_id):
     new_question = {
         'id': get_next_id(ANSWER_PATH),

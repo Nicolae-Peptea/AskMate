@@ -53,6 +53,7 @@ def ask_question():
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
+    data_handler.increment_views(question_id)
     global question_path
     files = os.listdir(app.config['UPLOAD_PATH'])
     answers = data_handler.get_answers_for_question(question_id)
@@ -151,6 +152,12 @@ def up_vote_answer(answer_id):
 def down_vote_answer(answer_id):
     data_handler.vote_answer(answer_id=answer_id, vote='down')
     return redirect(question_path)
+
+
+# @app.route('/question/<int:question_id>/views_up)
+# def raise_views(question_id):
+#     data_handler.vote_answer(answer_id=answer_id, vote='down')
+#     return redirect(question_path)
 
 
 if __name__ == "__main__":
