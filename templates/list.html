@@ -1,3 +1,70 @@
+<!-- {#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{##}
+{#    <head>#}
+{#        <meta charset="utf-8">#}
+{#        <title>Welcome! | ASK-MATE-1</title>#}
+{#        <style>#}
+{#            body {#}
+{#                font-family: Arial, Helvetica, sans-serif;#}
+{#                margin: 0;#}
+{#            }#}
+{#            .center {#}
+{#                margin: auto;#}
+{#                width: 90%;#}
+{#                border: 1px solid black;#}
+{#            }#}
+{#        </style>#}
+{#    </head>#}
+{##}
+{#    <body>#}
+{#        <div style="padding: 5px 10px 0px 10px;margin-left: 90px;"><h1>Ask Mate</h1></div>#}
+{#        <div style="text-align: right;">#}
+{#            <form action="{{ url_for('ask_question') }}">#}
+{#                <button style="padding: 5px;margin-right: 90px;">Ask Question</button>#}
+{#            </form>#}
+{#            <br>#}
+{#            <form action="{{ url_for('route_list') }}">#}
+{#                <div style="margin-right: 90px;">#}
+{#                    <label for="order_by">Order by: </label>#}
+{#                    <select name="order_by" id="sort" onChange="this.form.submit();">#}
+{#                        <option value="title" {% if order_by == 'title' %}selected{%endif%}>Title</option>#}
+{#                        <option value="submission_time" {% if order_by == 'submission_time' %}selected{%endif%}>Submission Time</option>#}
+{#                        <option value="message" {% if order_by == 'message' %}selected{%endif%}>Message</option>#}
+{#                        <option value="view_number" {% if order_by == 'view_number' %}selected{%endif%}>Views</option>#}
+{#                        <option value="vote_number" {% if order_by == 'vote_number' %}selected{%endif%}>Votes</option>#}
+{#                    </select>#}
+{#                    <label for="order_direction">Direction: </label>#}
+{#                    <select name="order_direction" id="order" onChange="this.form.submit();">#}
+{#                        <option value="asc" {% if direction == 'asc' %}selected{%endif%}>Ascending</option>#}
+{#                        <option value="desc" {% if direction == 'desc' %}selected{%endif%}>Descending</option>#}
+{#                    </select>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+{#        <hr>#}
+{#        <div>#}
+{#            {% for question in questions %}#}
+{#                <div class="center">#}
+{#                    <div style="padding: 5px 10px;">#}
+{#                        <a href="/question/{{ question['id'] }}" title="'{{ question['submission_time'] }}'">#}
+{#                            {% autoescape false %}{{ question['title'] }}{% endautoescape %}#}
+{#                        </a>#}
+{#                        <p style="width:90%">{% autoescape false %}{{ question['message'][:200] }}...{% endautoescape %}</p>#}
+{#                    </div>#}
+{##}
+{#                    <div style="text-align: right;padding: 5px 10px;">#}
+{#                        <div>{{ question["view_number"] }} views</div>#}
+{#                        <div>{{ question["vote_number"] }} votes</div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <br>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#    </body>#}
+{##}
+{#</html>#} -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,16 +95,16 @@
                 <div style="margin-right: 90px;">
                     <label for="order_by">Order by: </label>
                     <select name="order_by" id="sort" onChange="this.form.submit();">
-                        <option value="title" {% if order_by == 'title' %}selected{%endif%}>Title</option>
-                        <option value="submission_time" {% if order_by == 'submission_time' %}selected{%endif%}>Submission Time</option>
-                        <option value="message" {% if order_by == 'message' %}selected{%endif%}>Message</option>
-                        <option value="view_number" {% if order_by == 'view_number' %}selected{%endif%}>Views</option>
-                        <option value="vote_number" {% if order_by == 'vote_number' %}selected{%endif%}>Votes</option>
+                        <option value="title" {% if request_param['order_by'] == 'title' %}selected{%endif%}>Title</option>
+                        <option value="submission_time" {% if request_param['order_by'] == 'submission_time' %}selected{%endif%}>Submission Time</option>
+                        <option value="message" {% if request_param['order_by'] == 'message' %}selected{%endif%}>Message</option>
+                        <option value="view_number" {% if request_param['order_by'] == 'view_number' %}selected{%endif%}>Views</option>
+                        <option value="vote_number" {% if request_param['order_by'] == 'vote_number' %}selected{%endif%}>Votes</option>
                     </select>
                     <label for="order_direction">Direction: </label>
                     <select name="order_direction" id="order" onChange="this.form.submit();">
-                        <option value="asc" {% if direction == 'asc' %}selected{%endif%}>Ascending</option>
-                        <option value="desc" {% if direction == 'desc' %}selected{%endif%}>Descending</option>
+                        <option value="asc" {% if request_param['order_direction'] == 'asc' %}selected{%endif%}>Ascending</option>
+                        <option value="desc" {% if request_param['order_direction'] == 'desc' %}selected{%endif%}>Descending</option>
                     </select>
                 </div>
             </form>

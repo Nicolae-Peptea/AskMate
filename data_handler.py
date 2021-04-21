@@ -30,6 +30,16 @@ def vote_entry(file_path, file_headers, entry_to_vote, vote):
     write_elem_to_file(entry_to_vote, file_path, file_headers)
 
 
+def convert_items_to_ints(items: dict):
+    for elem in items:
+        for key in elem:
+            try:
+                elem[key] = int(elem[key])
+            except ValueError:
+                elem[key] = elem[key]
+    return items
+
+
 def get_single_question(question_id):
     return get_single_entry_by_id(file_path=QUESTIONS_PATH, entry_id=question_id)
 
@@ -38,25 +48,19 @@ def get_single_answer(answer_id):
     return get_single_entry_by_id(file_path=ANSWER_PATH, entry_id=answer_id)
 
 
-def get_ordered_questions(questions, order_by, direction):
-    integers = ["submission_time", "view_number", "vote_number"]
-    for question in questions:
-        for piece in range(len(questions) - 1):
-            if direction == "asc":
-                if order_by in integers:
-                    if int(questions[piece][order_by]) > int(questions[piece+1][order_by]):
-                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
-                else:
-                    if questions[piece][order_by] > questions[piece+1][order_by]:
-                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
-            else:
-                if order_by in integers:
-                    if int(questions[piece][order_by]) < int(questions[piece+1][order_by]):
-                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
-                else:
-                    if questions[piece][order_by] < questions[piece+1][order_by]:
-                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
-    return questions
+def get_ordered_questions(parameters):
+
+    def order(param):
+        return param == 'desc'
+
+    questions = convert_items_to_ints(list(read_file(QUESTIONS_PATH)))
+    order_by = 'submission_time'
+    direction = 'desc'
+    if parameters:
+        order_by = parameters['order_by']
+        direction = parameters['order_direction']
+
+    return sorted(questions, key=lambda elem: elem[order_by], reverse=order(direction))
 
 
 def get_answers_for_question(id_elem: str):
@@ -91,7 +95,7 @@ def vote_question(question_id, vote):
     return vote_entry(file_path=QUESTIONS_PATH,
                       file_headers=QUESTIONS_DATA_HEADER,
                       entry_to_vote=get_single_question(question_id=question_id),
-                      vote=vote,)
+                      vote=vote)
 
 
 def increment_views_algorithm(file_path, file_headers, entry):
@@ -133,7 +137,7 @@ def vote_answer(answer_id, vote):
     return vote_entry(file_path=ANSWER_PATH,
                       file_headers=ANSWER_DATA_HEADER,
                       entry_to_vote=get_single_answer(answer_id=answer_id),
-                      vote=vote,)
+                      vote=vote)
 
 
 # CONNECTION
