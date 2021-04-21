@@ -8,8 +8,14 @@ ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'me
 
 
 def get_questions():
-    questions = read_file(QUESTIONS_PATH)
-    return questions
+    return read_file(QUESTIONS_PATH)
+
+
+def get_single_question(question_id):
+    questions = list(get_questions())
+    for question in questions:
+        if int(question["id"]) == question_id:
+            return question
 
 
 def get_ordered_questions(questions, order_by, direction):
@@ -29,12 +35,6 @@ def get_answers(id_elem: str):
     return [answer for answer in answers if answer['question_id'] == str(id_elem)]
 
 
-def get_question(questions, question_id):
-    for question in questions:
-        if question["id"] == str(question_id):
-            return question
-
-
 def add_question(new_entry):
     new_question = {
         'id': get_next_id(QUESTIONS_PATH),
@@ -45,6 +45,12 @@ def add_question(new_entry):
     new_question.update(new_entry)
     add_id = write_elem_to_file(new_question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
     return add_id
+
+
+def edit_question(new_entry, question_id):
+    question = get_single_question(question_id)
+    question.update(new_entry)
+    write_elem_to_file(new_entry, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
 
 
 def add_answer(new_entry, question_id):
@@ -92,6 +98,7 @@ def write_elem_to_file(elem, file_path, file_header):
                 updated_id = e['id']
             else:
                 dict_writer.writerow(e)
+
         if not updated_id:
             dict_writer.writerow(elem)
             updated_id = elem['id']
