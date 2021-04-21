@@ -26,15 +26,26 @@ def ask_question():
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
     global question_path
-    questions = data_handler.get_questions()
     answers = data_handler.get_answers(question_id)
     num_of_answers = len(answers)
-    my_question = data_handler.get_question(questions, question_id)
+    my_question = data_handler.get_single_question(question_id)
     question_path = url_for('display_question', question_id=question_id)
     return render_template("question.html",
                            my_question=my_question,
                            answers=answers,
                            num_of_answers=num_of_answers)
+
+
+@app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
+def edit_question(question_id):
+    address = url_for('edit_question', question_id=question_id)
+    if request.method == "GET":
+        return render_template('post_question.html', address=address,
+                               question=data_handler.get_single_question(question_id)
+                               )
+    elif request.method == "POST":
+        data_handler.edit_question(new_entry=dict(request.form), question_id=question_id)
+        return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
