@@ -22,6 +22,23 @@ def validate_image(stream):
     return '.' + (format if format != 'jpeg' else 'jpg')
 
 
+def generate_entry_with_image(new_entry):
+    uploaded_file = request.files['image']
+    filename = secure_filename(uploaded_file.filename)
+    if filename != '':
+        uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+    new_entry['image'] = filename
+    return new_entry
+
+
+def generate_new_entry():
+    if request.files:
+        new_entry = generate_entry_with_image(dict(request.form))
+    else:
+        new_entry = dict(request.form)
+    return new_entry
+
+
 @app.route("/")
 @app.route("/list")
 def route_list():
@@ -40,13 +57,7 @@ def ask_question():
     if request.method == "GET":
         return render_template('post_question.html', address=address)
     elif request.method == "POST":
-        new_entry = dict(request.form)
-        if request.files:
-            uploaded_file = request.files['image']
-            filename = secure_filename(uploaded_file.filename)
-            if filename != '':
-                uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
-            new_entry['image'] = filename
+        new_entry = generate_new_entry()
         question_id = data_handler.add_question(new_entry)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -78,10 +89,10 @@ def edit_question(question_id):
     address = url_for('edit_question', question_id=question_id)
     if request.method == "GET":
         return render_template('post_question.html', address=address,
-                               question=data_handler.get_single_question(question_id)
-                               )
+                               question=data_handler.get_single_question(question_id))
     elif request.method == "POST":
-        data_handler.edit_question(new_entry=dict(request.form), question_id=question_id)
+        new_entry = generate_new_entry()
+        data_handler.edit_question(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -91,13 +102,7 @@ def answer_question(question_id):
     if request.method == "GET":
         return render_template("post_answer.html", address=address)
     elif request.method == "POST":
-        new_entry = dict(request.form)
-        if request.files:
-            uploaded_file = request.files['image']
-            filename = secure_filename(uploaded_file.filename)
-            if filename != '':
-                uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
-            new_entry['image'] = filename
+        new_entry = generate_new_entry()
         data_handler.add_answer(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
