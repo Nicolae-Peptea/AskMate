@@ -1,9 +1,25 @@
-from flask import Flask, render_template, request, redirect, url_for
+import imghdr
+import os
+from flask import (Flask, redirect, render_template, request,
+                   send_from_directory, url_for)
+from werkzeug.utils import secure_filename
 
 import data_handler
 
-app = Flask(__name__)
 question_path = ''
+
+app = Flask(__name__)
+app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
+app.config['UPLOAD_PATH'] = 'images'
+
+
+def validate_image(stream):
+    header = stream.read(512)
+    stream.seek(0)
+    format = imghdr.what(None, header)
+    if not format:
+        return None
+    return '.' + (format if format != 'jpeg' else 'jpg')
 
 
 @app.route("/")
@@ -24,22 +40,36 @@ def ask_question():
     if request.method == "GET":
         return render_template('post_question.html', address=address)
     elif request.method == "POST":
-        question_id = data_handler.add_question(new_entry=dict(request.form))
+        new_entry = dict(request.form)
+        if request.files:
+            uploaded_file = request.files['image']
+            filename = secure_filename(uploaded_file.filename)
+            if filename != '':
+                uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+            new_entry['image'] = filename
+        question_id = data_handler.add_question(new_entry)
         return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
     global question_path
+    files = os.listdir(app.config['UPLOAD_PATH'])
     answers = data_handler.get_answers_for_question(question_id)
     num_of_answers = len(answers)
     my_question = data_handler.get_single_question(question_id)
-    print (my_question)
     question_path = url_for('display_question', question_id=question_id)
     return render_template("question.html",
                            my_question=my_question,
                            answers=answers,
-                           num_of_answers=num_of_answers)
+                           num_of_answers=num_of_answers,
+                           files=files,
+                           )
+
+
+@app.route('/images/<filename>')
+def upload_image(filename):
+    return send_from_directory(app.config['UPLOAD_PATH'], filename)
 
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])

@@ -83,8 +83,8 @@ def delete_question(question_id):
 
 
 def vote_question(question_id, vote):
-    return vote_entry(file_path= QUESTIONS_PATH,
-                      file_headers = QUESTIONS_DATA_HEADER,
+    return vote_entry(file_path=QUESTIONS_PATH,
+                      file_headers=QUESTIONS_DATA_HEADER,
                       entry_to_vote=get_single_question(question_id=question_id),
                       vote=vote,)
 
