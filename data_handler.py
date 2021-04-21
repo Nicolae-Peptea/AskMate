@@ -19,14 +19,23 @@ def get_single_question(question_id):
 
 
 def get_ordered_questions(questions, order_by, direction):
+    integers = ["submission_time", "view_number", "vote_number"]
     for question in questions:
         for piece in range(len(questions) - 1):
             if direction == "asc":
-                if questions[piece][order_by] > questions[piece+1][order_by]:
-                    questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+                if order_by in integers:
+                    if int(questions[piece][order_by]) > int(questions[piece+1][order_by]):
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+                else:
+                    if questions[piece][order_by] > questions[piece+1][order_by]:
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
             else:
-                if questions[piece][order_by] < questions[piece+1][order_by]:
-                    questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+                if order_by in integers:
+                    if int(questions[piece][order_by]) < int(questions[piece+1][order_by]):
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+                else:
+                    if questions[piece][order_by] < questions[piece+1][order_by]:
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
     return questions
 
 
