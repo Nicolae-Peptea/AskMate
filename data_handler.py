@@ -12,6 +12,24 @@ def get_questions():
     return questions
 
 
+def get_ordered_questions(questions, order_by, direction):
+    if order_by == "submission_time":
+        if direction == "asc":
+            return questions
+        else:
+            return questions[::-1]
+    else:
+        for question in questions:
+            for piece in range(len(questions) - 1):
+                if direction == "asc":
+                    if questions[piece][order_by] > questions[piece+1][order_by]:
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+                else:
+                    if questions[piece][order_by] < questions[piece+1][order_by]:
+                        questions[piece], questions[piece + 1] = questions[piece + 1], questions[piece]
+        return questions
+
+
 def get_answers(id_elem: str):
     answers = read_file(ANSWER_PATH)
     return [answer for answer in answers if answer['question_id'] == str(id_elem)]
@@ -54,10 +72,6 @@ def delete_answer(answer_id):
     delete_entry(entry_id=answer_id, file_path=ANSWER_PATH, file_header=ANSWER_DATA_HEADER)
 
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 # CONNECTION
 
 
@@ -93,21 +107,10 @@ def write_elem_to_file(elem, file_path, file_header):
 
 def delete_entry(entry_id, file_path, file_header):
     entries = list(read_file(file_path))
-<<<<<<< Updated upstream
     with open(file_path, 'w') as file:
-=======
-    with open(QUESTIONS_PATH, 'w') as file:
->>>>>>> Stashed changes
         dict_writer = csv.DictWriter(file, fieldnames=file_header)
         dict_writer.writeheader()
         for elem in entries:
             if int(elem['id']) == entry_id:
                 continue
-<<<<<<< Updated upstream
             dict_writer.writerow(elem)
-=======
-            dict_writer.writerow(elem)
-
-
-delete_question(3)
->>>>>>> Stashed changes
