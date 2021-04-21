@@ -47,6 +47,13 @@
                 text-decoration: none;
                 border: 1px solid white;
             }
+            .vote_button {
+                padding: 2px 6px;
+                border: 1px solid black;
+                text-decoration: none;
+                font-size: 16px;
+                color: black;
+            }
             .answer_buttons a {
                 float: left;
                 font-size: 16px;
@@ -73,8 +80,7 @@
             </div>
 
             <div style="padding: 0px 10px 0px 50px;">
-                <form action=""></form>
-                <button onclick="decrement()">-</button> {{ my_question["vote_number"] }} votes <button onclick="increment()">+</button>
+                <a class="vote_button" href="{{ url_for('down_vote_question', question_id=my_question['id']) }}">-</a> {{ my_question["vote_number"] }} votes <a class="vote_button" href="{{ url_for('up_vote_question', question_id=my_question['id']) }}">+</a>
                 <p>Viewed: {{ my_question["view_number"] }} times</p>
             </div>
             <hr>

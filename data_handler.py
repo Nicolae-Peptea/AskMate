@@ -19,10 +19,10 @@ def vote_entry(file_path, file_headers, entry_to_vote, vote):
     vote_as_int = int(entry['vote_number'])
     if vote == 'up':
         vote_as_int += 1
-        entry['vote_number'] = vote_as_int
+        entry['vote_number'] = str(vote_as_int)
     else:
         vote_as_int -= 1
-        entry['vote_number'] = vote_as_int
+        entry['vote_number'] = str(vote_as_int)
     write_elem_to_file(entry_to_vote, file_path, file_headers)
 
 
