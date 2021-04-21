@@ -81,7 +81,7 @@
 
             <div style="padding: 0px 10px 0px 50px;">
                 <a class="vote_button" href="{{ url_for('down_vote_question', question_id=my_question['id']) }}">-</a> {{ my_question["vote_number"] }} votes <a class="vote_button" href="{{ url_for('up_vote_question', question_id=my_question['id']) }}">+</a>
-                <p>Viewed: {{ my_question["view_number"] }} times</p>
+                <p>Viewed: {{ my_question["view_number"] }} {% if my_question["view_number"] == "1" %}time{% else %}times{%endif%}</p>
             </div>
             <hr>
             <div><h3 style="padding-left: 10px;text-decoration: underline;">Message:</h3></div>
@@ -94,7 +94,7 @@
                 </div>
             {%endif%}
             <hr>
-            <div style="padding-left: 10px;">{{ num_of_answers }} Answers</div><br><br>
+            <div style="padding-left: 10px;">{{ num_of_answers }} {% if num_of_answers == 1 %}Answer{% else %}Answers{%endif%}</div><br><br>
             <div>
                 {% for answer in answers %}
                     <div style="border: 1px solid black">

@@ -154,11 +154,5 @@ def down_vote_answer(answer_id):
     return redirect(question_path)
 
 
-# @app.route('/question/<int:question_id>/views_up)
-# def raise_views(question_id):
-#     data_handler.vote_answer(answer_id=answer_id, vote='down')
-#     return redirect(question_path)
-
-
 if __name__ == "__main__":
     app.run(debug=True)

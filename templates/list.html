@@ -54,8 +54,8 @@
                     </div>
 
                     <div style="text-align: right;padding: 5px 10px;">
-                        <div>{{ question["view_number"] }} views</div>
-                        <div>{{ question["vote_number"] }} votes</div>
+                        <div>{{ question["view_number"] }} {% if question["view_number"] == '1' %}view{% else %}views{%endif%}</div>
+                        <div>{{ question["vote_number"] }} {% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</div>
                     </div>
                 </div>
                 <br>
