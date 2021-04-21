@@ -38,7 +38,7 @@ def add_question(new_entry):
 def edit_question(new_entry, question_id):
     question = get_single_question(question_id)
     question.update(new_entry)
-    write_elem_to_file(new_entry, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
+    write_elem_to_file(question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
 
 
 def add_answer(new_entry, question_id):
