@@ -103,7 +103,9 @@
                         </div>
     
                         <div style="text-align: right;margin: 5px 10px;">
-                            <div>{{ answer["vote_number"] }} votes</div>
+                            <div>
+                                <a class="vote_button" href="{{ url_for('down_vote_answer', answer_id=answer['id']) }}">-</a> {{ answer["vote_number"] }} votes <a class="vote_button" href="{{ url_for('up_vote_answer', answer_id=answer['id']) }}">+</a>
+                            </div>
                         </div>
                         <div class="answer_buttons">
                             <a href="/answer/{{ answer['id'] }}/edit">Edit</a>
