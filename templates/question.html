@@ -82,9 +82,9 @@
             <div style="padding-left: 10px;">{{ my_question['message'] }}</div>
             {% if my_question['image'] %}
                 <div>
-                    {% for file in files %}
-                    <a href="{{ url_for('upload_image', filename=my_question['image']) }}"><img src="{{ url_for('upload_image', filename=my_question['image']) }}" style="width: 256px;margin: 10px 10px;"></a>
-                    {% endfor %}
+                    <a href="{{ url_for('upload_image', filename=my_question['image']) }}">
+                        <img src="{{ url_for('upload_image', filename=my_question['image']) }}" style="width: 256px;margin: 10px 10px;">
+                    </a>
                 </div>
             {%endif%}
             <hr>
@@ -103,6 +103,13 @@
                             <a href="/answer/{{ answer['id'] }}/edit">Edit</a>
                             <a href="/answer/{{ answer['id'] }}/delete">Delete</a>
                         </div>
+                        {% if answer['image'] %}
+                            <div>
+                                <a href="{{ url_for('upload_image', filename=answer['image']) }}">
+                                    <img src="{{ url_for('upload_image', filename=answer['image']) }}" style="width: 256px;margin: 10px 10px;">
+                                </a>
+                            </div>
+                        {%endif%}
                     </div>
                     <br>
                 {% endfor %}

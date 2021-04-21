@@ -90,7 +90,14 @@ def answer_question(question_id):
     if request.method == "GET":
         return render_template("post_answer.html", address=address)
     elif request.method == "POST":
-        data_handler.add_answer(new_entry=dict(request.form), question_id=question_id)
+        new_entry = dict(request.form)
+        if request.files:
+            uploaded_file = request.files['image']
+            filename = secure_filename(uploaded_file.filename)
+            if filename != '':
+                uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+            new_entry['image'] = filename
+        data_handler.add_answer(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
 
