@@ -99,14 +99,16 @@ def down_vote_question(question_id):
 
 @app.route('/answer/<int:answer_id>/vote_up')
 def up_vote_answer(answer_id):
-    data_handler.vote_answer(answer_id=answer_id, vote='up')
-    return redirect(question_path)
+    answer = data_handler.get_single_answer(answer_id)
+    data_handler.vote_answer(entry_to_vote=answer, vote='up')
+    return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 @app.route('/answer/<int:answer_id>/vote_down')
 def down_vote_answer(answer_id):
-    data_handler.vote_answer(answer_id=answer_id, vote='down')
-    return redirect(question_path)
+    answer = data_handler.get_single_answer(answer_id)
+    data_handler.vote_answer(entry_to_vote=answer, vote='down')
+    return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 if __name__ == "__main__":

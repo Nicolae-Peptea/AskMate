@@ -23,10 +23,10 @@ def vote_entry(file_path, file_headers, entry_to_vote, vote):
     vote_as_int = int(entry['vote_number'])
     if vote == 'up':
         vote_as_int += 1
-        entry['vote_number'] = str(vote_as_int)
+        entry['vote_number'] = vote_as_int
     else:
         vote_as_int -= 1
-        entry['vote_number'] = str(vote_as_int)
+        entry['vote_number'] = vote_as_int
     write_elem_to_file(entry_to_vote, file_path, file_headers)
 
 
@@ -53,12 +53,11 @@ def get_single_answer(answer_id):
 
 
 def get_ordered_questions(parameters):
-
     questions = convert_items_to_ints(list(read_file(QUESTIONS_PATH)))
     order_by = parameters.get('order_by', 'submission_time')
     direction = parameters.get('order_direction', 'desc')
-
     should_reverse = direction == 'desc'
+
     return sorted(questions, key=lambda elem: elem[order_by], reverse=should_reverse)
 
 
@@ -87,21 +86,13 @@ def edit_question(new_entry, question_id):
 
 def delete_question(question_id, path):
     delete_answers(question_id, path)
-    delete_entry(
-        path,
-        entry_id=question_id,
-        file_path=QUESTIONS_PATH,
-        file_header=QUESTIONS_DATA_HEADER
-    )
+    delete_entry(path, entry_id=question_id, file_path=QUESTIONS_PATH,
+                 file_header=QUESTIONS_DATA_HEADER)
 
 
 def vote_question(question_id, vote):
-    return vote_entry(
-        file_path=QUESTIONS_PATH,
-        file_headers=QUESTIONS_DATA_HEADER,
-        entry_to_vote=get_single_question(question_id=question_id),
-        vote=vote
-    )
+    return vote_entry(QUESTIONS_PATH, file_headers=QUESTIONS_DATA_HEADER,
+                      entry_to_vote=get_single_question(question_id=question_id), vote=vote)
 
 
 def increment_views_algorithm(file_path, file_headers, entry):
@@ -111,11 +102,8 @@ def increment_views_algorithm(file_path, file_headers, entry):
 
 
 def increment_views(question_id):
-    return increment_views_algorithm(
-        file_path=QUESTIONS_PATH,
-        file_headers=QUESTIONS_DATA_HEADER,
-        entry=get_single_question(question_id=question_id)
-    )
+    return increment_views_algorithm(QUESTIONS_PATH, file_headers=QUESTIONS_DATA_HEADER,
+                                     entry=get_single_question(question_id=question_id))
 
 
 def add_answer(new_entry, question_id):
@@ -130,28 +118,20 @@ def add_answer(new_entry, question_id):
 
 
 def delete_answer(answer_id, path):
-    delete_entry(
-        path,
-        entry_id=answer_id,
-        file_path=ANSWER_PATH,
-        file_header=ANSWER_DATA_HEADER
-    )
+    delete_entry(path, entry_id=answer_id, file_path=ANSWER_PATH,
+                 file_header=ANSWER_DATA_HEADER)
 
 
 def delete_answers(question_id, path):
     answers = get_answers_for_question(question_id)
     for answer in answers:
         if int(answer['question_id']) == question_id:
-            delete_answer(int(answer['id']), path)
+            delete_answer(int(answer["id"]), path)
 
 
-def vote_answer(answer_id, vote):
-    return vote_entry(
-        file_path=ANSWER_PATH,
-        file_headers=ANSWER_DATA_HEADER,
-        entry_to_vote=get_single_answer(answer_id=answer_id),
-        vote=vote
-    )
+def vote_answer(entry_to_vote, vote):
+    return vote_entry(file_path=ANSWER_PATH, file_headers=ANSWER_DATA_HEADER,
+                      entry_to_vote=entry_to_vote, vote=vote)
 
 
 # CONNECTION
