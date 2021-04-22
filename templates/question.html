@@ -2,18 +2,10 @@
 <html lang="en">
 
     <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
         <meta charset="utf-8">
         <title>{{ my_question['title'] }} | ASK-MATE-1</title>
         <style>
-            .center {
-                margin: auto;
-                width: 90%;
-                border: 1px solid black;
-            }
-            body {
-                font-family: Arial, Helvetica, sans-serif;
-                margin: 0;
-            }
             .navbar {
                 overflow: hidden;
                 background-color: #333;
@@ -75,8 +67,8 @@
             <div class="navbar">
                 <a href="{{ url_for('route_list') }}">Home</a>
                 <a href="{{ url_for('answer_question', question_id=my_question['id']) }}">Answer Question</a>
-                <a href="/question/{{ my_question['id'] }}/edit">Edit Question</a>
-                <a href="/question/{{ my_question['id'] }}/delete">Delete Question</a>
+                <a href="{{ url_for('edit_question', question_id=my_question['id']) }}">Edit Question</a>
+                <a href="{{ url_for('delete_question', question_id=my_question['id']) }}">Delete Question</a>
             </div>
 
             <div style="padding: 0px 10px 0px 50px;">
@@ -108,8 +100,7 @@
                             </div>
                         </div>
                         <div class="answer_buttons">
-                            <a href="/answer/{{ answer['id'] }}/edit">Edit</a>
-                            <a href="/answer/{{ answer['id'] }}/delete">Delete</a>
+                            <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}">Delete</a>
                         </div>
                         {% if answer['image'] %}
                             <div>

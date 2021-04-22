@@ -1,0 +1,18 @@
+/* list.html */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+.center {
+    margin: auto;
+    width: 90%;
+    border: 1px solid black;
+}
+#baseCenter {
+    margin: auto;
+    width: 90%;
+}
+.header {
+    padding: 5px 10px 0px 10px;
+    margin-left: 90px;
+}

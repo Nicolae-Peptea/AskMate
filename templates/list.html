@@ -2,23 +2,13 @@
 <html lang="en">
 
     <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
         <meta charset="utf-8">
         <title>Welcome! | ASK-MATE-1</title>
-        <style>
-            body {
-                font-family: Arial, Helvetica, sans-serif;
-                margin: 0;
-            }
-            .center {
-                margin: auto;
-                width: 90%;
-                border: 1px solid black;
-            }
-        </style>
     </head>
 
     <body>
-        <div style="padding: 5px 10px 0px 10px;margin-left: 90px;"><h1>Ask Mate</h1></div>
+        <div class="header"><h1>Ask Mate</h1></div>
         <div style="text-align: right;">
             <form action="{{ url_for('ask_question') }}">
                 <button style="padding: 5px;margin-right: 90px;">Ask Question</button>
@@ -47,7 +37,7 @@
             {% for question in questions %}
                 <div class="center">
                     <div style="padding: 5px 10px;">
-                        <a href="/question/{{ question['id'] }}" title="'{{ question['submission_time'] }}'">
+                        <a href="{{ url_for('display_question', question_id=question['id']) }}" title="'{{ question['submission_time'] }}'">
                             {% autoescape false %}{{ question['title'] }}{% endautoescape %}
                         </a>
                         <p style="width:90%">{% autoescape false %}{{ question['message'][:200] }}...{% endautoescape %}</p>

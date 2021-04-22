@@ -1,13 +1,13 @@
 import os
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
-
 import data_handler
 
 
 app = Flask(__name__)
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
 app.config['UPLOAD_PATH'] = 'images'
+app._static_folder = os.path.abspath("static")
 
 
 @app.route("/")
@@ -20,9 +20,8 @@ def route_list():
 
 @app.route('/add-question', methods=["GET", "POST"])
 def ask_question():
-    address = url_for('ask_question')
     if request.method == "GET":
-        return render_template('post_question.html', address=address)
+        return render_template('post_question.html')
     elif request.method == "POST":
         new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         question_id = data_handler.add_question(new_entry)
@@ -50,10 +49,8 @@ def upload_image(filename):
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
-    address = url_for('edit_question', question_id=question_id)
     if request.method == "GET":
-        return render_template("post_question.html", address=address,
-                               question=data_handler.get_single_question(question_id))
+        return render_template("edit_question.html", question=data_handler.get_single_question(question_id))
     elif request.method == "POST":
         new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)
@@ -62,9 +59,8 @@ def edit_question(question_id):
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def answer_question(question_id):
-    address = url_for('answer_question', question_id=question_id)
     if request.method == "GET":
-        return render_template("post_answer.html", address=address)
+        return render_template("post_answer.html", question_id=question_id)
     elif request.method == "POST":
         new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         data_handler.add_answer(new_entry=new_entry, question_id=question_id)
