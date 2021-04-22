@@ -7,7 +7,7 @@
     <form action="{{ url_for('answer_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
 
         <label for="answer">Answer:</label><br>
-        <textarea id="answer" name="message" rows="2" cols="60" required></textarea><br><br>
+        <textarea id="answer" name="message" rows="6" cols="60" required></textarea><br><br>
 
         <label for="image">Click on the "Choose File" button to upload an image:</label><br>
         <input type="file" name="image"><br><br>
