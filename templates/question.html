@@ -80,7 +80,7 @@
             </div>
 
             <div style="padding: 0px 10px 0px 50px;">
-                <a class="vote_button" href="{{ url_for('down_vote_question', question_id=my_question['id']) }}">-</a> {{ my_question["vote_number"] }} votes <a class="vote_button" href="{{ url_for('up_vote_question', question_id=my_question['id']) }}">+</a>
+                <a class="vote_button" href="{{ url_for('down_vote_question', question_id=my_question['id']) }}">-</a> {{ my_question["vote_number"] }} {% if my_question["vote_number"] == '1' %}vote{% else %}votes{%endif%} <a class="vote_button" href="{{ url_for('up_vote_question', question_id=my_question['id']) }}">+</a>
                 <p>Viewed: {{ my_question["view_number"] }} {% if my_question["view_number"] == "1" %}time{% else %}times{%endif%}</p>
             </div>
             <hr>
@@ -104,7 +104,7 @@
     
                         <div style="text-align: right;margin: 5px 10px;">
                             <div>
-                                <a class="vote_button" href="{{ url_for('down_vote_answer', answer_id=answer['id']) }}">-</a> {{ answer["vote_number"] }} votes <a class="vote_button" href="{{ url_for('up_vote_answer', answer_id=answer['id']) }}">+</a>
+                                <a class="vote_button" href="{{ url_for('down_vote_answer', answer_id=answer['id']) }}">-</a> {{ answer["vote_number"] }} {% if answer["vote_number"] == '1' %}vote{% else %}votes{%endif%} <a class="vote_button" href="{{ url_for('up_vote_answer', answer_id=answer['id']) }}">+</a>
                             </div>
                         </div>
                         <div class="answer_buttons">
