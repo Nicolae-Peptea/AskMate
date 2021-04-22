@@ -112,15 +112,14 @@ def add_answer(new_entry, question_id):
         'question_id': question_id,
         'vote_number': 0,
         'submission_time': round(datetime.timestamp(datetime.now())),
+    }
     new_question.update(new_entry)
     write_elem_to_file(new_question, ANSWER_PATH, ANSWER_DATA_HEADER)
-    delete_entry(
-        path,
-        entry_id=answer_id,
-        file_path=ANSWER_PATH,
-        file_header=ANSWER_DATA_HEADER
-    )
->>>>>>> Stashed changes
+
+
+def delete_answer(answer_id, path):
+    delete_entry(path, entry_id=answer_id, file_path=ANSWER_PATH,
+                 file_header=ANSWER_DATA_HEADER)
 
 
 def delete_answers(question_id, path):
@@ -144,6 +143,8 @@ def delete_image(location, path):
         files = os.listdir(path)
         if filename in files:
             os.unlink(os.path.join(path, filename))
+        else:
+            pass
 
 
 def read_file(file_path):
