@@ -1,7 +1,19 @@
 {% extends "base_form.html" %}
+
 {% block title %}Answer question{% endblock %}
 {% block form_title %}Here comes a clever answer{% endblock %}
-{% block first_form %}
-    <label for="answer">Answer:</label><br>
-    <textarea id="answer" name="message" rows="2" cols="60" required></textarea>
+
+{% block form %}
+    <form action="{{ url_for('answer_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
+
+        <label for="answer">Answer:</label><br>
+        <textarea id="answer" name="message" rows="2" cols="60" required></textarea><br><br>
+
+        <label for="image">Click on the "Choose File" button to upload an image:</label><br>
+        <input type="file" name="image"><br><br>
+
+        <button type="submit" style="margin-left: 80%;">POST</button>
+
+    </form>
+
 {% endblock %}
