@@ -150,7 +150,11 @@ def vote_answer(entry_to_vote, vote):
 def delete_image(location, path):
     if location['image']:
         filename = location['image']
-        os.unlink(os.path.join(path, filename))
+        files = os.listdir(path)
+        if filename in files:
+            os.unlink(os.path.join(path, filename))
+        else:
+            pass
 
 
 def read_file(file_path):
