@@ -23,9 +23,8 @@ def route_list():
 
 @app.route('/add-question', methods=["GET", "POST"])
 def ask_question():
-    address = url_for('ask_question')
     if request.method == "GET":
-        return render_template('post_question.html', address=address)
+        return render_template('post_question.html')
     elif request.method == "POST":
         new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         question_id = data_handler.add_question(new_entry)
