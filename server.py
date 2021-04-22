@@ -14,7 +14,8 @@ app.config['UPLOAD_PATH'] = 'images'
 @app.route("/list")
 def route_list():
     ordered_questions = data_handler.get_ordered_questions(parameters=request.args)
-    return render_template('list.html', questions=ordered_questions, request_param=request.args)
+    return render_template('list.html', questions=data_handler.new_line_for_html(ordered_questions),
+                           request_param=request.args)
 
 
 @app.route('/add-question', methods=["GET", "POST"])
@@ -30,14 +31,15 @@ def ask_question():
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
-
     data_handler.increment_views(question_id)
-    my_question = data_handler.get_single_question(question_id)
+    my_question = [data_handler.get_single_question(question_id)]
+    print ('my question in servretr', my_question)
     answers = data_handler.get_answers_for_question(question_id)
     num_of_answers = len(answers)
     files = os.listdir(app.config['UPLOAD_PATH'])
 
-    return render_template("question.html", my_question=my_question, answers=answers,
+    return render_template("question.html", my_question=data_handler.new_line_for_html(my_question)[0],
+                           answers=data_handler.new_line_for_html(answers),
                            num_of_answers=num_of_answers, files=files)
 
 

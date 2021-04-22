@@ -36,8 +36,18 @@ def convert_items_to_ints(items: dict):
             try:
                 elem[key] = int(elem[key])
             except ValueError:
-                elem[key] = elem[key]
+                pass
     return items
+
+
+def new_line_for_html(entry: list):
+    for elem in entry:
+        for key in elem:
+            try:
+                elem[key] = elem[key].replace("\n", '<br>')
+            except AttributeError:
+                pass
+    return entry
 
 
 def get_next_id(file_path):

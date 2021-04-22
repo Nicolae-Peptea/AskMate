@@ -85,7 +85,7 @@
             </div>
             <hr>
             <div><h3 style="padding-left: 10px;text-decoration: underline;">Message:</h3></div>
-            <div style="padding-left: 10px;">{{ my_question['message'] }}</div>
+            <div style="padding-left: 10px;">{% autoescape false %}{{ my_question['message'] }}{% endautoescape %}</div>
             {% if my_question['image'] %}
                 <div>
                     <a href="{{ url_for('upload_image', filename=my_question['image']) }}">
