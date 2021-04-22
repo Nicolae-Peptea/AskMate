@@ -27,13 +27,14 @@ def ask_question():
     if request.method == "GET":
         return render_template('post_question.html', address=address)
     elif request.method == "POST":
-        new_entry = data_handler.generate_new_entry(app)
+        new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         question_id = data_handler.add_question(new_entry)
         return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
+
     data_handler.increment_views(question_id)
     my_question = data_handler.get_single_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
@@ -62,7 +63,7 @@ def edit_question(question_id):
             question_id=question_id
         )
     elif request.method == "POST":
-        new_entry = data_handler.generate_new_entry(app)
+        new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -72,7 +73,7 @@ def answer_question(question_id):
     if request.method == "GET":
         return render_template("post_answer.html", question_id=question_id)
     elif request.method == "POST":
-        new_entry = data_handler.generate_new_entry(app)
+        new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         data_handler.add_answer(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -83,13 +84,13 @@ def delete_answer(answer_id):
     if answer['image']:
         filename = answer['image']
         os.unlink(os.path.join(app.config['UPLOAD_PATH'], filename))
-    data_handler.delete_answer(answer_id, app)
+    data_handler.delete_answer(answer_id, app.config['UPLOAD_PATH'])
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 @app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
-    data_handler.delete_question(question_id, app)
+    data_handler.delete_question(question_id, app.config['UPLOAD_PATH'])
     return redirect(url_for('route_list'))
 
 
@@ -108,14 +109,14 @@ def down_vote_question(question_id):
 @app.route('/answer/<int:answer_id>/vote_up')
 def up_vote_answer(answer_id):
     answer = data_handler.get_single_answer(answer_id)
-    data_handler.vote_answer(answer_id=answer_id, vote='up')
+    data_handler.vote_answer(entry_to_vote=answer, vote='up')
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 @app.route('/answer/<int:answer_id>/vote_down')
 def down_vote_answer(answer_id):
     answer = data_handler.get_single_answer(answer_id)
-    data_handler.vote_answer(answer_id=answer_id, vote='down')
+    data_handler.vote_answer(entry_to_vote=answer, vote='down')
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
