@@ -1,4 +1,5 @@
 import csv
+import os
 from datetime import datetime
 
 QUESTIONS_PATH = 'data_play/question.csv'
