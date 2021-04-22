@@ -4,7 +4,6 @@ from flask import (Flask, redirect, render_template, request,
 
 import data_handler
 
-question_path = ''
 
 app = Flask(__name__)
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
@@ -24,26 +23,22 @@ def ask_question():
     if request.method == "GET":
         return render_template('post_question.html', address=address)
     elif request.method == "POST":
-        new_entry = data_handler.generate_new_entry(app)
+        new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         question_id = data_handler.add_question(new_entry)
         return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
+
     data_handler.increment_views(question_id)
     my_question = data_handler.get_single_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
     num_of_answers = len(answers)
     files = os.listdir(app.config['UPLOAD_PATH'])
-    global question_path
-    question_path = url_for('display_question', question_id=question_id)
-    return render_template("question.html",
-                           my_question=my_question,
-                           answers=answers,
-                           num_of_answers=num_of_answers,
-                           files=files,
-                           )
+
+    return render_template("question.html", my_question=my_question, answers=answers,
+                           num_of_answers=num_of_answers, files=files)
 
 
 @app.route('/images/<filename>')
@@ -55,10 +50,10 @@ def upload_image(filename):
 def edit_question(question_id):
     address = url_for('edit_question', question_id=question_id)
     if request.method == "GET":
-        return render_template('post_question.html', address=address,
+        return render_template("post_question.html", address=address,
                                question=data_handler.get_single_question(question_id))
     elif request.method == "POST":
-        new_entry = data_handler.generate_new_entry(app)
+        new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -69,7 +64,7 @@ def answer_question(question_id):
     if request.method == "GET":
         return render_template("post_answer.html", address=address)
     elif request.method == "POST":
-        new_entry = data_handler.generate_new_entry(app)
+        new_entry = data_handler.generate_new_entry(app.config['UPLOAD_PATH'])
         data_handler.add_answer(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -80,13 +75,13 @@ def delete_answer(answer_id):
     if answer['image']:
         filename = answer['image']
         os.unlink(os.path.join(app.config['UPLOAD_PATH'], filename))
-    data_handler.delete_answer(answer_id)
-    return redirect(question_path)
+    data_handler.delete_answer(answer_id, app.config['UPLOAD_PATH'])
+    return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 @app.route('/question/<int:question_id>/delete')
 def delete_question(question_id):
-    data_handler.delete_question(question_id, app)
+    data_handler.delete_question(question_id, app.config['UPLOAD_PATH'])
     return redirect(url_for('route_list'))
 
 
