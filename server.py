@@ -7,7 +7,7 @@ import data_handler
 app = Flask(__name__)
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
 app.config['UPLOAD_PATH'] = 'images'
-app._static_folder = os.path.abspath("static")
+# app._static_folder = os.path.abspath("static")
 
 
 @app.route("/")
@@ -34,10 +34,10 @@ def display_question(question_id):
     my_question = [data_handler.get_single_question(question_id)]
     answers = data_handler.get_answers_for_question(question_id)
     num_of_answers = len(answers)
-    question_for_template = 0
+    # question_for_template = 0
     files = os.listdir(app.config['UPLOAD_PATH'])
     return render_template("question.html",
-                           my_question=data_handler.new_line_for_html(my_question)[question_for_template],
+                           my_question=my_question[0],
                            answers=data_handler.new_line_for_html(answers),
                            num_of_answers=num_of_answers, files=files)
 
@@ -67,39 +67,39 @@ def answer_question(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
 
-@app.route('/answer/<int:answer_id>/delete')
+@app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
     answer = data_handler.get_single_answer(answer_id)
     data_handler.delete_answer(answer_id, app.config['UPLOAD_PATH'])
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
-@app.route('/question/<int:question_id>/delete')
+@app.route('/question/<int:question_id>/delete', methods=["POST"])
 def delete_question(question_id):
     data_handler.delete_question(question_id, app.config['UPLOAD_PATH'])
     return redirect(url_for('route_list'))
 
 
-@app.route('/question/<int:question_id>/vote_up')
+@app.route('/question/<int:question_id>/vote_up', methods=["POST"])
 def up_vote_question(question_id):
     data_handler.vote_question(question_id, vote='up')
     return redirect(url_for('route_list'))
 
 
-@app.route('/question/<int:question_id>/vote_down')
+@app.route('/question/<int:question_id>/vote_down', methods=["POST"])
 def down_vote_question(question_id):
     data_handler.vote_question(question_id, vote='down')
     return redirect(url_for('route_list'))
 
 
-@app.route('/answer/<int:answer_id>/vote_up')
+@app.route('/answer/<int:answer_id>/vote_up', methods=["POST"])
 def up_vote_answer(answer_id):
     answer = data_handler.get_single_answer(answer_id)
     data_handler.vote_answer(entry_to_vote=answer, vote='up')
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
-@app.route('/answer/<int:answer_id>/vote_down')
+@app.route('/answer/<int:answer_id>/vote_down', methods=["POST"])
 def down_vote_answer(answer_id):
     answer = data_handler.get_single_answer(answer_id)
     data_handler.vote_answer(entry_to_vote=answer, vote='down')

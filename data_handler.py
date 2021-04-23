@@ -135,8 +135,8 @@ def delete_answer(answer_id, path):
 def delete_answers(question_id, path):
     answers = get_answers_for_question(question_id)
     for answer in answers:
-        if int(answer['question_id']) == question_id:
-            delete_answer(int(answer["id"]), path)
+        # if int(answer['question_id']) == question_id:
+        delete_answer(int(answer["id"]), path)
 
 
 def vote_answer(entry_to_vote, vote):
