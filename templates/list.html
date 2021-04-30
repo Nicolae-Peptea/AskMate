@@ -1,56 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-    <head>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-        <meta charset="utf-8">
-        <title>Welcome! | ASK-MATE-1</title>
-    </head>
+{% block content %}
+    <div id="left-section">
+        <form action="{{ url_for('ask_question') }}">
+            <button id="ask-button" >Ask Question</button>
+        </form>
 
-    <body>
-        <div class="header"><h1>Ask Mate</h1></div>
-        <div style="text-align: right;">
-            <form action="{{ url_for('ask_question') }}">
-                <button style="padding: 5px;margin-right: 90px;">Ask Question</button>
-            </form>
-            <br>
-            <form action="{{ url_for('route_list') }}">
-                <div style="margin-right: 90px;">
-                    <label for="order_by">Order by: </label>
-                    <select name="order_by" id="sort" onChange="this.form.submit();">
-                        <option value="title" {% if request_param['order_by'] == 'title' %}selected{%endif%}>Title</option>
-                        <option value="submission_time" {% if request_param['order_by'] == 'submission_time' %}selected{%endif%}>Submission Time</option>
-                        <option value="message" {% if request_param['order_by'] == 'message' %}selected{%endif%}>Message</option>
-                        <option value="view_number" {% if request_param['order_by'] == 'view_number' %}selected{%endif%}>Views</option>
-                        <option value="vote_number" {% if request_param['order_by'] == 'vote_number' %}selected{%endif%}>Votes</option>
-                    </select>
-                    <label for="order_direction">Direction: </label>
-                    <select name="order_direction" id="order" onChange="this.form.submit();">
-                        <option value="asc" {% if request_param['order_direction'] == 'asc' %}selected{%endif%}>Ascending</option>
-                        <option value="desc" {% if request_param['order_direction'] == 'desc' %}selected{%endif%}>Descending</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        <hr>
-        <div>
+        <br>
+
+        <form action="{{ url_for('route_list') }}">
+            <div id="question-sorting">
+                <label for="order_by">Order by: </label><br>
+                <select name="order_by" id="sort" onChange="this.form.submit();">
+                    <option value="title" {% if request_param['order_by'] == 'title' %}selected{%endif%}>Title</option>
+                    <option value="submission_time" {% if request_param['order_by'] == 'submission_time' %}selected{%endif%}>
+                        Submission Time
+                    </option>
+                    <option value="message" {% if request_param['order_by'] == 'message' %}selected{%endif%}>Message</option>
+                    <option value="view_number" {% if request_param['order_by'] == 'view_number' %}selected{%endif%}>Views</option>
+                    <option value="vote_number" {% if request_param['order_by'] == 'vote_number' %}selected{%endif%}>Votes</option>
+                </select><br>
+                <label for="order_direction">Direction: </label><br>
+                <select name="order_direction" id="order" onChange="this.form.submit();">
+                    <option value="asc" {% if request_param['order_direction'] == 'asc' %}selected{%endif%}>Ascending</option>
+                    <option value="desc" {% if request_param['order_direction'] == 'desc' %}selected{%endif%}>Descending</option>
+                </select>
+            </div>
+        </form>
+
+    </div>
+
+    <div id="main_page_list">
+        <ul>
             {% for question in questions %}
-                <div class="center">
-                    <div style="padding: 5px 10px;">
-                        <a href="{{ url_for('display_question', question_id=question['id']) }}" title="'{{ question['submission_time'] }}'">
+                <li>
+
+                    <div>
+                        <a id="title-link" href="{{ url_for('display_question', question_id=question['id']) }}" title="'{{ question['submission_time'] }}'">
                             {% autoescape false %}{{ question['title'] }}{% endautoescape %}
                         </a>
-                        <p style="width:90%">{% autoescape false %}{{ question['message'][:200] }}...{% endautoescape %}</p>
+                        <p>{% autoescape false %}{{ question['message'][:200] }}...{% endautoescape %}</p>
                     </div>
 
-                    <div style="text-align: right;padding: 5px 10px;">
+                    <div>
                         <div>{{ question["view_number"] }} {% if question["view_number"] == '1' %}view{% else %}views{%endif%}</div>
                         <div>{{ question["vote_number"] }} {% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</div>
                     </div>
-                </div>
-                <br>
-            {% endfor %}
-        </div>
-    </body>
 
-</html>
+                    <div>
+                        <a href="{{ url_for('down_vote_question', question_id=question['id']) }}">-</a> 
+                        {{ question["vote_number"] }} {% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%} 
+                        <a href="{{ url_for('up_vote_question', question_id=question['id']) }}">+</a>
+                    </div>
+
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

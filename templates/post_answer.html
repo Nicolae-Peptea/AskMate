@@ -1,19 +1,24 @@
-{% extends "base_form.html" %}
+{% extends "layout.html" %}
 
-{% block title %}Answer question{% endblock %}
-{% block form_title %}Here comes a clever answer{% endblock %}
+{% block page_title %}Answer question{% endblock %}
 
-{% block form %}
-    <form action="{{ url_for('answer_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
+{% block content %}
+    <div id="filling-form">
+        <form action="{{ url_for('answer_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
 
-        <label for="answer">Answer:</label><br>
-        <textarea id="answer" name="message" rows="6" cols="60" required></textarea><br><br>
+            <label for="answer">Answer:</label><br>
+            <textarea id="answer_text" name="message" required></textarea><br>
 
-        <label for="image">Click on the "Choose File" button to upload an image:</label><br>
-        <input type="file" name="image"><br><br>
+            <label for="image">Click on the "Choose File" button to upload an image:</label><br>
+            <input type="file" name="image"><br>
 
-        <button type="submit" style="margin-left: 80%;">POST</button>
+            <button id="post-button" type="submit">POST</button>
 
-    </form>
-
+        </form>
+    </div>
+    <div class="home-button">
+        <form id="home-button" action="{{ url_for('route_list') }}">
+            <button>Home</button>
+        </form>
+    </div>
 {% endblock %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <meta charset="UTF-8">
+        <title>{% block page_title %}All Questions{% endblock %} | ASK-MATE-1</title>
+    </head>
+
+    <body>
+        <header>
+            <h1 class="header" id="header-title">ASK MATE</h1>
+        </header>
+
+        <div class="content-wrapper">         
+            <h2>{{ self.page_title() }}</h2>
+            <section>
+
+                {% block content %}{% endblock %}
+                
+            </section>
+
+        </div>
+    </body>
+
+</html>

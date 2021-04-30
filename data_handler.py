@@ -1,8 +1,5 @@
 import csv
 import os
-import imghdr
-from flask import request
-from werkzeug.utils import secure_filename
 from datetime import datetime
 
 QUESTIONS_PATH = 'data_play/question.csv'
@@ -135,7 +132,6 @@ def delete_answer(answer_id, path):
 def delete_answers(question_id, path):
     answers = get_answers_for_question(question_id)
     for answer in answers:
-        # if int(answer['question_id']) == question_id:
         delete_answer(int(answer["id"]), path)
 
 
@@ -194,29 +190,3 @@ def delete_entry(path, entry_id, file_path, file_header):
                 delete_image(elem, path)
                 continue
             dict_writer.writerow(elem)
-
-
-def validate_image(stream):
-    header = stream.read(512)
-    stream.seek(0)
-    img_format = imghdr.what(None, header)
-    if not format:
-        return None
-    return '.' + (img_format if img_format != 'jpeg' else 'jpg')
-
-
-def generate_entry_with_image(new_entry, path):
-    uploaded_file = request.files['image']
-    filename = secure_filename(uploaded_file.filename)
-    if filename != '':
-        uploaded_file.save(os.path.join(path, filename))
-    new_entry['image'] = filename
-    return new_entry
-
-
-def generate_new_entry(path):
-    if request.files:
-        new_entry = generate_entry_with_image(dict(request.form), path)
-    else:
-        new_entry = dict(request.form)
-    return new_entry

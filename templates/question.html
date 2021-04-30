@@ -1,120 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-    <head>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-        <meta charset="utf-8">
-        <title>{{ my_question['title'] }} | ASK-MATE-1</title>
-        <style>
-            .navbar {
-                overflow: hidden;
-                background-color: #333;
-                float: right;
-                font-size: 16px;
-                color: white;
-                text-align: center;
-                padding: 1px 1px;
-                margin-right: 10px;
-                text-decoration: none;
-            }
-            .answer_buttons {
-                overflow: hidden;
-                background-color: #333;
-                float: right;
-                font-size: 16px;
-                color: white;
-                text-align: center;
-                padding: 1px 1px;
-                margin-right: 10px;
-                text-decoration: none;
-                position: relative;
-                top: -80px;
-            }
-            .navbar a {
-                float: left;
-                font-size: 16px;
-                color: white;
-                text-align: center;
-                padding: 10px 10px;
-                text-decoration: none;
-                border: 1px solid white;
-            }
-            .vote_button {
-                padding: 2px 6px;
-                border: 1px solid black;
-                text-decoration: none;
-                font-size: 16px;
-                color: black;
-            }
-            .answer_buttons a {
-                float: left;
-                font-size: 16px;
-                color: white;
-                text-align: center;
-                padding: 10px 10px;
-                text-decoration: none;
-                border: 1px solid white;
-            }
-            .navbar a:hover, .subnav:hover .subnavbtn {
-                background-color: gray;
-            }
-        </style>
-    </head>
+{% block page_title %}{{ my_question['title'] }}{% endblock %}
 
-    <body>      
-        <div class="center">
-            <div><h1 style="padding-left: 10px;">{{ my_question['title'] }}</h1></div>
-            <div class="navbar">
-                <a href="{{ url_for('route_list') }}">Home</a>
-                <a href="{{ url_for('answer_question', question_id=my_question['id']) }}">Answer Question</a>
-                <a href="{{ url_for('edit_question', question_id=my_question['id']) }}">Edit Question</a>
-                <a href="{{ url_for('delete_question', question_id=my_question['id']) }}">Delete Question</a>
-            </div>
+{% block content %}
+     
+    <div id="question-page">
 
-            <div style="padding: 0px 10px 0px 50px;">
-                <a class="vote_button" href="{{ url_for('down_vote_question', question_id=my_question['id']) }}">-</a> {{ my_question["vote_number"] }} {% if my_question["vote_number"] == '1' %}vote{% else %}votes{%endif%} <a class="vote_button" href="{{ url_for('up_vote_question', question_id=my_question['id']) }}">+</a>
-                <p>Viewed: {{ my_question["view_number"] }} {% if my_question["view_number"] == "1" %}time{% else %}times{%endif%}</p>
-            </div>
-            <hr>
-            <div><h3 style="padding-left: 10px;text-decoration: underline;">Message:</h3></div>
-            <div style="padding-left: 10px;"><pre>{{ my_question['message'] }}</pre></div>
+        <div id="nav-bar">
+            <ul>
+                <li>
+                    <form action="{{ url_for('route_list') }}">
+                        <button>Home</button>
+                    </form>
+                <li>
+                    <form action="{{ url_for('answer_question', question_id=my_question['id']) }}">
+                        <button>Answer Question</button>
+                    </form>
+                <li>
+                    <form action="{{ url_for('edit_question', question_id=my_question['id']) }}">
+                        <button>Edit Question</button>
+                    </form>
+                <li>
+                    <form action="{{ url_for('delete_question', question_id=my_question['id']) }}">
+                        <button>Delete Question</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+
+            <p>Viewed: {{ my_question["view_number"] }} {% if my_question["view_number"] == "1" %}time{% else %}times{%endif%}</p>
+
+        </div>
+               
+        <div id="question-message">
+            <h3>Message:</h3>
+            <pre>{{ my_question['message'] }}</pre>
             {% if my_question['image'] %}
                 <div>
                     <a href="{{ url_for('upload_image', filename=my_question['image']) }}">
-                        <img src="{{ url_for('upload_image', filename=my_question['image']) }}" style="width: 256px;margin: 10px 10px;">
+                        <img src="{{ url_for('upload_image', filename=my_question['image']) }}">
                     </a>
                 </div>
             {%endif%}
-            <hr>
-            <div style="padding-left: 10px;">{{ num_of_answers }} {% if num_of_answers == 1 %}Answer{% else %}Answers{%endif%}</div><br><br>
-            <div>
-                {% for answer in answers %}
-                    <div style="border: 1px solid black">
-                        <div style="padding: 5px 10px;">
-                            <p style="width:90%">{% autoescape false %}{{ answer['message'] }}{% endautoescape %}</p>
-                        </div>
-    
-                        <div style="text-align: right;margin: 5px 10px;">
-                            <div>
-                                <a class="vote_button" href="{{ url_for('down_vote_answer', answer_id=answer['id']) }}">-</a> {{ answer["vote_number"] }} {% if answer["vote_number"] == '1' %}vote{% else %}votes{%endif%} <a class="vote_button" href="{{ url_for('up_vote_answer', answer_id=answer['id']) }}">+</a>
-                            </div>
-                        </div>
-                        <div class="answer_buttons">
-                            <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}">Delete</a>
-                        </div>
-                        {% if answer['image'] %}
-                            <div>
-                                <a href="{{ url_for('upload_image', filename=answer['image']) }}">
-                                    <img src="{{ url_for('upload_image', filename=answer['image']) }}" style="width: 256px;margin: 10px 10px;">
-                                </a>
-                            </div>
-                        {%endif%}
-                    </div>
-                    <br>
-                {% endfor %}
-            </div>
         </div>
 
-    </body>
+        <div id="answers-header">
+            <h3>Answers</h3>
+            {{ num_of_answers }} {% if num_of_answers == 1 %}Answer{% else %}Answers{%endif%}
+        </div>
+        
+        <div id="answers_list">
+            <ul>
+                {% for answer in answers %}
+                    <li>
+                        <div id="answer-right-side">
+                            <p>{% autoescape false %}{{ answer['message'] }}{% endautoescape %}</p>
+                            {% if answer['image'] %}
+                                <div id="image">
+                                    <a href="{{ url_for('upload_image', filename=answer['image']) }}">
+                                        <img src="{{ url_for('upload_image', filename=answer['image']) }}">
+                                    </a>
+                                </div>
+                            {%endif%}
+                        </div>
+                        <div id="answer-left-side">
+                            <div>
+                                <a href="{{ url_for('down_vote_answer', answer_id=answer['id']) }}">-</a> 
+                                {{ answer["vote_number"] }} {% if answer["vote_number"] == '1' %}vote{% else %}votes{%endif%} 
+                                <a href="{{ url_for('up_vote_answer', answer_id=answer['id']) }}">+</a>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}">Delete</a>
+                            </div>
+                        </div>
+                        
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
-</html>
+{% endblock %}
