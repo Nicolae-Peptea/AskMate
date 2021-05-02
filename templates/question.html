@@ -21,7 +21,7 @@
                         <button>Edit Question</button>
                     </form>
                 <li>
-                    <form action="{{ url_for('delete_question', question_id=my_question['id']) }}">
+                    <form action="{{ url_for('delete_question', question_id=my_question['id']) }}" method="post">
                         <button>Delete Question</button>
                     </form>
                 </li>
@@ -29,9 +29,8 @@
         </div>
         
         <div>
-
             <p>Viewed: {{ my_question["view_number"] }} {% if my_question["view_number"] == "1" %}time{% else %}times{%endif%}</p>
-
+            <p>Votes: {{ my_question["vote_number"] }} {% if my_question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p>
         </div>
                
         <div id="question-message">
@@ -48,13 +47,42 @@
 
         <div id="answers-header">
             <h3>Answers</h3>
-            {{ num_of_answers }} {% if num_of_answers == 1 %}Answer{% else %}Answers{%endif%}
+            <p>
+                {{ num_of_answers }} {% if num_of_answers == 1 %}Answer{% else %}Answers{%endif%}
+            </p>
         </div>
         
         <div id="answers_list">
             <ul>
                 {% for answer in answers %}
                     <li>
+                        <div id="answer-left-side">
+                            <div id="voting">
+                                <form action="{{ url_for('up_vote_answer', answer_id=answer['id']) }}" method="post">
+                                    <button type="submit"><i class="arrow up"></i></button>
+                                </form>
+                                <p>
+                                    <p>{{ answer["vote_number"] }}</p>
+                                    <p>{% if answer["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p>
+                                </p>
+                                <form action="{{ url_for('down_vote_answer', answer_id=answer['id']) }}" method="post">
+                                    <button type="submit"><i class="arrow down"></i></button>
+                                </form>
+                            </div>
+
+                            <form id="delete-answer" action="{{ url_for('delete_answer', answer_id=answer['id']) }}" method="post">
+                                <button type="submit">
+                                    <div class="icon-trash" style="float: left">
+                                        <div class="trash-lid" style="background-color: #02A7D7"></div>
+                                        <div class="trash-container" style="background-color: #02A7D7"></div>
+                                        <div class="trash-line-1"></div>
+                                        <div class="trash-line-2"></div>
+                                        <div class="trash-line-3"></div>
+                                    </div>
+                                </button>
+                            </form>
+
+                        </div>
                         <div id="answer-right-side">
                             <p>{% autoescape false %}{{ answer['message'] }}{% endautoescape %}</p>
                             {% if answer['image'] %}
@@ -65,17 +93,6 @@
                                 </div>
                             {%endif%}
                         </div>
-                        <div id="answer-left-side">
-                            <div>
-                                <a href="{{ url_for('down_vote_answer', answer_id=answer['id']) }}">-</a> 
-                                {{ answer["vote_number"] }} {% if answer["vote_number"] == '1' %}vote{% else %}votes{%endif%} 
-                                <a href="{{ url_for('up_vote_answer', answer_id=answer['id']) }}">+</a>
-                            </div>
-                            <div>
-                                <a href="{{ url_for('delete_answer', answer_id=answer['id']) }}">Delete</a>
-                            </div>
-                        </div>
-                        
                     </li>
                 {% endfor %}
             </ul>

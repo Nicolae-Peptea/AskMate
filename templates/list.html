@@ -35,22 +35,32 @@
             {% for question in questions %}
                 <li>
 
-                    <div>
-                        <a id="title-link" href="{{ url_for('display_question', question_id=question['id']) }}" title="'{{ question['submission_time'] }}'">
+                    <div id="question_views_votes">
+                        
+                        <div id="question-votes">
+                            <form action="{{ url_for('up_vote_question', question_id=question['id']) }}" method="post">
+                                <button type="submit"><i class="arrow up"></i></button>
+                            </form>
+                            <p>
+                                <p>{{ question["vote_number"] }}</p>
+                                <p>{% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p> 
+                            </p>
+                            <form action="{{ url_for('down_vote_question', question_id=question['id']) }}" method="post">
+                                <button type="submit"><i class="arrow down"></i></button>
+                            </form>
+                        </div>
+
+                        <div id="question-views">
+                            <p>{{ question["view_number"] }}</p>
+                            <p>{% if question["view_number"] == '1' %}view{% else %}views{%endif%}</p>
+                        </div>
+                    </div>
+
+                    <div id="question-block">
+                        <a id="title-link" href="{{ url_for('display_question', question_id=question['id']) }}">
                             {% autoescape false %}{{ question['title'] }}{% endautoescape %}
                         </a>
                         <p>{% autoescape false %}{{ question['message'][:200] }}...{% endautoescape %}</p>
-                    </div>
-
-                    <div>
-                        <div>{{ question["view_number"] }} {% if question["view_number"] == '1' %}view{% else %}views{%endif%}</div>
-                        <div>{{ question["vote_number"] }} {% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</div>
-                    </div>
-
-                    <div>
-                        <a href="{{ url_for('down_vote_question', question_id=question['id']) }}">-</a> 
-                        {{ question["vote_number"] }} {% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%} 
-                        <a href="{{ url_for('up_vote_question', question_id=question['id']) }}">+</a>
                     </div>
 
                 </li>

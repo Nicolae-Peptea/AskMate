@@ -31,8 +31,10 @@ def generate_new_entry(path):
 @app.route("/list")
 def route_list():
     ordered_questions = data_handler.get_ordered_questions(parameters=request.args)
-    return render_template('list.html', questions=data_handler.new_line_for_html(ordered_questions),
-                           request_param=request.args)
+    return render_template(
+        'list.html',
+        questions=data_handler.new_line_for_html(ordered_questions),
+        request_param=request.args)
 
 
 @app.route('/add-question', methods=["GET", "POST"])
@@ -66,7 +68,9 @@ def upload_image(filename):
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
     if request.method == "GET":
-        return render_template("edit_question.html", question=data_handler.get_single_question(question_id))
+        return render_template(
+            "edit_question.html",
+            question=data_handler.get_single_question(question_id))
     elif request.method == "POST":
         new_entry = generate_new_entry(app.config['UPLOAD_PATH'])
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)
