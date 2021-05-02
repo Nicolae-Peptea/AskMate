@@ -16,14 +16,8 @@ def get_single_entry_by_id(file_path, entry_id):
 
 
 def vote_entry(file_path, file_headers, entry_to_vote, vote):
-    entry = entry_to_vote
-    vote_as_int = int(entry['vote_number'])
-    if vote == 'up':
-        vote_as_int += 1
-        entry['vote_number'] = vote_as_int
-    else:
-        vote_as_int -= 1
-        entry['vote_number'] = vote_as_int
+    voted = int(entry_to_vote['vote_number']) + int(vote)
+    entry_to_vote['vote_number'] = voted
     write_elem_to_file(entry_to_vote, file_path, file_headers)
 
 
@@ -37,7 +31,7 @@ def convert_items_to_ints(items: dict):
     return items
 
 
-def new_line_for_html(entry: list):
+def generate_data_without_new_line(entry: list):
     for elem in entry:
         for key in elem:
             try:

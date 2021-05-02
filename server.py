@@ -27,16 +27,22 @@ def generate_new_entry(path):
     return new_entry
 
 
+@app.route('/images/<filename>')
+def upload_image(filename):
+    return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+
 @app.route("/")
 @app.route("/list")
 def route_list():
     ordered_questions = data_handler.get_ordered_questions(parameters=request.args)
     return render_template(
         'list.html',
-        questions=data_handler.new_line_for_html(ordered_questions),
+        questions=data_handler.generate_data_without_new_line(ordered_questions),
         request_param=request.args)
 
 
+# QUESTION MANIPULATION
 @app.route('/add-question', methods=["GET", "POST"])
 def ask_question():
     if request.method == "GET":
@@ -56,13 +62,8 @@ def display_question(question_id):
     files = os.listdir(app.config['UPLOAD_PATH'])
     return render_template("question.html",
                            my_question=my_question[0],
-                           answers=data_handler.new_line_for_html(answers),
+                           answers=data_handler.generate_data_without_new_line(answers),
                            num_of_answers=num_of_answers, files=files)
-
-
-@app.route('/images/<filename>')
-def upload_image(filename):
-    return send_from_directory(app.config['UPLOAD_PATH'], filename)
 
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
@@ -77,6 +78,23 @@ def edit_question(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
 
+@app.route('/question/<int:question_id>/delete', methods=["POST"])
+def delete_question(question_id):
+    data_handler.delete_question(question_id, app.config['UPLOAD_PATH'])
+    return redirect(url_for('route_list'))
+
+
+@app.route('/question/<int:question_id>/vote', methods=["POST"])
+def vote_question(question_id):
+    vote_list = list(dict(request.form).keys())
+    if 'upvote' in vote_list:
+        data_handler.vote_question(question_id, vote='1')
+    elif 'downvote' in vote_list:
+        data_handler.vote_question(question_id, vote='-1')
+    return redirect(url_for('route_list'))
+
+
+# ANSWER MANIPULATION
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def answer_question(question_id):
     if request.method == "GET":
@@ -94,35 +112,14 @@ def delete_answer(answer_id):
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
-@app.route('/question/<int:question_id>/delete', methods=["POST"])
-def delete_question(question_id):
-    data_handler.delete_question(question_id, app.config['UPLOAD_PATH'])
-    return redirect(url_for('route_list'))
-
-
-@app.route('/question/<int:question_id>/vote_up', methods=["POST"])
-def up_vote_question(question_id):
-    data_handler.vote_question(question_id, vote='up')
-    return redirect(url_for('route_list'))
-
-
-@app.route('/question/<int:question_id>/vote_down', methods=["POST"])
-def down_vote_question(question_id):
-    data_handler.vote_question(question_id, vote='down')
-    return redirect(url_for('route_list'))
-
-
-@app.route('/answer/<int:answer_id>/vote_up', methods=["POST"])
-def up_vote_answer(answer_id):
+@app.route('/answer/<int:answer_id>/vote', methods=["POST"])
+def vote_answer(answer_id):
     answer = data_handler.get_single_answer(answer_id)
-    data_handler.vote_answer(entry_to_vote=answer, vote='up')
-    return redirect(url_for("display_question", question_id=answer['question_id']))
-
-
-@app.route('/answer/<int:answer_id>/vote_down', methods=["POST"])
-def down_vote_answer(answer_id):
-    answer = data_handler.get_single_answer(answer_id)
-    data_handler.vote_answer(entry_to_vote=answer, vote='down')
+    vote_list = list(dict(request.form).keys())
+    if 'upvote' in vote_list:
+        data_handler.vote_answer(answer, vote='1')
+    elif 'downvote' in vote_list:
+        data_handler.vote_answer(answer, vote='-1')
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 

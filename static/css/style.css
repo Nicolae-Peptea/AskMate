@@ -97,6 +97,11 @@ header {
     padding: 10%;
 }
 
+#question-votes {
+    margin-bottom: 1%;
+    border-bottom: 2px solid royalblue;
+}
+
 #question_views_votes {
     background-color: #ffffff;
     border: 1px solid royalblue;
@@ -245,6 +250,12 @@ header {
     border: 1px solid royalblue;
     border-radius: 5px;
 }
+
+#voting {
+    margin-bottom: 5%;
+    border-bottom: 2px solid royalblue;
+}
+
 #answers_list li:nth-child(even) #voting button {
     background-color: #ffffff;
 }
