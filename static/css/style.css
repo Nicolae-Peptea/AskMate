@@ -194,6 +194,7 @@ header {
     border: 1px solid #0a52ee;
     font-size: 16px;
     border-radius: 5px;
+    overflow: auto;
 }
 
 #answers_list li {
