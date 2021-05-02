@@ -21,7 +21,7 @@ def vote_entry(file_path, file_headers, entry_to_vote, vote):
     write_elem_to_file(entry_to_vote, file_path, file_headers)
 
 
-def convert_items_to_ints(items: dict):
+def generate_data_with_integers(items: dict):
     for elem in items:
         for key in elem:
             try:
@@ -54,7 +54,7 @@ def get_single_answer(answer_id):
 
 
 def get_ordered_questions(parameters):
-    questions = convert_items_to_ints(list(read_file(QUESTIONS_PATH)))
+    questions = generate_data_with_integers(list(read_file(QUESTIONS_PATH)))
     order_by = parameters.get('order_by', 'submission_time')
     direction = parameters.get('order_direction', 'desc')
     should_reverse = direction == 'desc'
@@ -65,6 +65,10 @@ def get_ordered_questions(parameters):
 def get_answers_for_question(id_elem: str):
     answers = read_file(ANSWER_PATH)
     return [answer for answer in answers if answer['question_id'] == str(id_elem)]
+
+
+def get_next_question_id():
+    return get_next_id(QUESTIONS_PATH)
 
 
 def add_question(new_entry):
@@ -105,6 +109,10 @@ def increment_views_algorithm(file_path, file_headers, entry):
 def increment_views(question_id):
     return increment_views_algorithm(QUESTIONS_PATH, file_headers=QUESTIONS_DATA_HEADER,
                                      entry=get_single_question(question_id=question_id))
+
+
+def get_next_answer_id():
+    return get_next_id(ANSWER_PATH)
 
 
 def add_answer(new_entry, question_id):
