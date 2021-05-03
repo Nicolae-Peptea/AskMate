@@ -8,12 +8,10 @@
         <form action="{{ url }}" method="post" enctype="multipart/form-data">
 
             <label for="question_title">Title:</label><br>
-            <textarea id="question_title" name="title" required>{{ question['title'] if question }}
-            </textarea><br>
+            <textarea id="question_title" name="title" required>{{ question['title'] if question }}</textarea><br>
         
             <label for="question_text">Text:</label><br>
-            <textarea id="question_text" name="message" required>{{ question['message'] if question }}
-            </textarea><br>
+            <textarea id="question_text" name="message" required>{{ question['message'] if question }}</textarea><br>
 
             <label for="image">Click on the "Choose File" button to upload an image:</label><br>
             <input id="file-input-button" type="file" name="image"><br>

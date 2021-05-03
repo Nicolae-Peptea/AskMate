@@ -37,7 +37,7 @@
             <h3>Message:</h3>
             <pre>{{ my_question['message'] }}</pre>
             {% if my_question['image'] %}
-                <div>
+                <div id="image">
                     <a href="{{ url_for('upload_image', filename=my_question['image']) }}">
                         <img src="{{ url_for('upload_image', filename=my_question['image']) }}">
                     </a>

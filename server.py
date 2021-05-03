@@ -10,22 +10,24 @@ app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
 app.config['UPLOAD_PATH'] = 'images'
 
 
-def generate_entry_with_image(new_entry, path, entry):
+def generate_entry_with_image(new_entry, path, operation):
     uploaded_file = request.files['image']
     filename = secure_filename(uploaded_file.filename)
     if filename != '':
-        if entry == 'question':
-            filename = entry + str(data_handler.get_next_question_id())
-        elif entry == 'answer':
-            filename = entry + str(data_handler.get_next_answer_id())
+        if operation == 'new_question':
+            filename = 'question' + str(data_handler.get_next_question_id())
+        elif operation == 'new_answer':
+            filename = 'answer' + str(data_handler.get_next_answer_id())
+        else:
+            filename = operation
         uploaded_file.save(os.path.join(path, filename))
         new_entry['image'] = filename
     return new_entry
 
 
-def generate_new_entry(path, entry):
+def generate_new_entry(path, operation):
     if request.files:
-        new_entry = generate_entry_with_image(dict(request.form), path, entry)
+        new_entry = generate_entry_with_image(dict(request.form), path, operation)
     else:
         new_entry = dict(request.form)
     return new_entry
@@ -53,7 +55,7 @@ def ask_question():
         url = url_for('ask_question')
         return render_template('manipulate_question.html', url=url)
     elif request.method == "POST":
-        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'question')
+        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_question')
         question_id = data_handler.add_question(new_entry)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -81,7 +83,7 @@ def edit_question(question_id):
             question=question,
             url=url)
     elif request.method == "POST":
-        new_entry = generate_new_entry(app.config['UPLOAD_PATH'])
+        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='question' + str(question_id))
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -108,7 +110,7 @@ def answer_question(question_id):
     if request.method == "GET":
         return render_template("post_answer.html", question_id=question_id)
     elif request.method == "POST":
-        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'answer')
+        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_answer')
         data_handler.add_answer(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
