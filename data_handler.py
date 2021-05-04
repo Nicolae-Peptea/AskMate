@@ -81,6 +81,12 @@ def get_last_added_question_id(cursor):
     return cursor.fetchone()['max']
 
 
+@database_common.connection_handler
+def get_last_added_answer_id(cursor):
+    cursor.execute('SELECT MAX(id) FROM answer')
+    return cursor.fetchone()['max']
+
+
 def edit_question(new_entry, question_id):
     question = get_single_question(question_id)
     question.update(new_entry)
@@ -109,19 +115,17 @@ def increment_views(question_id):
                                      entry=get_single_question(question_id=question_id))
 
 
-def get_next_answer_id():
-    return get_next_id(ANSWER_PATH)
 
-
-def add_answer(new_entry, question_id):
-    new_question = {
-        'id': get_next_id(ANSWER_PATH),
+@database_common.connection_handler
+def add_answer(cursor, new_entry, question_id):
+    adding = """INSERT INTO answer ("submission_time","question_id","message","image","vote_number")
+                VALUES (now()::timestamp(0), %(question_id)s, %(message)s, %(image)s, 0)
+                """
+    cursor.execute(adding, {
         'question_id': question_id,
-        'vote_number': 0,
-        'submission_time': round(datetime.timestamp(datetime.now())),
-    }
-    new_question.update(new_entry)
-    write_elem_to_file(new_question, ANSWER_PATH, ANSWER_DATA_HEADER)
+        'message': new_entry['message'],
+        'image': new_entry.get('image', None),
+    })
 
 
 def delete_answer(answer_id, path):

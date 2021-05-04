@@ -18,7 +18,7 @@ def generate_entry_with_image(new_entry, path, operation):
         if operation == 'new_question':
             filename = 'question' + str(data_handler.get_last_added_question_id())
         elif operation == 'new_answer':
-            filename = 'answer' + str(data_handler.get_next_answer_id())
+            filename = 'answer' + str(data_handler.get_last_added_answer_id())
         else:
             filename = operation
         uploaded_file.save(os.path.join(path, filename))
