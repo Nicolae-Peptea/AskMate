@@ -1,48 +1,3 @@
-<<<<<<< HEAD
-# AskMate (sprint 1)
-
-## Story
-
-Its time to put your newly acquired Flask skills to use! Your next big task will be to implement a crowdsourced Q&A site, like Stack Overflow.
-
-The initial version of the site should be able to handle questions and answers, there is no need for other functionality like user management or comments for questions/answers.
-
-The management was very interested in the agile development methodologies that they just recently hear about, thus they are handing out a **prioritized list** of user stories called a product backlog. Try to estimate how many of these stories your team can finish until the demo. As the order is important, you should choose from the beginning of the list as much as you can, **the first four stories are the most important**.
-
-## What are you going to learn?
-
-- create a Flask project
-- use routes with Flask
-- use HTML and the Jinja templating engine
-- CSV handling
-
-## Tasks
-
-1. Implement the `/list` page that displays all questions.
-    - The page is available under `/list`
-    - Load and display the data from `question.csv`
-    - Sort the questions by the latest question on top
-
-2. Create the `/question/<question_id>` page that displays a question and the answers for it.
-    - The page is available under `/question/<question_id>`
-    - There are links to the question pages from the list page
-    - The page displays the question title and message
-    - The page displays all the answers to a question
-
-3. Implement a form that allows you to add a question.
-    - There is an `/add-question` page with a form
-    - The page is linked from the list page
-    - There is a POST form with at least `title` and `message` fields
-    - After submitting, you are redirected to "Display a question" page of this new question
-
-4. Implement posting a new answer.
-    - The page URL is `/question/<question_id>/new-answer`
-    - The question detail page links to this page
-    - The page has a POST form with a form field called `message`
-    - Posting an answer redirects you back to the question detail page, and the new answer is there
-
-5. Implement sorting for the question list.
-=======
 # AskMate (sprint 2)
 
 ## Story
@@ -118,7 +73,6 @@ As last week the management is handing out a **prioritized list** of new user st
     - The main page contains a link to all of the questions (`/list`)
 
 10. Implement sorting for the question list. [If you did this user story in the previous sprint, now you only have to rewrite it to use SQL]
->>>>>>> 634448c (starter project)
     - The question list can be sorted by title, submission time, message, number of views, and number of votes
     - You can choose the direction: ascending or descending
     - The order is passed as query string parameters, for example `/list?order_by=title&order_direction=desc`
