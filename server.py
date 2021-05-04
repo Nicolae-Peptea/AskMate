@@ -16,7 +16,7 @@ def generate_entry_with_image(new_entry, path, operation):
     filename = secure_filename(uploaded_file.filename)
     if filename != '':
         if operation == 'new_question':
-            filename = 'question' + str(data_handler.get_next_question_id())
+            filename = 'question' + str(data_handler.get_last_added_question_id())
         elif operation == 'new_answer':
             filename = 'answer' + str(data_handler.get_next_answer_id())
         else:
@@ -59,7 +59,8 @@ def ask_question():
         return render_template('manipulate_question.html', url=url)
     elif request.method == "POST":
         new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_question')
-        question_id = data_handler.add_question(new_entry)
+        data_handler.add_question(new_entry)
+        question_id = data_handler.get_last_added_question_id()
         return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -67,7 +68,6 @@ def ask_question():
 def display_question(question_id):
     my_question = data_handler.get_single_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
-
     num_of_answers = len(answers)
     files = os.listdir(app.config['UPLOAD_PATH'])
     return render_template("question_page.html",

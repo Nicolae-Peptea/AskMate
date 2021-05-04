@@ -33,21 +33,6 @@ def vote_entry(file_path, file_headers, entry_to_vote, vote):
     write_elem_to_file(entry_to_vote, file_path, file_headers)
 
 
-def generate_data_with_integers(items: dict):
-    for elem in items:
-        for key in elem:
-            try:
-                elem[key] = int(elem[key])
-            except ValueError:
-                pass
-    return items
-
-
-
-def get_next_id(file_path):
-    return int(max(read_file(file_path), default={'id': 0}, key=lambda e: int(e['id']))['id']) + 1
-
-
 @database_common.connection_handler
 def get_single_question(cursor, question_id):
     query = """SELECT * FROM question
@@ -77,21 +62,23 @@ def get_answers_for_question(cursor, question_id):
     return cursor.fetchall()
 
 
-def get_next_question_id():
-    return get_next_id(QUESTIONS_PATH)
+@database_common.connection_handler
+def add_question(cursor, new_entry):
+
+    adding = """INSERT INTO question ("submission_time","title","message","image","view_number","vote_number")
+                VALUES (now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
+                """
+    cursor.execute(adding, {
+        'title': new_entry['title'],
+        'message': new_entry['message'],
+        'image': new_entry.get('image', None),
+    })
 
 
-def add_question(new_entry):
-
-    new_question = {
-        'id': get_next_id(QUESTIONS_PATH),
-        'view_number': 0,
-        'vote_number': 0,
-        'submission_time': round(datetime.timestamp(datetime.now())),
-    }
-    new_question.update(new_entry)
-    add_id = write_elem_to_file(new_question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
-    return add_id
+@database_common.connection_handler
+def get_last_added_question_id(cursor):
+    cursor.execute('SELECT MAX(id) FROM question')
+    return cursor.fetchone()['max']
 
 
 def edit_question(new_entry, question_id):
