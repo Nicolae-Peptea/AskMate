@@ -42,10 +42,11 @@ def upload_image(filename):
 @app.route("/")
 @app.route("/list")
 def route_list():
-    ordered_questions = data_handler.get_ordered_questions(parameters=request.args)
+    print (data_handler.get_questions())
+    # ordered_questions = data_handler.get_ordered_questions(parameters=request.args)
     return render_template(
         'list.html',
-        questions=data_handler.generate_data_without_new_line(ordered_questions),
+        questions=data_handler.get_questions(),
         request_param=request.args)
 
 

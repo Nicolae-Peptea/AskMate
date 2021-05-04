@@ -1,11 +1,24 @@
 import csv
 import os
+import psycopg2
+import database_common
 from datetime import datetime
+from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
 
 QUESTIONS_PATH = 'data_play/question.csv'
 ANSWER_PATH = 'data_play/answer.csv'
 QUESTIONS_DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
 ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+
+
+@database_common.connection_handler
+def get_questions(cursor):
+    cursor.execute(
+        sql.SQL("select * from {table}").
+                format(table=sql.Identifier('question')))
+    return cursor.fetchall()
+
 
 
 def get_single_entry_by_id(file_path, entry_id):
