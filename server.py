@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import os
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
@@ -135,3 +136,17 @@ def vote_answer(answer_id):
 
 if __name__ == "__main__":
     app.run(debug=True)
+=======
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def hello():
+    return "Hello World!"
+
+
+if __name__ == "__main__":
+    app.run()
+>>>>>>> 634448c (starter project)
