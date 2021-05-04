@@ -16,9 +16,8 @@ ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'me
 def get_questions(cursor):
     cursor.execute(
         sql.SQL("select * from {table}").
-                format(table=sql.Identifier('question')))
+            format(table=sql.Identifier('question')))
     return cursor.fetchall()
-
 
 
 def get_single_entry_by_id(file_path, entry_id):
@@ -44,22 +43,17 @@ def generate_data_with_integers(items: dict):
     return items
 
 
-def generate_data_without_new_line(entry: list):
-    for elem in entry:
-        for key in elem:
-            try:
-                elem[key] = elem[key].replace("\n", '<br>')
-            except AttributeError:
-                pass
-    return entry
-
 
 def get_next_id(file_path):
     return int(max(read_file(file_path), default={'id': 0}, key=lambda e: int(e['id']))['id']) + 1
 
 
-def get_single_question(question_id):
-    return get_single_entry_by_id(file_path=QUESTIONS_PATH, entry_id=question_id)
+@database_common.connection_handler
+def get_single_question(cursor, question_id):
+    query = """SELECT * FROM question
+                WHERE id = %(question_id)s"""
+    cursor.execute(query, {"question_id":question_id})
+    return {key:value for e in cursor.fetchall() for key,value in e.items()}
 
 
 def get_single_answer(answer_id):
@@ -75,9 +69,12 @@ def get_ordered_questions(parameters):
     return sorted(questions, key=lambda elem: elem[order_by], reverse=should_reverse)
 
 
-def get_answers_for_question(id_elem: str):
-    answers = read_file(ANSWER_PATH)
-    return [answer for answer in answers if answer['question_id'] == str(id_elem)]
+@database_common.connection_handler
+def get_answers_for_question(cursor, question_id):
+    query = """SELECT * FROM answer
+                WHERE question_id = %(question_id)s"""
+    cursor.execute(query, {"question_id": question_id})
+    return cursor.fetchall()
 
 
 def get_next_question_id():
@@ -85,6 +82,7 @@ def get_next_question_id():
 
 
 def add_question(new_entry):
+
     new_question = {
         'id': get_next_id(QUESTIONS_PATH),
         'view_number': 0,

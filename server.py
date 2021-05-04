@@ -42,8 +42,9 @@ def upload_image(filename):
 @app.route("/")
 @app.route("/list")
 def route_list():
-    print (data_handler.get_questions())
+    # print (data_handler.get_questions())
     # ordered_questions = data_handler.get_ordered_questions(parameters=request.args)
+    # print(data_handler.get_questions())
     return render_template(
         'list.html',
         questions=data_handler.get_questions(),
@@ -64,14 +65,14 @@ def ask_question():
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
-    data_handler.increment_views(question_id)
-    my_question = [data_handler.get_single_question(question_id)]
+    my_question = data_handler.get_single_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
+
     num_of_answers = len(answers)
     files = os.listdir(app.config['UPLOAD_PATH'])
     return render_template("question_page.html",
-                           my_question=my_question[0],
-                           answers=data_handler.generate_data_without_new_line(answers),
+                           my_question=my_question,
+                           answers=answers,
                            num_of_answers=num_of_answers, files=files)
 
 
