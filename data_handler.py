@@ -47,6 +47,14 @@ def get_single_answer(cursor, answer_id):
     return dict(cursor.fetchone())
 
 
+@database_common.connection_handler
+def get_single_comment(cursor, comment_id):
+    query = """SELECT * FROM comment
+                WHERE id = %(comment_id)s"""
+    cursor.execute(query, {"comment_id": comment_id})
+    return dict(cursor.fetchone())
+
+
 def get_ordered_questions(parameters):
     questions = generate_data_with_integers(list(read_file(QUESTIONS_PATH)))
     order_by = parameters.get('order_by', 'submission_time')

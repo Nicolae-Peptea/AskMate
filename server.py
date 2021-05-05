@@ -163,19 +163,19 @@ def edit_answer(answer_id):
     if request.method == "GET":
         return render_template('manipulate_answer.html', answer=answer)
     else:
-        question_id = data_handler.get_question_id(answer_id)
         new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_answer', prev_entry=answer)
         data_handler.edit_answer(new_entry=new_entry, answer_id=answer_id)
-        return redirect(url_for("display_question", question_id=question_id))
+        return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 @app.route("/comment/<int:comment_id>/edit", methods=["GET", "POST"])
 def edit_comment(comment_id):
-    comment = ''
+    comment = data_handler.get_single_comment(comment_id)
+    print (comment)
     if request.method == "GET":
-        return render_template('manipulate_answer.html', comment)
+        return render_template('manipulate_comment.html', comment_id=comment['id'])
     else:
-        return redirect(url_for('display_question'))
+        return redirect(url_for('display_question', question_id=comment['question_id']))
         pass
 
 
