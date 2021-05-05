@@ -150,8 +150,9 @@ def add_comment_to_answer(answer_id):
         url = url_for('add_comment_to_answer', answer_id=answer_id)
         return render_template('manipulate_comment.html', url=url)
     else:
+        question_id = data_handler.get_question_id(answer_id)
         comment = request.form
-        data_handler.add_comment_to_answer(comment, question_id)
+        data_handler.add_comment_to_answer(comment, answer_id)
         return redirect(url_for("display_question", question_id=question_id))
 
 

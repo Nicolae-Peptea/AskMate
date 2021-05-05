@@ -206,11 +206,21 @@ def delete_answer_image(entry_id, path):
 
 @database_common.connection_handler
 def add_comment_to_question(cursor, new_entry, question_id):
-    print (new_entry)
     adding = """INSERT INTO comment ("submission_time","question_id","message","edited_count")
                     VALUES (now()::timestamp(0), %(question_id)s, %(message)s, 0)
                     """
     cursor.execute(adding, {
         'question_id': question_id,
+        'message': new_entry['comment'],
+    })
+
+
+@database_common.connection_handler
+def add_comment_to_answer(cursor, new_entry, answer_id):
+    adding = """INSERT INTO comment ("submission_time","answer_id","message","edited_count")
+                    VALUES (now()::timestamp(0), %(answer_id)s, %(message)s, 0)
+                    """
+    cursor.execute(adding, {
+        'answer_id': answer_id,
         'message': new_entry['comment'],
     })
