@@ -22,13 +22,6 @@ def get_questions(cursor):
     return cursor.fetchall()
 
 
-def get_single_entry_by_id(file_path, entry_id):
-    entries = read_file(file_path)
-    for entry in entries:
-        if int(entry["id"]) == entry_id:
-            return entry
-
-
 def vote_entry(file_path, file_headers, entry_to_vote, vote):
     voted = int(entry_to_vote['vote_number']) + int(vote)
     entry_to_vote['vote_number'] = voted
@@ -40,7 +33,6 @@ def get_single_question(cursor, question_id):
     query = """SELECT * FROM question
                 WHERE id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
-    # print (get_file_names(question_id))
     return {key: value for e in cursor.fetchall() for key, value in e.items()}
 
 
@@ -130,17 +122,16 @@ def delete_entry(cursor, delete_by, delete_value, table):
 
 
 def delete_question(question_id, path):
-    delete_images(question_id, path)
+    delete_question_images(question_id, path)
     delete_entry('question_id', question_id, 'question_tag')
     delete_entry('question_id', question_id, 'answer')
     delete_entry('question_id', question_id, 'comment')
     delete_entry('id', question_id, 'question')
 
 
-
 @database_common.connection_handler
-def get_file_names(cursor, entry_id):
-    querry = """
+def get_image_names_for_question(cursor, entry_id):
+    query = """
     SELECT image
         FROM question
     WHERE id= %(entry_id)s
@@ -149,9 +140,21 @@ def get_file_names(cursor, entry_id):
         FROM answer
     WHERE question_id=%(entry_id)s
     """
-
-    cursor.execute(querry, {'entry_id': entry_id})
+    cursor.execute(query, {'entry_id': entry_id})
     return [value for e in cursor.fetchall() for key, value in e.items() if value]
+
+
+@database_common.connection_handler
+def get_image_names_for_answers(cursor, entry_id):
+    query = """
+       SELECT image
+           FROM answer
+       WHERE id= %(entry_id)s
+       """
+    cursor.execute(query, {'entry_id': entry_id})
+    return [value for e in cursor.fetchall() for key, value in e.items() if value]
+
+
 
 
 def vote_question(question_id, vote):
@@ -182,9 +185,21 @@ def add_answer(cursor, new_entry, question_id):
     })
 
 
+@database_common.connection_handler
+def get_question_id(cursor, answer_id):
+    query = """
+    SELECT question_id FROM answer
+    WHERE id = %(answer_id)s
+    """
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()['question_id']
+
+
 def delete_answer(answer_id, path):
-    delete_entry(path, entry_id=answer_id, file_path=ANSWER_PATH,
-                 file_header=ANSWER_DATA_HEADER)
+    delete_answer_image(answer_id, path)
+    delete_entry('answer_id', answer_id, 'comment')
+    delete_entry('id', answer_id, 'answer')
+
 
 
 def delete_answers(question_id, path):
@@ -199,46 +214,15 @@ def vote_answer(entry_to_vote, vote):
 
 
 # CONNECTION
-def delete_images(entry_id, path):
-    file_list = get_file_names(entry_id)
+def delete_question_images(entry_id, path):
+    file_list = get_image_names_for_question(entry_id)
     if file_list:
         for file in file_list:
             os.unlink(os.path.join(path, file))
 
 
-def read_file(file_path):
-    with open(file_path, 'r') as file:
-        reader = csv.DictReader(file)
-        yield from reader
-
-
-def write_elem_to_file(elem, file_path, file_header):
-    entries = list(read_file(file_path))
-    updated_id = None
-
-    with open(file_path, 'w') as file:
-        dict_writer = csv.DictWriter(file, fieldnames=file_header)
-        dict_writer.writeheader()
-        for e in entries:
-            if e['id'] == elem['id']:
-                dict_writer.writerow(elem)
-                updated_id = e['id']
-            else:
-                dict_writer.writerow(e)
-
-        if not updated_id:
-            dict_writer.writerow(elem)
-            updated_id = elem['id']
-
-    return updated_id
-
-# def delete_entry(path, entry_id, file_path, file_header):
-#     entries = list(read_file(file_path))
-#     with open(file_path, 'w') as file:
-#         dict_writer = csv.DictWriter(file, fieldnames=file_header)
-#         dict_writer.writeheader()
-#         for elem in entries:
-#             if int(elem['id']) == entry_id:
-#                 delete_image(elem, path)
-#                 continue
-#             dict_writer.writerow(elem)
+def delete_answer_image(entry_id, path):
+    file_list = get_image_names_for_answers(entry_id)
+    if file_list:
+        for file in file_list:
+            os.unlink(os.path.join(path, file))

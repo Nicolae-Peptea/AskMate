@@ -90,7 +90,7 @@ def edit_question(question_id):
             url=url)
     elif request.method == "POST":
         new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_question', prev_entry=question)
-        print(new_entry)
+        # print(new_entry)
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -124,9 +124,10 @@ def answer_question(question_id):
 
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
-    answer = data_handler.get_single_answer(answer_id)
+    question_id = data_handler.get_question_id(answer_id)
+    # print (question_id)
     data_handler.delete_answer(answer_id, app.config['UPLOAD_PATH'])
-    return redirect(url_for("display_question", question_id=answer['question_id']))
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route('/answer/<int:answer_id>/vote', methods=["POST"])
