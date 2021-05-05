@@ -96,7 +96,6 @@ def edit_question(cursor, new_entry, question_id):
         UPDATE question 
             SET title=%(new_title)s,
             message=%(new_message)s,
-            submission_time= now()::timestamp(0),
             image=%(new_image)s
         WHERE id = %(question_id)s
         """
@@ -110,8 +109,7 @@ def edit_question(cursor, new_entry, question_id):
         edit = """
         UPDATE question 
             SET title=%(new_title)s,
-            message=%(new_message)s,
-            submission_time= now()::timestamp(0)
+            message=%(new_message)s
         WHERE id = %(question_id)s
         """
         cursor.execute(edit, {
@@ -130,8 +128,7 @@ def edit_answer(cursor, new_entry, answer_id):
         UPDATE answer 
             SET 
             message=%(new_message)s,
-            image=%(new_image)s,
-            submission_time= now()::timestamp(0)
+            image=%(new_image)s
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
@@ -142,13 +139,12 @@ def edit_answer(cursor, new_entry, answer_id):
     else:
         edit = """
         UPDATE answer 
-            SET message=%(new_message)s,
-            submission_time= now()::timestamp(0)
+            SET message=%(new_message)s
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
             'new_message': new_entry['message'],
-             'answer_id': answer_id,
+            'answer_id': answer_id,
         })
 
 

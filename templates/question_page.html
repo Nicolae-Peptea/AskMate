@@ -54,6 +54,11 @@
                         <tbody>
                             <td>{{comment['message']}}</td>
                             <td>{{comment['submission_time']}}</td>
+                            <td>
+                                <a href="{{ url_for('add_comment_to_question', question_id=my_question['id']) }}">
+                                    Edit
+                                </a>
+                            </td>
                         </tbody>
                     </table>
                 </div>
@@ -123,6 +128,11 @@
                                                 <tbody>
                                                     <td>{{comment['message']}}</td>
                                                     <td>{{comment['submission_time']}}</td>
+                                                    <td>
+                                                        <a href="{{ url_for('add_comment_to_question', question_id=my_question['id']) }}">
+                                                            Edit
+                                                        </a>
+                                                     </td>
                                                 </tbody>
                                             </table>
                                         </div>
