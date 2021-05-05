@@ -58,8 +58,7 @@ def route_list():
 @app.route('/add-question', methods=["GET", "POST"])
 def ask_question():
     if request.method == "GET":
-        url = url_for('ask_question')
-        return render_template('manipulate_question.html', url=url)
+        return render_template('manipulate_question.html')
     elif request.method == "POST":
         new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_question')
         data_handler.add_question(new_entry)
@@ -83,11 +82,10 @@ def display_question(question_id):
 def edit_question(question_id):
     question = data_handler.get_single_question(question_id)
     if request.method == "GET":
-        url = url_for('edit_question', question_id=question['id'])
         return render_template(
             "manipulate_question.html",
-            question=question,
-            url=url)
+            question=question
+        )
     elif request.method == "POST":
         new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_question', prev_entry=question)
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)

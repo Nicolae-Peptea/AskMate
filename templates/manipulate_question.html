@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 
-{% block page_title %}Edit question{% endblock %}
+{% block page_title %}{%if question %}Edit{%else%}Add new{%endif%} question{% endblock %}
 
 {% block content %}
 
     <div id="filling-form">
-        <form action="{{ url }}" method="post" enctype="multipart/form-data">
+        <form action="{%if question %}{{ url_for('edit_question', question_id=question['id']) }}{%else%}{{ url_for('ask_question') }}{%endif%}" method="post" enctype="multipart/form-data">
 
             <label for="question_title">Title:</label><br>
             <textarea id="question_title" name="title" required>{{ question['title'] if question }}</textarea><br>
