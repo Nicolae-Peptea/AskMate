@@ -136,7 +136,8 @@ def vote_answer(answer_id):
 @app.route("/question/<int:question_id>/new-comment", methods=["GET","POST"])
 def add_comment_to_question(question_id):
     if request.method == "GET":
-        return render_template('manipulate_comment.html', question_id=question_id)
+        url = url_for('add_comment_to_question', question_id=question_id)
+        return render_template('manipulate_comment.html', question_id=question_id, url=url)
     else:
         comment = request.form
         data_handler.add_comment_to_question(comment, question_id)
