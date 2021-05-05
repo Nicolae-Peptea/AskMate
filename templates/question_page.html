@@ -44,6 +44,11 @@
                 </div>
             {%endif%}
         </div>
+        <div>
+            <a href="{{ url_for('add_comment_to_question', question_id=my_question['id']) }}">
+                Add comment
+            </a>
+        </div>
 
         <div id="answers-header">
             <h3>Answers</h3>
