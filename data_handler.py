@@ -96,6 +96,7 @@ def edit_question(cursor, new_entry, question_id):
         UPDATE question 
             SET title=%(new_title)s,
             message=%(new_message)s,
+            submission_time= now()::timestamp(0),
             image=%(new_image)s
         WHERE id = %(question_id)s
         """
@@ -109,7 +110,8 @@ def edit_question(cursor, new_entry, question_id):
         edit = """
         UPDATE question 
             SET title=%(new_title)s,
-            message=%(new_message)s
+            message=%(new_message)s,
+            submission_time= now()::timestamp(0)
         WHERE id = %(question_id)s
         """
         cursor.execute(edit, {
@@ -121,13 +123,15 @@ def edit_question(cursor, new_entry, question_id):
 
 @database_common.connection_handler
 def edit_answer(cursor, new_entry, answer_id):
+    # functie cu edit
     new_image = new_entry.get('image', 0)
     if new_image:
         edit = """
         UPDATE answer 
             SET 
             message=%(new_message)s,
-            image=%(new_image)s
+            image=%(new_image)s,
+            submission_time= now()::timestamp(0)
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
@@ -138,7 +142,8 @@ def edit_answer(cursor, new_entry, answer_id):
     else:
         edit = """
         UPDATE answer 
-            SET message=%(new_message)s
+            SET message=%(new_message)s,
+            submission_time= now()::timestamp(0)
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
