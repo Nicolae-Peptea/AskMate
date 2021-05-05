@@ -71,13 +71,14 @@ def display_question(question_id):
     my_question = data_handler.get_single_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
-    question_comment = data_handler.get_comment_by_question_id(question_id)
-    print(question_comment)
+    question_comments = data_handler.get_comments_by_question_id(question_id)
+    all_comments = data_handler.get_comments_for_answers_by_question_id()
     return render_template("question_page.html",
                            my_question=my_question,
                            answers=answers,
                            files=files,
-                           question_comment=question_comment)
+                           question_comments=question_comments,
+                           comments=all_comments)
 
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])

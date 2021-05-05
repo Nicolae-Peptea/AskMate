@@ -44,12 +44,16 @@
                 </div>
             {%endif%}
         </div>
-        <div id="add_comment_for_question">
-            {% if question_comment %}
-            <hr>
-            <p>{{question_comment['message']}}</p>
-            <p>{{question_comment['submission_time']}}</p>
-            <hr>
+
+        <div id="comment_for_question">
+            {% if question_comments %}
+            <h4>Comments</h4>
+            {% for comment in question_comments %}
+                <div id="actual_comment">
+                    <p id="comment_message">{{comment['message']}}</p>
+                    <p id="comment_submission_time">{{comment['submission_time']}}</p>
+                </div>
+            {% endfor %}
             {% endif %}
             <a href="{{ url_for('add_comment_to_question', question_id=my_question['id']) }}">
                 Add comment
@@ -103,9 +107,19 @@
                                     </a>
                                 </div>
                             {%endif%}
-                            <div id="add_comment_for_answer">
-
-                                <a href="{{ url_for('add_comment_to_answer', answer_id=answer['id']) }}">
+                            <div id="comment_for_answer">
+                                {% if comments %}
+                                <h4>Comments</h4>
+                                {% for comment in comments %}
+                                    {%if comment['answer_id'] == answer['id'] %}
+                                        <div id="actual_comment">
+                                            <p id="comment_message">{{comment['message']}}</p>
+                                            <p id="comment_submission_time">{{comment['submission_time']}}</p>
+                                        </div>
+                                    {%endif%}
+                                {% endfor %}
+                                {% endif %}
+                                <a href="{{ url_for('add_comment_to_question', question_id=my_question['id']) }}">
                                     Add comment
                                 </a>
                             </div>

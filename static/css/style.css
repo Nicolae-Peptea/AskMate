@@ -148,6 +148,47 @@ header {
 /* END OF HOME PAGE */
 
 /* QUESTION PAGE */
+#comment_for_question, #comment_for_answer {
+    /* display: flex;
+    flex-direction: column; */
+    width: 80%;
+    /* align-self: center;
+    align-items: flex-start; */
+    border-top: 1px solid royalblue;
+    border-bottom: 1px solid royalblue;
+    padding: 2%;
+}
+
+#comment_for_question h4, #comment_for_answer h4 {
+    margin-top: 0.5%;
+    border-bottom: 1px solid royalblue;
+}
+
+
+#comment_for_question a, #comment_for_answer a {
+    text-decoration: none;
+    color: royalblue;
+    font-weight: bold;
+}
+
+#comment_for_question a:hover, #comment_for_answer a:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+#comment_for_question a, #comment_for_answer p {
+
+}
+
+#actual_comment {
+    display: grid;
+    grid-column: 90% 10%;
+}
+
+#comment_submission_time {
+    grid-column: 2;
+}
+
 #question-page #nav-bar {
     border-bottom: 2px solid #0a52ee;
 }
