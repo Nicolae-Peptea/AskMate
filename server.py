@@ -169,5 +169,15 @@ def edit_answer(answer_id):
         return redirect(url_for("display_question", question_id=question_id))
 
 
+@app.route("/comment/<int:comment_id>/edit", methods=["GET", "POST"])
+def edit_comment(comment_id):
+    comment = ''
+    if request.method == "GET":
+        return render_template('manipulate_answer.html', comment)
+    else:
+        return redirect(url_for('display_question'))
+        pass
+
+
 if __name__ == "__main__":
     app.run(debug=True)
