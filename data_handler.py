@@ -202,15 +202,3 @@ def delete_answer_image(entry_id, path):
     if file_list:
         for file in file_list:
             os.unlink(os.path.join(path, file))
-
-
-def connection_handler(function):
-    def wrapper(*args, **kwargs):
-        connection = open_database()
-        dict_cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        ret_value = function(dict_cur, *args, **kwargs)
-        dict_cur.close()
-        connection.close()
-        return ret_value
-
-    return wrapper
