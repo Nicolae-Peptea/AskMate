@@ -202,3 +202,4 @@ def delete_answer_image(entry_id, path):
     if file_list:
         for file in file_list:
             os.unlink(os.path.join(path, file))
+
