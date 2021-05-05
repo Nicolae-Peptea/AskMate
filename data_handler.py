@@ -1,4 +1,3 @@
-import csv
 import os
 import sys
 
@@ -7,11 +6,6 @@ import database_common
 from datetime import datetime
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
-
-QUESTIONS_PATH = 'data_play/question.csv'
-ANSWER_PATH = 'data_play/answer.csv'
-QUESTIONS_DATA_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-ANSWER_DATA_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
 @database_common.connection_handler
@@ -22,22 +16,12 @@ def get_questions(cursor):
     return cursor.fetchall()
 
 
-def vote_entry(file_path, file_headers, entry_to_vote, vote):
-    voted = int(entry_to_vote['vote_number']) + int(vote)
-    entry_to_vote['vote_number'] = voted
-    write_elem_to_file(entry_to_vote, file_path, file_headers)
-
-
 @database_common.connection_handler
 def get_single_question(cursor, question_id):
     query = """SELECT * FROM question
                 WHERE id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
     return {key: value for e in cursor.fetchall() for key, value in e.items()}
-
-
-def get_single_answer(answer_id):
-    return get_single_entry_by_id(file_path=ANSWER_PATH, entry_id=answer_id)
 
 
 def get_ordered_questions(parameters):
@@ -155,13 +139,6 @@ def get_image_names_for_answers(cursor, entry_id):
     return [value for e in cursor.fetchall() for key, value in e.items() if value]
 
 
-
-
-def vote_question(question_id, vote):
-    return vote_entry(QUESTIONS_PATH, file_headers=QUESTIONS_DATA_HEADER,
-                      entry_to_vote=get_single_question(question_id=question_id), vote=vote)
-
-
 def increment_views_algorithm(file_path, file_headers, entry):
     incremented_views = int(entry['view_number']) + 1
     entry['view_number'] = str(incremented_views)
@@ -171,6 +148,18 @@ def increment_views_algorithm(file_path, file_headers, entry):
 def increment_views(question_id):
     return increment_views_algorithm(QUESTIONS_PATH, file_headers=QUESTIONS_DATA_HEADER,
                                      entry=get_single_question(question_id=question_id))
+
+
+@database_common.connection_handler
+def vote_question(cursor, entry_id, table, vote=0):
+    to_increase = 1 if vote == 'upvote' else - 1
+
+    cursor.execute(
+        sql.SQL("""
+                UPDATE {table} SET 
+                vote_number = vote_number + %(increase)s
+                WHERE id = %(entry_id)s""").
+            format(table=sql.Identifier(table)), {"entry_id": entry_id, "increase": to_increase})
 
 
 @database_common.connection_handler
@@ -201,19 +190,6 @@ def delete_answer(answer_id, path):
     delete_entry('id', answer_id, 'answer')
 
 
-
-def delete_answers(question_id, path):
-    answers = get_answers_for_question(question_id)
-    for answer in answers:
-        delete_answer(int(answer["id"]), path)
-
-
-def vote_answer(entry_to_vote, vote):
-    return vote_entry(file_path=ANSWER_PATH, file_headers=ANSWER_DATA_HEADER,
-                      entry_to_vote=entry_to_vote, vote=vote)
-
-
-# CONNECTION
 def delete_question_images(entry_id, path):
     file_list = get_image_names_for_question(entry_id)
     if file_list:
@@ -226,3 +202,15 @@ def delete_answer_image(entry_id, path):
     if file_list:
         for file in file_list:
             os.unlink(os.path.join(path, file))
+
+
+def connection_handler(function):
+    def wrapper(*args, **kwargs):
+        connection = open_database()
+        dict_cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        ret_value = function(dict_cur, *args, **kwargs)
+        dict_cur.close()
+        connection.close()
+        return ret_value
+
+    return wrapper

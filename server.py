@@ -90,7 +90,6 @@ def edit_question(question_id):
             url=url)
     elif request.method == "POST":
         new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_question', prev_entry=question)
-        # print(new_entry)
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
@@ -103,11 +102,8 @@ def delete_question(question_id):
 
 @app.route('/question/<int:question_id>/vote', methods=["POST"])
 def vote_question(question_id):
-    vote_list = list(dict(request.form).keys())
-    if 'upvote' in vote_list:
-        data_handler.vote_question(question_id, vote='1')
-    elif 'downvote' in vote_list:
-        data_handler.vote_question(question_id, vote='-1')
+    vote_type = ''.join(dict(request.form).keys())
+    data_handler.vote_question(question_id, 'question', vote_type)
     return redirect(url_for('route_list'))
 
 
@@ -125,20 +121,16 @@ def answer_question(question_id):
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
     question_id = data_handler.get_question_id(answer_id)
-    # print (question_id)
     data_handler.delete_answer(answer_id, app.config['UPLOAD_PATH'])
     return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route('/answer/<int:answer_id>/vote', methods=["POST"])
 def vote_answer(answer_id):
-    answer = data_handler.get_single_answer(answer_id)
-    vote_list = list(dict(request.form).keys())
-    if 'upvote' in vote_list:
-        data_handler.vote_answer(answer, vote='1')
-    elif 'downvote' in vote_list:
-        data_handler.vote_answer(answer, vote='-1')
-    return redirect(url_for("display_question", question_id=answer['question_id']))
+    question_id = data_handler.get_question_id(answer_id)
+    vote_type = ''.join(dict(request.form).keys())
+    data_handler.vote_question(answer_id, 'answer', vote_type)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 if __name__ == "__main__":
