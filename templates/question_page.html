@@ -45,6 +45,12 @@
             {%endif%}
         </div>
         <div id="add_comment_for_question">
+            {% if question_comment %}
+            <hr>
+            <p>{{question_comment['message']}}</p>
+            <p>{{question_comment['submission_time']}}</p>
+            <hr>
+            {% endif %}
             <a href="{{ url_for('add_comment_to_question', question_id=my_question['id']) }}">
                 Add comment
             </a>
@@ -53,7 +59,7 @@
         <div id="answers-header">
             <h3>Answers</h3>
             <p>
-                {{ num_of_answers }} {% if num_of_answers == 1 %}Answer{% else %}Answers{%endif%}
+                {{ answers|length }} {% if answers|length == 1 %}Answer{% else %}Answers{%endif%}
             </p>
         </div>
         
@@ -98,6 +104,7 @@
                                 </div>
                             {%endif%}
                             <div id="add_comment_for_answer">
+
                                 <a href="{{ url_for('add_comment_to_answer', answer_id=answer['id']) }}">
                                     Add comment
                                 </a>

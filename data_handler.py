@@ -17,6 +17,14 @@ def get_questions(cursor):
 
 
 @database_common.connection_handler
+def get_comment_by_question_id(cursor, question_id):
+    query = """SELECT * FROM comment
+                WHERE question_id = %(question_id)s"""
+    cursor.execute(query, {"question_id": question_id})
+    return dict(cursor.fetchone())
+
+
+@database_common.connection_handler
 def get_single_question(cursor, question_id):
     query = """SELECT * FROM question
                 WHERE id = %(question_id)s"""

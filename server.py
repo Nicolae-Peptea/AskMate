@@ -16,9 +16,9 @@ def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
     filename = secure_filename(uploaded_file.filename)
     if filename != '':
         if operation == 'new_question':
-            filename = 'question' + str(data_handler.get_last_added_question_id())
+            filename = 'question' + str(data_handler.get_last_added_question_id()+1)
         elif operation == 'new_answer':
-            filename = 'answer' + str(data_handler.get_last_added_answer_id())
+            filename = 'answer' + str(data_handler.get_last_added_answer_id()+1)
         elif operation == 'edit_question':
             filename = 'question' + str(prev_entry['id'])
         else:
@@ -70,12 +70,14 @@ def ask_question():
 def display_question(question_id):
     my_question = data_handler.get_single_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
-    num_of_answers = len(answers)
     files = os.listdir(app.config['UPLOAD_PATH'])
+    question_comment = data_handler.get_comment_by_question_id(question_id)
+    print(question_comment)
     return render_template("question_page.html",
                            my_question=my_question,
                            answers=answers,
-                           num_of_answers=num_of_answers, files=files)
+                           files=files,
+                           question_comment=question_comment)
 
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
