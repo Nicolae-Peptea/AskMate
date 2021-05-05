@@ -4,7 +4,7 @@
 
 {% block content %}
     <div id="filling-form">
-        <form action="{{ url }}" method="post" enctype="multipart/form-data">
+        <form action="{% if question_id %}{{ url_for('add_comment_to_question', question_id=question_id) }}{%else%}{{ url_for('add_comment_to_answer', answer_id=answer_id) }}{%endif%}" method="post" enctype="multipart/form-data">
 
             <label for="answer">Comment:</label><br>
             <textarea id="answer_text" name="comment" required></textarea><br>

@@ -134,8 +134,7 @@ def vote_answer(answer_id):
 @app.route("/question/<int:question_id>/new-comment", methods=["GET","POST"])
 def add_comment_to_question(question_id):
     if request.method == "GET":
-        url = url_for('add_comment_to_question', question_id=question_id)
-        return render_template('manipulate_comment.html', url=url)
+        return render_template('manipulate_comment.html', question_id=question_id)
     else:
         comment = request.form
         data_handler.add_comment_to_question(comment, question_id)
@@ -145,8 +144,7 @@ def add_comment_to_question(question_id):
 @app.route("/answer/<int:answer_id>/new-comment", methods=["GET","POST"])
 def add_comment_to_answer(answer_id):
     if request.method == "GET":
-        url = url_for('add_comment_to_answer', answer_id=answer_id)
-        return render_template('manipulate_comment.html', url=url)
+        return render_template('manipulate_comment.html', answer_id=answer_id)
     else:
         question_id = data_handler.get_question_id(answer_id)
         comment = request.form
