@@ -137,14 +137,10 @@ def vote_answer(answer_id):
 def add_comment_to_question(question_id):
     if request.method == "GET":
         return render_template('manipulate_comment.html', question_id=question_id)
-        pass # ma duce la form
     else:
-        comment = request.form.get('message')
-        print(comment)
+        comment = request.form
+        data_handler.add_comment_to_question(comment, question_id)
         return redirect(url_for("display_question", question_id=question_id))
-
-        pass
-
 
 
 if __name__ == "__main__":
