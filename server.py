@@ -21,6 +21,8 @@ def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
             filename = 'answer' + str(data_handler.get_last_added_answer_id()+1)
         elif operation == 'edit_question':
             filename = 'question' + str(prev_entry['id'])
+        elif operation == 'edit_answer':
+            filename = 'answer' + str(prev_entry['id'])
         else:
             filename = operation
         uploaded_file.save(os.path.join(path, filename))
@@ -112,7 +114,7 @@ def vote_question(question_id):
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def answer_question(question_id):
     if request.method == "GET":
-        return render_template("post_answer.html", question_id=question_id)
+        return render_template("manipulate_answer.html", question_id=question_id)
     elif request.method == "POST":
         new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_answer')
         data_handler.add_answer(new_entry=new_entry, question_id=question_id)
@@ -144,7 +146,7 @@ def add_comment_to_question(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
 
-@app.route("/answer/<int:answer_id>/new-comment", methods=["GET","POST"])
+@app.route("/answer/<int:answer_id>/new-comment", methods=["GET", "POST"])
 def add_comment_to_answer(answer_id):
     if request.method == "GET":
         return render_template('manipulate_comment.html', answer_id=answer_id)
@@ -152,6 +154,18 @@ def add_comment_to_answer(answer_id):
         question_id = data_handler.get_question_id(answer_id)
         comment = request.form
         data_handler.add_comment_to_answer(comment, answer_id)
+        return redirect(url_for("display_question", question_id=question_id))
+
+
+@app.route("/answer/<int:answer_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id):
+    answer = data_handler.get_single_answer(answer_id)
+    if request.method == "GET":
+        return render_template('manipulate_answer.html', answer=answer)
+    else:
+        question_id = data_handler.get_question_id(answer_id)
+        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_answer', prev_entry=answer)
+        data_handler.edit_answer(new_entry=new_entry, answer_id=answer_id)
         return redirect(url_for("display_question", question_id=question_id))
 
 

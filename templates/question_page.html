@@ -100,7 +100,9 @@
                                     </div>
                                 </button>
                             </form>
-
+                            <form action="{{ url_for('edit_answer', answer_id=answer['id']) }}">
+                                <button type="submit">Edit</button>
+                            </form>
                         </div>
                         <div id="answer-right-side">
                             <p>{% autoescape false %}{{ answer['message'] }}{% endautoescape %}</p>

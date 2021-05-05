@@ -36,7 +36,15 @@ def get_single_question(cursor, question_id):
     query = """SELECT * FROM question
                 WHERE id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
-    return {key: value for e in cursor.fetchall() for key, value in e.items()}
+    return dict(cursor.fetchone())
+
+
+@database_common.connection_handler
+def get_single_answer(cursor, answer_id):
+    query = """SELECT * FROM answer
+                WHERE id = %(answer_id)s"""
+    cursor.execute(query, {"answer_id": answer_id})
+    return dict(cursor.fetchone())
 
 
 def get_ordered_questions(parameters):
@@ -108,6 +116,34 @@ def edit_question(cursor, new_entry, question_id):
             'new_title': new_entry['title'],
             'new_message': new_entry['message'],
             'question_id': question_id
+        })
+
+
+@database_common.connection_handler
+def edit_answer(cursor, new_entry, answer_id):
+    new_image = new_entry.get('image', 0)
+    if new_image:
+        edit = """
+        UPDATE answer 
+            SET 
+            message=%(new_message)s,
+            image=%(new_image)s
+        WHERE id = %(answer_id)s
+        """
+        cursor.execute(edit, {
+            'new_message': new_entry['message'],
+            'new_image': new_image,
+            'answer_id': answer_id,
+        })
+    else:
+        edit = """
+        UPDATE answer 
+            SET message=%(new_message)s
+        WHERE id = %(answer_id)s
+        """
+        cursor.execute(edit, {
+            'new_message': new_entry['message'],
+             'answer_id': answer_id,
         })
 
 
