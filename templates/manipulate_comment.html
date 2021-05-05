@@ -1,19 +1,21 @@
 {% extends "layout.html" %}
 
-{% block page_title %}Comment question{% endblock %}
+{% block page_title %}Answer question{% endblock %}
 
 {% block content %}
     <div id="filling-form">
-        <form action="{{ url_for('add_comment_to_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ url_for('answer_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
 
             <label for="answer">Answer:</label><br>
             <textarea id="answer_text" name="message" required></textarea><br>
+
+            <label for="image">Click on the "Choose File" button to upload an image:</label><br>
+            <input type="file" name="image"><br>
 
             <button id="post-button" type="submit">POST</button>
 
         </form>
     </div>
-
     <div class="home-button">
         <form id="home-button" action="{{ url_for('route_list') }}">
             <button>Home</button>
