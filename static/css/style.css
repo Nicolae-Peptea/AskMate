@@ -149,11 +149,7 @@ header {
 
 /* QUESTION PAGE */
 #comment_for_question, #comment_for_answer {
-    /* display: flex;
-    flex-direction: column; */
     width: 80%;
-    /* align-self: center;
-    align-items: flex-start; */
     border-top: 1px solid royalblue;
     border-bottom: 1px solid royalblue;
     padding: 2%;
@@ -183,6 +179,10 @@ header {
 #actual_comment {
     display: grid;
     grid-column: 90% 10%;
+}
+
+#actual_comment td {
+    width: 70%;
 }
 
 #comment_submission_time {

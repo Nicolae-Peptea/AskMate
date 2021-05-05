@@ -50,8 +50,12 @@
             <h4>Comments</h4>
             {% for comment in question_comments %}
                 <div id="actual_comment">
-                    <p id="comment_message">{{comment['message']}}</p>
-                    <p id="comment_submission_time">{{comment['submission_time']}}</p>
+                    <table>
+                        <tbody>
+                            <td>{{comment['message']}}</td>
+                            <td>{{comment['submission_time']}}</td>
+                        </tbody>
+                    </table>
                 </div>
             {% endfor %}
             {% endif %}
@@ -113,8 +117,12 @@
                                 {% for comment in comments %}
                                     {%if comment['answer_id'] == answer['id'] %}
                                         <div id="actual_comment">
-                                            <p id="comment_message">{{comment['message']}}</p>
-                                            <p id="comment_submission_time">{{comment['submission_time']}}</p>
+                                            <table>
+                                                <tbody>
+                                                    <td>{{comment['message']}}</td>
+                                                    <td>{{comment['submission_time']}}</td>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     {%endif%}
                                 {% endfor %}
