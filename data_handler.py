@@ -1,5 +1,7 @@
 import csv
 import os
+import sys
+
 import psycopg2
 import database_common
 from datetime import datetime
@@ -37,8 +39,9 @@ def vote_entry(file_path, file_headers, entry_to_vote, vote):
 def get_single_question(cursor, question_id):
     query = """SELECT * FROM question
                 WHERE id = %(question_id)s"""
-    cursor.execute(query, {"question_id":question_id})
-    return {key:value for e in cursor.fetchall() for key,value in e.items()}
+    cursor.execute(query, {"question_id": question_id})
+    # print (get_file_names(question_id))
+    return {key: value for e in cursor.fetchall() for key, value in e.items()}
 
 
 def get_single_answer(answer_id):
@@ -64,7 +67,6 @@ def get_answers_for_question(cursor, question_id):
 
 @database_common.connection_handler
 def add_question(cursor, new_entry):
-
     adding = """INSERT INTO question ("submission_time","title","message","image","view_number","vote_number")
                 VALUES (now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
                 """
@@ -87,16 +89,69 @@ def get_last_added_answer_id(cursor):
     return cursor.fetchone()['max']
 
 
-def edit_question(new_entry, question_id):
-    question = get_single_question(question_id)
-    question.update(new_entry)
-    write_elem_to_file(question, QUESTIONS_PATH, QUESTIONS_DATA_HEADER)
+@database_common.connection_handler
+def edit_question(cursor, new_entry, question_id):
+    new_image = new_entry.get('image', 0)
+    if new_image:
+        edit = """
+        UPDATE question 
+            SET title=%(new_title)s,
+            message=%(new_message)s,
+            image=%(new_image)s
+        WHERE id = %(question_id)s
+        """
+        cursor.execute(edit, {
+            'new_title': new_entry['title'],
+            'new_message': new_entry['message'],
+            'new_image': new_image,
+            'question_id': question_id
+        })
+    else:
+        edit = """
+        UPDATE question 
+            SET title=%(new_title)s,
+            message=%(new_message)s
+        WHERE id = %(question_id)s
+        """
+        cursor.execute(edit, {
+            'new_title': new_entry['title'],
+            'new_message': new_entry['message'],
+            'question_id': question_id
+        })
+
+
+@database_common.connection_handler
+def delete_entry(cursor, delete_by, delete_value, table):
+    cursor.execute(
+        sql.SQL("""DELETE FROM {table} WHERE {delete_by} = %(delete_value)s""").
+            format(delete_by=sql.Identifier(delete_by),
+                   table=sql.Identifier(table)), {'delete_value': delete_value}
+    )
 
 
 def delete_question(question_id, path):
-    delete_answers(question_id, path)
-    delete_entry(path, entry_id=question_id, file_path=QUESTIONS_PATH,
-                 file_header=QUESTIONS_DATA_HEADER)
+    delete_images(question_id, path)
+    delete_entry('question_id', question_id, 'question_tag')
+    delete_entry('question_id', question_id, 'answer')
+    delete_entry('question_id', question_id, 'comment')
+    delete_entry('id', question_id, 'question')
+
+
+
+@database_common.connection_handler
+def get_file_names(cursor, entry_id):
+    querry = """
+    SELECT image
+        FROM question
+    WHERE id= %(entry_id)s
+        UNION
+    SELECT image
+        FROM answer
+    WHERE question_id=%(entry_id)s
+    """
+
+    cursor.execute(querry, {'entry_id': entry_id})
+    return [value for e in cursor.fetchall() for key, value in e.items() if value]
 
 
 def vote_question(question_id, vote):
@@ -113,7 +168,6 @@ def increment_views_algorithm(file_path, file_headers, entry):
 def increment_views(question_id):
     return increment_views_algorithm(QUESTIONS_PATH, file_headers=QUESTIONS_DATA_HEADER,
                                      entry=get_single_question(question_id=question_id))
-
 
 
 @database_common.connection_handler
@@ -145,16 +199,11 @@ def vote_answer(entry_to_vote, vote):
 
 
 # CONNECTION
-
-
-def delete_image(location, path):
-    if location['image']:
-        filename = location['image']
-        files = os.listdir(path)
-        if filename in files:
-            os.unlink(os.path.join(path, filename))
-        else:
-            pass
+def delete_images(entry_id, path):
+    file_list = get_file_names(entry_id)
+    if file_list:
+        for file in file_list:
+            os.unlink(os.path.join(path, file))
 
 
 def read_file(file_path):
@@ -183,14 +232,13 @@ def write_elem_to_file(elem, file_path, file_header):
 
     return updated_id
 
-
-def delete_entry(path, entry_id, file_path, file_header):
-    entries = list(read_file(file_path))
-    with open(file_path, 'w') as file:
-        dict_writer = csv.DictWriter(file, fieldnames=file_header)
-        dict_writer.writeheader()
-        for elem in entries:
-            if int(elem['id']) == entry_id:
-                delete_image(elem, path)
-                continue
-            dict_writer.writerow(elem)
+# def delete_entry(path, entry_id, file_path, file_header):
+#     entries = list(read_file(file_path))
+#     with open(file_path, 'w') as file:
+#         dict_writer = csv.DictWriter(file, fieldnames=file_header)
+#         dict_writer.writeheader()
+#         for elem in entries:
+#             if int(elem['id']) == entry_id:
+#                 delete_image(elem, path)
+#                 continue
+#             dict_writer.writerow(elem)

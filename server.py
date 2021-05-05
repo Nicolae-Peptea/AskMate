@@ -11,7 +11,7 @@ app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
 app.config['UPLOAD_PATH'] = 'images'
 
 
-def generate_entry_with_image(new_entry, path, operation):
+def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
     uploaded_file = request.files['image']
     filename = secure_filename(uploaded_file.filename)
     if filename != '':
@@ -19,16 +19,19 @@ def generate_entry_with_image(new_entry, path, operation):
             filename = 'question' + str(data_handler.get_last_added_question_id())
         elif operation == 'new_answer':
             filename = 'answer' + str(data_handler.get_last_added_answer_id())
+        elif operation == 'edit_question':
+            filename = 'question' + str(prev_entry['id'])
         else:
             filename = operation
         uploaded_file.save(os.path.join(path, filename))
         new_entry['image'] = filename
+
     return new_entry
 
 
-def generate_new_entry(path, operation):
+def generate_new_entry(path, operation, prev_entry=''):
     if request.files:
-        new_entry = generate_entry_with_image(dict(request.form), path, operation)
+        new_entry = generate_entry_with_image(dict(request.form), path, operation, prev_entry)
     else:
         new_entry = dict(request.form)
     return new_entry
@@ -78,15 +81,16 @@ def display_question(question_id):
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
+    question = data_handler.get_single_question(question_id)
     if request.method == "GET":
-        question = data_handler.get_single_question(question_id)
         url = url_for('edit_question', question_id=question['id'])
         return render_template(
             "manipulate_question.html",
             question=question,
             url=url)
     elif request.method == "POST":
-        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='question' + str(question_id))
+        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_question', prev_entry=question)
+        print(new_entry)
         data_handler.edit_question(new_entry=new_entry, question_id=question_id)
         return redirect(url_for("display_question", question_id=question_id))
 
