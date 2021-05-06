@@ -55,7 +55,7 @@ def display_latest_questions():
 def display_searched_questions():
     key_words=request.args.get('q')
     searched_questions=data_handler.get_searched_questions(key_words)
-    data_handler.get_highlighted_search(searched_questions, key_words)
+    data_handler.highlighted_search(searched_questions, key_words)
     return render_template(
         'latest_questions.html',
         questions=searched_questions)
@@ -117,14 +117,14 @@ def edit_question(question_id):
 @app.route('/question/<int:question_id>/delete', methods=["POST"])
 def delete_question(question_id):
     data_handler.delete_question(question_id, app.config['UPLOAD_PATH'])
-    return redirect(url_for('display_latest_questions'))
+    return redirect(url_for('display_all_questions'))
 
 
 @app.route('/question/<int:question_id>/vote', methods=["POST"])
 def vote_question(question_id):
     vote_type = ''.join(dict(request.form).keys())
     data_handler.vote_question(question_id, 'question', vote_type)
-    return redirect(url_for('display_latest_questions'))
+    return redirect(url_for('display_all_questions'))
 
 
 # ANSWER MANIPULATION
