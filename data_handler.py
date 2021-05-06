@@ -361,15 +361,17 @@ def delete_question_tag(cursor, question_id, tag_id):
 
 
 # DO
-def increment_views_algorithm(file_path, file_headers, entry):
-    incremented_views = int(entry['view_number']) + 1
-    entry['view_number'] = str(incremented_views)
-    write_elem_to_file(entry, file_path, file_headers)
 
-
-def increment_views(question_id):
-    return increment_views_algorithm(QUESTIONS_PATH, file_headers=QUESTIONS_DATA_HEADER,
-                                     entry=get_question(question_id=question_id))
+@database_common.connection_handler
+def update_views(cursor: RealDictCursor, question_id: int):
+    update = """
+    UPDATE question 
+    SET view_number = view_number + 1
+    WHERE id = %(question_id)s
+    """
+    cursor.execute(update, {
+        'question_id': question_id
+    })
 
 
 @database_common.connection_handler

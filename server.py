@@ -85,6 +85,7 @@ def ask_question():
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
+    data_handler.update_views(question_id)
     my_question = data_handler.get_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
