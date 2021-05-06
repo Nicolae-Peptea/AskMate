@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 
 import psycopg2
@@ -394,8 +395,9 @@ def get_searched_questions(cursor: RealDictCursor, phrase: str):
 
 
 def get_highlighted_search(questions, phrase):
+
     for question in questions:
-        question['message'] = question['message'].replace(phrase, f"<mark>{phrase}</mark>")
-        question['title'] = question['title'].replace(phrase, f"<mark>{phrase}</mark>")
-        # question['message'] = re.sub(phrase, f"<mark>{phrase}</mark>", question['message'], flags=re.IGNORECASE)
-        # question['title'] = re.sub(phrase, f"<mark>{phrase}</mark>", question['title'], flags=re.IGNORECASE)
+        for to_replace in re.findall(f'(?i){phrase}', question['message']):
+            question['message'] = question['message'].replace(to_replace, f"<mark>{to_replace}</mark>")
+        for to_replace in re.findall(f'(?i){phrase}', question['title']):
+            question['title'] = question['title'].replace(to_replace, f"<mark>{to_replace}</mark>")
