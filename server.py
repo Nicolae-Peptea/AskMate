@@ -49,19 +49,20 @@ def display_latest_questions():
     return render_template(
         'latest_questions.html',
         questions=data_handler.get_latest_5_questions())
-    
 
-@app.route("/search", methods=["POST"])
+
+@app.route("/search")
 def display_searched_questions():
-    searched_phrase=request.form.get('search_phrase')
-    searched_questions=data_handler.get_searched_questions(searched_phrase)
+    key_words=request.args.get('q')
+    searched_questions=data_handler.get_searched_questions(key_words)
     return render_template(
         'latest_questions.html',
-        searched_questions=searched_questions)
+        questions=searched_questions)
 
 
 @app.route("/list")
 def display_all_questions():
+    print (request.args)
     order_by = request.args.get('order_by', 'submission_time')
     direction = request.args.get('order_direction', 'desc')
     return render_template(

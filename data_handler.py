@@ -381,3 +381,13 @@ def vote_question(cursor, entry_id, table, vote=0):
                 vote_number = vote_number + %(increase)s
                 WHERE id = %(entry_id)s""").
             format(table=sql.Identifier(table)), {"entry_id": entry_id, "increase": to_increase})
+
+
+@database_common.connection_handler
+def get_searched_questions(cursor: RealDictCursor, phrase: str):
+    query = f"""
+    SELECT * FROM question
+    WHERE message ILIKE '%{phrase}%' or title ILIKE '%{phrase}%'
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
