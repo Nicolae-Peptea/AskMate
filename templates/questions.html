@@ -8,6 +8,12 @@
 
         <br>
 
+        <form action="{{ url_for('display_latest_questions') }}">
+            <button id="ask-button" >Main Page</button>
+        </form>
+
+        <br>
+
         <form action="{{ url_for('display_all_questions') }}">
             <div id="question-sorting">
                 <label for="order_by">Order by: </label><br>

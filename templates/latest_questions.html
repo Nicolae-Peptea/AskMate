@@ -1,6 +1,14 @@
 {% extends "layout.html" %}
 {% block page_title %}Latest questions{% endblock %}
 {% block content %}
+
+    <div id="search_bar">
+        <input type="text" placeholder="Ex: drawing a canvas">
+        <form action="" method="post">
+            <button id="search-button" >Search</button>
+        </form>
+    </div>
+
     <div id="left-section">
         <form action="{{ url_for('ask_question') }}">
             <button id="ask-button" >Ask Question</button>

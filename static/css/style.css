@@ -147,6 +147,26 @@ header {
 }
 /* END OF HOME PAGE */
 
+/* LATEST QUESTIONS PAGE */
+#search_bar {
+    padding: 2%;
+    display: flex;
+    border: 2px solid royalblue;
+    margin-top: 1%;
+    border-radius: 5px;
+}
+
+#search_bar input {
+    padding: 1%;
+    width: 90%;
+}
+
+#search_bar button {
+    padding: 5%;
+    margin: 5%;
+}
+/* END OF LATEST QUESTIONS PAGE */
+
 /* QUESTION PAGE */
 #tags{
     display: flex;
