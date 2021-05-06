@@ -207,5 +207,11 @@ def add_tag_to_question(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
 
+@app.route('/question/<question_id>/tag/<tag_id>/delete', methods=["POST"])
+def delete_question_tag(question_id, tag_id):
+    data_handler.delete_question_tag(question_id, tag_id)
+    return redirect(url_for("display_question", question_id=question_id))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
