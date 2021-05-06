@@ -148,7 +148,7 @@ header {
 /* END OF HOME PAGE */
 
 /* QUESTION PAGE */
-#comment_for_question, #comment_for_answer {
+#comment_for_question, #comment_for_answer, #question_tags {
     width: 80%;
     border-top: 1px solid royalblue;
     border-bottom: 1px solid royalblue;
@@ -161,13 +161,17 @@ header {
 }
 
 
-#comment_for_question a, #comment_for_answer a {
+#comment_for_question a, 
+#comment_for_answer a, 
+#question_tags a {
     text-decoration: none;
     color: royalblue;
     font-weight: bold;
 }
 
-#comment_for_question a:hover, #comment_for_answer a:hover {
+#comment_for_question a:hover, 
+#comment_for_answer a:hover,
+#question_tags a:hover {
     color: black;
     text-decoration: underline;
 }
