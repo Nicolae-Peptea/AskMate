@@ -53,9 +53,11 @@ def display_latest_questions():
 
 @app.route("/list")
 def display_all_questions():
+    order_by = request.args.get('order_by', 'submission_time')
+    direction = request.args.get('order_direction', 'desc')
     return render_template(
         'questions.html',
-        questions=data_handler.get_questions(parameters=request.args),
+        questions=data_handler.get_questions(order_by, direction),
         request_param=request.args)
 
 

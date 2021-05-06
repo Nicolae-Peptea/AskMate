@@ -10,18 +10,16 @@ from psycopg2.extras import RealDictCursor
 
 # GET
 @database_common.connection_handler
-def get_questions(cursor, parameters):
-    order_by = parameters.get('order_by', 'submission_time')
-    direction = parameters.get('order_direction', 'desc').upper()
+def get_questions(cursor, order_by, direction):
+    if order_by not in ["submission_time", "view_number", "vote_number", "title", "message"] or \
+            direction not in ["desc", "asc"]:
+        raise ValueError
 
     cursor.execute(
-        sql.SQL("""
-        SELECT * FROM {table}
-        ORDER BY {order_by}
-        """).
-            format(table=sql.Identifier('question'),
-                   order_by=sql.Identifier(order_by))
-    )
+        f"""
+        SELECT * FROM question 
+        ORDER BY {order_by} {direction}
+        """)
 
     return cursor.fetchall()
 
