@@ -205,9 +205,6 @@ header {
     text-decoration: underline;
 }
 
-#comment_for_question a, #comment_for_answer p {
-
-}
 
 #actual_comment {
     display: grid;
@@ -397,6 +394,7 @@ header {
     margin-left: auto;
     margin-right: auto;
 }
+
 /* END OF FORMS PAGES */
 
 /* SUBMIT BUTTONS */

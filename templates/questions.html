@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-
+{% block page_title %}All Questions{% endblock %}
 {% block content %}
     <div id="left-section">
         <form action="{{ url_for('ask_question') }}">
@@ -8,7 +8,7 @@
 
         <br>
 
-        <form action="{{ url_for('route_list') }}">
+        <form action="{{ url_for('display_all_questions') }}">
             <div id="question-sorting">
                 <label for="order_by">Order by: </label><br>
                 <select name="order_by" id="sort" onChange="this.form.submit();">

@@ -45,17 +45,16 @@ def upload_image(filename):
 
 
 @app.route("/")
-def route_list():
+def display_latest_questions():
     return render_template(
-        'list.html',
-        questions=data_handler.get_latest_5_questions(),
-        request_param=request.args)
+        'latest_questions.html',
+        questions=data_handler.get_latest_5_questions())
 
 
 @app.route("/list")
 def display_all_questions():
     return render_template(
-        'list.html',
+        'questions.html',
         questions=data_handler.get_questions(parameters=request.args),
         request_param=request.args)
 
@@ -106,14 +105,14 @@ def edit_question(question_id):
 @app.route('/question/<int:question_id>/delete', methods=["POST"])
 def delete_question(question_id):
     data_handler.delete_question(question_id, app.config['UPLOAD_PATH'])
-    return redirect(url_for('route_list'))
+    return redirect(url_for('display_latest_questions'))
 
 
 @app.route('/question/<int:question_id>/vote', methods=["POST"])
 def vote_question(question_id):
     vote_type = ''.join(dict(request.form).keys())
     data_handler.vote_question(question_id, 'question', vote_type)
-    return redirect(url_for('route_list'))
+    return redirect(url_for('display_latest_questions'))
 
 
 # ANSWER MANIPULATION
