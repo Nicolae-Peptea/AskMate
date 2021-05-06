@@ -52,7 +52,7 @@ def route_list():
     # print(data_handler.get_questions())
     return render_template(
         'list.html',
-        questions=data_handler.get_questions(),
+        questions=data_handler.get_questions(parameters=request.args),
         request_param=request.args)
 
 
@@ -70,7 +70,7 @@ def ask_question():
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
-    my_question = data_handler.get_single_question(question_id)
+    my_question = data_handler.get_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
     question_comments = data_handler.get_comments_by_question_id(question_id)
@@ -85,7 +85,7 @@ def display_question(question_id):
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
 def edit_question(question_id):
-    question = data_handler.get_single_question(question_id)
+    question = data_handler.get_question(question_id)
     if request.method == "GET":
         return render_template(
             "manipulate_question.html",
@@ -123,7 +123,7 @@ def answer_question(question_id):
 
 @app.route("/answer/<int:answer_id>/edit", methods=["GET", "POST"])
 def edit_answer(answer_id):
-    answer = data_handler.get_single_answer(answer_id)
+    answer = data_handler.get_answer(answer_id)
     if request.method == "GET":
         return render_template('manipulate_answer.html', answer=answer)
     else:

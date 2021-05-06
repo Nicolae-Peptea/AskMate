@@ -10,10 +10,19 @@ from psycopg2.extras import RealDictCursor
 
 # GET
 @database_common.connection_handler
-def get_questions(cursor):
+def get_questions(cursor, parameters):
+    order_by = parameters.get('order_by', 'submission_time')
+    direction = parameters.get('order_direction', 'desc').upper()
+
     cursor.execute(
-        sql.SQL("select * from {table}").
-            format(table=sql.Identifier('question')))
+        sql.SQL("""
+        SELECT * FROM {table}
+        ORDER BY {order_by}
+        """).
+            format(table=sql.Identifier('question'),
+                   order_by=sql.Identifier(order_by))
+    )
+
     return cursor.fetchall()
 
 
@@ -33,7 +42,7 @@ def get_comments_by_question_id(cursor, question_id):
 
 
 @database_common.connection_handler
-def get_single_question(cursor, question_id):
+def get_question(cursor, question_id):
     query = """SELECT * FROM question
                 WHERE id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
@@ -41,7 +50,7 @@ def get_single_question(cursor, question_id):
 
 
 @database_common.connection_handler
-def get_single_answer(cursor, answer_id):
+def get_answer(cursor, answer_id):
     query = """SELECT * FROM answer
                 WHERE id = %(answer_id)s"""
     cursor.execute(query, {"answer_id": answer_id})
@@ -49,7 +58,7 @@ def get_single_answer(cursor, answer_id):
 
 
 @database_common.connection_handler
-def get_single_comment(cursor, comment_id):
+def get_comment(cursor, comment_id):
     query = """SELECT * FROM comment
                 WHERE id = %(comment_id)s"""
     cursor.execute(query, {"comment_id": comment_id})
@@ -57,21 +66,12 @@ def get_single_comment(cursor, comment_id):
 
 
 def get_comment_and_question_id(comment_id):
-    comment = get_single_comment(comment_id)
+    comment = get_comment(comment_id)
     if comment['question_id']:
         question_id = comment['question_id']
     elif comment['answer_id']:
         question_id = get_question_id(comment['answer_id'])
     return comment, question_id
-
-
-def get_ordered_questions(parameters):
-    questions = generate_data_with_integers(list(read_file(QUESTIONS_PATH)))
-    order_by = parameters.get('order_by', 'submission_time')
-    direction = parameters.get('order_direction', 'desc')
-    should_reverse = direction == 'desc'
-
-    return sorted(questions, key=lambda elem: elem[order_by], reverse=should_reverse)
 
 
 @database_common.connection_handler
@@ -255,10 +255,13 @@ def edit_comment(cursor, new_entry, comment_id):
 
 # DELETE
 @database_common.connection_handler
-def delete_entry(cursor, delete_by, delete_value, table):
+def delete_entry(cursor, field_name, delete_value, table):
+    if field_name not in ["question_id", "id", "answer_id"]:
+        raise ValueError
+
     cursor.execute(
         sql.SQL("""DELETE FROM {table} WHERE {delete_by} = %(delete_value)s""").
-            format(delete_by=sql.Identifier(delete_by),
+            format(delete_by=sql.Identifier(field_name),
                    table=sql.Identifier(table)), {'delete_value': delete_value}
     )
 
@@ -305,7 +308,7 @@ def increment_views_algorithm(file_path, file_headers, entry):
 
 def increment_views(question_id):
     return increment_views_algorithm(QUESTIONS_PATH, file_headers=QUESTIONS_DATA_HEADER,
-                                     entry=get_single_question(question_id=question_id))
+                                     entry=get_question(question_id=question_id))
 
 
 @database_common.connection_handler
