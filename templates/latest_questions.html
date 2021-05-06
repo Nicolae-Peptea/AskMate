@@ -3,8 +3,8 @@
 {% block content %}
 
     <div id="search_bar">
-        <input type="text" placeholder="Ex: drawing a canvas">
-        <form action="" method="post">
+        <input type="text" name="search_phrase" placeholder="Ex: drawing a canvas">
+        <form action="{{ url_for('display_searched_questions') }}" method="post">
             <button id="search-button" >Search</button>
         </form>
     </div>
