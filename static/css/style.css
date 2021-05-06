@@ -35,6 +35,10 @@ header {
     margin: 0% auto;
     padding: 0.5%;
 }
+
+#header_and_nav {
+    display: flex;
+}
 /* END OF HEADERS */
 
 #filling-form {
@@ -144,6 +148,13 @@ header {
 #question-sorting select {
     margin-bottom: 1%;
     padding: 2%;
+}
+
+#question-sorting select {
+    padding: 2%;
+    font-size: 18px;
+    border-radius: 2px;
+    background-color: white;
 }
 /* END OF HOME PAGE */
 
@@ -363,8 +374,19 @@ header {
     background-color: #ffffff;
 }
 
+#main_page_list li:nth-child(even) #voting button {
+    background-color: #ffffff;
+}
+
 #voting button:hover {
-    border: 2px solid royalblue;
+    border: 3px solid royalblue;
+    cursor: pointer;
+    background-color: white;
+}
+
+#answers_list li:nth-child(even) #voting button:hover,
+#main_page_list li:nth-child(even) #voting button:hover {
+    border: 3px solid royalblue;
 }
 
 /* END OF QUESTION PAGE */

@@ -2,11 +2,35 @@
 
 {% block page_title %}{{ my_question['title'] }}{% endblock %}
 
+{% block navbar %}
+<div id="nav-bar">
+    <ul>
+        <li>
+            <form action="{{ url_for('display_latest_questions') }}">
+                <button>Home</button>
+            </form>
+        <li>
+            <form action="{{ url_for('answer_question', question_id=my_question['id']) }}">
+                <button>Answer Question</button>
+            </form>
+        <li>
+            <form action="{{ url_for('edit_question', question_id=my_question['id']) }}">
+                <button>Edit Question</button>
+            </form>
+        <li>
+            <form action="{{ url_for('delete_question', question_id=my_question['id']) }}" method="post">
+                <button>Delete Question</button>
+            </form>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
 {% block content %}
      
     <div id="question-page">
 
-        <div id="nav-bar">
+        <!-- <div id="nav-bar">
             <ul>
                 <li>
                     <form action="{{ url_for('display_latest_questions') }}">
@@ -26,7 +50,7 @@
                     </form>
                 </li>
             </ul>
-        </div>
+        </div> -->
         
         <div>
             <p>Viewed: {{ my_question["view_number"] }} {% if my_question["view_number"] == "1" %}time{% else %}times{%endif%}</p>
