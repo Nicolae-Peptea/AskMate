@@ -162,7 +162,7 @@ def add_comment_to_question(cursor, new_entry, question_id):
                     """
     cursor.execute(adding, {
         'question_id': question_id,
-        'message': new_entry['comment'],
+        'message': new_entry['message'],
     })
 
 
@@ -173,7 +173,7 @@ def add_comment_to_answer(cursor, new_entry, answer_id):
                     """
     cursor.execute(adding, {
         'answer_id': answer_id,
-        'message': new_entry['comment'],
+        'message': new_entry['message'],
     })
 
 
