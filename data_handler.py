@@ -248,7 +248,7 @@ def edit_comment(cursor, new_entry, comment_id):
     WHERE id = %(comment_id)s
     """
     cursor.execute(edit, {
-        'new_image': new_image,
+        'new_message': new_entry['message'],
         'comment_id': comment_id
     })
 

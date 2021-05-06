@@ -175,8 +175,9 @@ def edit_comment(comment_id):
     if request.method == "GET":
         return render_template('manipulate_comment.html', comment=comment)
     else:
+        new_entry = dict(request.form)
+        data_handler.edit_comment(new_entry, comment_id)
         return redirect(url_for('display_question', question_id=question_id))
-        pass
 
 
 if __name__ == "__main__":

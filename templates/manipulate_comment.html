@@ -21,7 +21,7 @@
                          {%endif%}" method="post" enctype="multipart/form-data">
 
             <label for="answer">Comment:</label><br>
-            <textarea id="answer_text" name="comment" required>{{ comment['message'] if comment }}</textarea><br>
+            <textarea id="answer_text" name="message" required>{{ comment['message'] if comment }}</textarea><br>
 
             <button id="post-button" type="submit">POST</button>
 
