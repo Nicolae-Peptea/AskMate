@@ -18,17 +18,17 @@ def get_questions(cursor):
 
 
 @database_common.connection_handler
-def get_comments_by_question_id(cursor, question_id):
-    query = """SELECT * FROM comment
-                WHERE question_id = %(question_id)s"""
-    cursor.execute(query, {"question_id": question_id})
+def get_comments_for_answers_by_question_id(cursor):
+    query = "SELECT * FROM comment"
+    cursor.execute(query)
     return cursor.fetchall()
 
 
 @database_common.connection_handler
-def get_comments_for_answers_by_question_id(cursor):
-    query = "SELECT * FROM comment"
-    cursor.execute(query)
+def get_comments_by_question_id(cursor, question_id):
+    query = """SELECT * FROM comment
+                WHERE question_id = %(question_id)s"""
+    cursor.execute(query, {"question_id": question_id})
     return cursor.fetchall()
 
 
