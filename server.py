@@ -55,6 +55,7 @@ def display_latest_questions():
 def display_searched_questions():
     key_words=request.args.get('q')
     searched_questions=data_handler.get_searched_questions(key_words)
+    data_handler.get_highlighted_search(searched_questions, key_words)
     return render_template(
         'latest_questions.html',
         questions=searched_questions)
@@ -62,7 +63,6 @@ def display_searched_questions():
 
 @app.route("/list")
 def display_all_questions():
-    print (request.args)
     order_by = request.args.get('order_by', 'submission_time')
     direction = request.args.get('order_direction', 'desc')
     return render_template(

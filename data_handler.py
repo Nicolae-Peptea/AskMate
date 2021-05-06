@@ -391,3 +391,13 @@ def get_searched_questions(cursor: RealDictCursor, phrase: str):
     """
     cursor.execute(query)
     return cursor.fetchall()
+
+
+import re
+
+def get_highlighted_search(questions, phrase):
+    for question in questions:
+        question['message'] = question['message'].replace(phrase, f"<mark>{phrase}</mark>")
+        question['title'] = question['title'].replace(phrase, f"<mark>{phrase}</mark>")
+        # question['message'] = re.sub(phrase, f"<mark>{phrase}</mark>", question['message'], flags=re.IGNORECASE)
+        # question['title'] = re.sub(phrase, f"<mark>{phrase}</mark>", question['title'], flags=re.IGNORECASE)
