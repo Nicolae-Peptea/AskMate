@@ -221,7 +221,6 @@ def add_question_tag(cursor, question_id, new_tag, existing_tag):
         })
     else:
         select_tag = """SELECT id FROM tag WHERE name=%(name)s;"""
-        # selected_tag = cursor.fetchone()['id']
         cursor.execute(select_tag, {'name': existing_tag})
         tag_id = cursor.fetchone()['id']
         print(tag_id)
