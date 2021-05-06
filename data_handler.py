@@ -10,25 +10,20 @@ from psycopg2.extras import RealDictCursor
 
 # GET
 @database_common.connection_handler
-def get_questions(cursor, parameters):
-    order_by = parameters.get('order_by', 'submission_time')
-    direction = parameters.get('order_direction', 'desc').upper()
-
+def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
+    if order_by not in ["submission_time", "view_number", "vote_number", "title", "message"] or \
+            direction not in ["desc", "asc"]:
+        raise ValueError
     cursor.execute(
-        sql.SQL("""
-        SELECT * FROM {table}
-        ORDER BY {order_by} 
-        """).
-            format(table=sql.Identifier('question'),
-                   order_by=sql.Identifier(order_by))
-    )
-
+        f"""
+        SELECT * FROM question 
+        ORDER BY {order_by} {direction}
+        """)
     return cursor.fetchall()
 
 
 @database_common.connection_handler
-def get_latest_5_questions(cursor):
-
+def get_latest_5_questions(cursor: RealDictCursor):
     cursor.execute(
         sql.SQL("""
         SELECT * FROM {table}
@@ -37,19 +32,18 @@ def get_latest_5_questions(cursor):
             format(table=sql.Identifier('question'),
                    column=sql.Identifier('submission_time'))
     )
-
     return cursor.fetchall()
 
 
 @database_common.connection_handler
-def get_comments_for_answers_by_question_id(cursor):
+def get_comments_for_answers_by_question_id(cursor: RealDictCursor):
     query = "SELECT * FROM comment"
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @database_common.connection_handler
-def get_comments_by_question_id(cursor, question_id):
+def get_comments_by_question_id(cursor: RealDictCursor, question_id: int):
     query = """SELECT * FROM comment
                 WHERE question_id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
@@ -57,7 +51,7 @@ def get_comments_by_question_id(cursor, question_id):
 
 
 @database_common.connection_handler
-def get_question(cursor, question_id):
+def get_question(cursor: RealDictCursor, question_id: int):
     query = """SELECT * FROM question
                 WHERE id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
@@ -65,7 +59,7 @@ def get_question(cursor, question_id):
 
 
 @database_common.connection_handler
-def get_answer(cursor, answer_id):
+def get_answer(cursor: RealDictCursor, answer_id: int):
     query = """SELECT * FROM answer
                 WHERE id = %(answer_id)s"""
     cursor.execute(query, {"answer_id": answer_id})
@@ -73,14 +67,14 @@ def get_answer(cursor, answer_id):
 
 
 @database_common.connection_handler
-def get_comment(cursor, comment_id):
+def get_comment(cursor: RealDictCursor, comment_id: int):
     query = """SELECT * FROM comment
                 WHERE id = %(comment_id)s"""
     cursor.execute(query, {"comment_id": comment_id})
     return dict(cursor.fetchone())
 
 
-def get_comment_and_question_id(comment_id):
+def get_comment_and_question_id(comment_id: int):
     comment = get_comment(comment_id)
     if comment['question_id']:
         question_id = comment['question_id']
@@ -90,7 +84,7 @@ def get_comment_and_question_id(comment_id):
 
 
 @database_common.connection_handler
-def get_answers_for_question(cursor, question_id):
+def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     query = """SELECT * FROM answer
                 WHERE question_id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
@@ -98,19 +92,19 @@ def get_answers_for_question(cursor, question_id):
 
 
 @database_common.connection_handler
-def get_last_added_question_id(cursor):
+def get_last_added_question_id(cursor: RealDictCursor):
     cursor.execute('SELECT MAX(id) FROM question')
     return cursor.fetchone()['max']
 
 
 @database_common.connection_handler
-def get_last_added_answer_id(cursor):
+def get_last_added_answer_id(cursor: RealDictCursor):
     cursor.execute('SELECT MAX(id) FROM answer')
     return cursor.fetchone()['max']
 
 
 @database_common.connection_handler
-def get_image_names_for_question(cursor, entry_id):
+def get_image_names_for_question(cursor: RealDictCursor, entry_id: int):
     query = """
     SELECT image
         FROM question
@@ -125,7 +119,7 @@ def get_image_names_for_question(cursor, entry_id):
 
 
 @database_common.connection_handler
-def get_image_names_for_answers(cursor, entry_id):
+def get_image_names_for_answers(cursor: RealDictCursor, entry_id: int):
     query = """
        SELECT image
            FROM answer
@@ -136,7 +130,7 @@ def get_image_names_for_answers(cursor, entry_id):
 
 
 @database_common.connection_handler
-def get_question_id(cursor, answer_id):
+def get_question_id(cursor: RealDictCursor, answer_id: int):
     query = """
     SELECT question_id FROM answer
     WHERE id = %(answer_id)s
@@ -146,7 +140,7 @@ def get_question_id(cursor, answer_id):
 
 
 @database_common.connection_handler
-def get_question_tags(cursor, question_id):
+def get_question_tags(cursor: RealDictCursor, question_id: int):
     query = """
     SELECT * FROM question_tag, tag
     WHERE question_id = %(question_id)s
@@ -158,7 +152,8 @@ def get_question_tags(cursor, question_id):
 
 # ADD
 @database_common.connection_handler
-def add_question(cursor, new_entry):
+def add_question(cursor: RealDictCursor, new_entry: dict):
+    print (new_entry)
     adding = """INSERT INTO question ("submission_time","title","message","image","view_number","vote_number")
                 VALUES (now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
                 """
@@ -170,7 +165,7 @@ def add_question(cursor, new_entry):
 
 
 @database_common.connection_handler
-def add_answer(cursor, new_entry, question_id):
+def add_answer(cursor: RealDictCursor, new_entry: dict, question_id: int):
     adding = """INSERT INTO answer ("submission_time","question_id","message","image","vote_number")
                 VALUES (now()::timestamp(0), %(question_id)s, %(message)s, %(image)s, 0)
                 """
@@ -182,7 +177,7 @@ def add_answer(cursor, new_entry, question_id):
 
 
 @database_common.connection_handler
-def add_comment_to_question(cursor, new_entry, question_id):
+def add_comment_to_question(cursor: RealDictCursor, new_entry: dict, question_id: int):
     adding = """INSERT INTO comment ("submission_time","question_id","message","edited_count")
                     VALUES (now()::timestamp(0), %(question_id)s, %(message)s, 0)
                     """
@@ -193,7 +188,7 @@ def add_comment_to_question(cursor, new_entry, question_id):
 
 
 @database_common.connection_handler
-def add_comment_to_answer(cursor, new_entry, answer_id):
+def add_comment_to_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int):
     adding = """INSERT INTO comment ("submission_time","answer_id","message","edited_count")
                     VALUES (now()::timestamp(0), %(answer_id)s, %(message)s, 0)
                     """
@@ -204,7 +199,7 @@ def add_comment_to_answer(cursor, new_entry, answer_id):
 
 
 @database_common.connection_handler
-def add_question_tag(cursor, question_id, new_tag, existing_tag):
+def add_question_tag(cursor: RealDictCursor, question_id: int, new_tag, existing_tag):
     if new_tag:
         add_new_tag = """INSERT INTO tag ("name")
                     VALUES (%(name)s);
@@ -233,17 +228,16 @@ def add_question_tag(cursor, question_id, new_tag, existing_tag):
         })
 
 
-
 # EDIT
 @database_common.connection_handler
-def edit_question(cursor, new_entry, question_id):
+def edit_question(cursor: RealDictCursor, new_entry: dict, question_id: int):
     new_image = new_entry.get('image', 0)
     if new_image:
         edit = """
         UPDATE question 
-            SET title=%(new_title)s,
-            message=%(new_message)s,
-            image=%(new_image)s
+            SET title = %(new_title)s,
+            message = %(new_message)s,
+            image = %(new_image)s
         WHERE id = %(question_id)s
         """
         cursor.execute(edit, {
@@ -255,8 +249,8 @@ def edit_question(cursor, new_entry, question_id):
     else:
         edit = """
         UPDATE question 
-            SET title=%(new_title)s,
-            message=%(new_message)s
+            SET title = %(new_title)s,
+            message = %(new_message)s
         WHERE id = %(question_id)s
         """
         cursor.execute(edit, {
@@ -267,15 +261,14 @@ def edit_question(cursor, new_entry, question_id):
 
 
 @database_common.connection_handler
-def edit_answer(cursor, new_entry, answer_id):
-    # functie cu edit
+def edit_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int):
     new_image = new_entry.get('image', 0)
     if new_image:
         edit = """
         UPDATE answer 
             SET 
-            message=%(new_message)s,
-            image=%(new_image)s
+            message = %(new_message)s,
+            image = %(new_image)s
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
@@ -286,7 +279,7 @@ def edit_answer(cursor, new_entry, answer_id):
     else:
         edit = """
         UPDATE answer 
-            SET message=%(new_message)s
+            SET message = %(new_message)s
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
@@ -296,11 +289,11 @@ def edit_answer(cursor, new_entry, answer_id):
 
 
 @database_common.connection_handler
-def edit_comment(cursor, new_entry, comment_id):
+def edit_comment(cursor: RealDictCursor, new_entry: dict, comment_id: int):
     edit = """
     UPDATE comment 
-    SET message=%(new_message)s,
-    submission_time=now()::timestamp(0),
+    SET message = %(new_message)s,
+    submission_time = now()::timestamp(0),
     edited_count = edited_count + 1
     WHERE id = %(comment_id)s
     """
@@ -355,6 +348,7 @@ def delete_answer_image(entry_id, path):
 def delete_comment(cursor, comment_id):
     delete = "DELETE FROM comment WHERE id = %(comment_id)s"
     cursor.execute(delete, {'comment_id': comment_id})
+
 
 @database_common.connection_handler
 def delete_question_tag(cursor, question_id, tag_id):

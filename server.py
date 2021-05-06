@@ -27,7 +27,7 @@ def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
             filename = operation
         uploaded_file.save(os.path.join(path, filename))
         new_entry['image'] = filename
-
+    print (new_entry)
     return new_entry
 
 
@@ -62,9 +62,11 @@ def display_searched_questions():
 
 @app.route("/list")
 def display_all_questions():
+    order_by = request.args.get('order_by', 'submission_time')
+    direction = request.args.get('order_direction', 'desc')
     return render_template(
         'questions.html',
-        questions=data_handler.get_questions(parameters=request.args),
+        questions=data_handler.get_questions(order_by, direction),
         request_param=request.args)
 
 
