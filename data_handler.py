@@ -393,8 +393,6 @@ def get_searched_questions(cursor: RealDictCursor, phrase: str):
     return cursor.fetchall()
 
 
-import re
-
 def get_highlighted_search(questions, phrase):
     for question in questions:
         question['message'] = question['message'].replace(phrase, f"<mark>{phrase}</mark>")
