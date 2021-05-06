@@ -221,7 +221,6 @@ def add_question_tag(cursor, question_id, new_tag, existing_tag):
         })
     else:
         select_tag = """SELECT id FROM tag WHERE name=%(name)s;"""
-        # selected_tag = cursor.fetchone()['id']
         cursor.execute(select_tag, {'name': existing_tag})
         tag_id = cursor.fetchone()['id']
         print(tag_id)
@@ -354,8 +353,17 @@ def delete_answer_image(entry_id, path):
 
 @database_common.connection_handler
 def delete_comment(cursor, comment_id):
-    edit = "DELETE FROM comment WHERE id = %(comment_id)s"
-    cursor.execute(edit, {'comment_id': comment_id})
+    delete = "DELETE FROM comment WHERE id = %(comment_id)s"
+    cursor.execute(delete, {'comment_id': comment_id})
+
+@database_common.connection_handler
+def delete_question_tag(cursor, question_id, tag_id):
+    delete = """
+        DELETE FROM question_tag 
+        WHERE question_id = %(question_id)s
+        AND tag_id = %(tag_id)s"""
+    cursor.execute(delete, {'question_id': question_id, 'tag_id': tag_id})
+
 
 # DO
 def increment_views_algorithm(file_path, file_headers, entry):

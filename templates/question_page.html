@@ -9,7 +9,7 @@
         <div id="nav-bar">
             <ul>
                 <li>
-                    <form action="{{ url_for('route_list') }}">
+                    <form action="{{ url_for('display_latest_questions') }}">
                         <button>Home</button>
                     </form>
                 <li>
@@ -81,7 +81,13 @@
             {% if tags %}
                 <div id="tags">
                     {%for tag in tags%}
-                    < {{tag['name']}} > 
+                    <div id="tag">
+                        {{tag['name']}} 
+                        <form action="{{ url_for('delete_question_tag', question_id=my_question['id'], tag_id=tag['id']) }}" method="post">
+                            <button type="submit">x</button>
+                        </form>
+                    </div>
+                    
                     {%endfor%}
                 </div>
             {%endif%}

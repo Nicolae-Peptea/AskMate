@@ -148,6 +148,35 @@ header {
 /* END OF HOME PAGE */
 
 /* QUESTION PAGE */
+#tags{
+    display: flex;
+}
+
+#tag {
+    display: flex;
+    border: 1px solid royalblue;
+    width: fit-content;
+    margin-right: 1px;
+    border-radius: 3px;
+}
+
+#tag button {
+    width: fit-content;
+    padding: 0px 2px 0px 2px;
+    border: none;
+    border-left: 1px solid royalblue;
+    color: black;
+    margin-left: 5px;
+    font-size: 15px;
+}
+
+#tag button:hover {
+    color: white;
+    background-color: royalblue;
+    border: 1px solid royalblue;
+    border-radius: 5px;
+}
+
 #comment_for_question, #comment_for_answer, #question_tags {
     width: 80%;
     border-top: 1px solid royalblue;
@@ -176,9 +205,6 @@ header {
     text-decoration: underline;
 }
 
-#comment_for_question a, #comment_for_answer p {
-
-}
 
 #actual_comment {
     display: grid;
@@ -368,6 +394,7 @@ header {
     margin-left: auto;
     margin-right: auto;
 }
+
 /* END OF FORMS PAGES */
 
 /* SUBMIT BUTTONS */
