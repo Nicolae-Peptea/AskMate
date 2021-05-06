@@ -54,14 +54,14 @@
                         <tbody>
                             <td id="td1">{{comment['message']}}</td>
                             <td id="td2">{{comment['submission_time']}}</td>
+                            <td id="td4">Edited:
+                                {{ comment['edited_count'] }} 
+                                {% if comment['edited_count'] == 1 %}time{% else %}times{%endif%}
+                            </td>
                             <td id="td3">
                                 <a href="{{ url_for('edit_comment', comment_id=comment['id']) }}">
                                     Edit
                                 </a>
-                            </td id="td4">
-                            <td>Edited: 
-                                {{ comment['edited_count'] }} 
-                                {% if comment['edited_count'] == 1 %}time{% else %}times{%endif%}
                             </td>
                             <td id="td5">
                                 <form id="delete-comment" action="{{ url_for('delete_comment', comment_id=comment['id']) }}" method="post">
@@ -137,14 +137,15 @@
                                                 <tbody>
                                                     <td id="td1">{{comment['message']}}</td>
                                                     <td id="td2">{{comment['submission_time']}}</td>
+
+                                                    <td id="td4">Edited:
+                                                        {{ comment['edited_count'] }} 
+                                                        {% if comment['edited_count'] == 1 %}time{% else %}times{%endif%}
+                                                    </td>
                                                     <td id="td3">
                                                         <a href="{{ url_for('edit_comment', comment_id=comment['id']) }}">
                                                             Edit
                                                         </a>
-                                                     </td id="td4">
-                                                     <td>Edited: 
-                                                        {{ comment['edited_count'] }} 
-                                                        {% if comment['edited_count'] == 1 %}time{% else %}times{%endif%}
                                                     </td>
                                                     <td id="td5">
                                                         <form id="delete-comment" action="{{ url_for('delete_comment', comment_id=comment['id']) }}" method="post">
