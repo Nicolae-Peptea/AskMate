@@ -36,9 +36,6 @@ header {
     padding: 0.5%;
 }
 
-#header_and_nav {
-    display: flex;
-}
 /* END OF HEADERS */
 
 #filling-form {
@@ -179,6 +176,23 @@ header {
 /* END OF LATEST QUESTIONS PAGE */
 
 /* QUESTION PAGE */
+#question_body {
+    padding: 1%;
+    border: 2px solid royalblue;
+    background-color: white;
+}
+
+#question_views_votes_on_question_page {
+    display: flex;
+    flex-direction: row;
+}
+
+#manipulate_question_buttons {
+    border-bottom: 1px solid royalblue;
+    padding-bottom: 5%;
+    margin-bottom: 5%;
+}
+
 #tags{
     display: flex;
 }
@@ -209,10 +223,13 @@ header {
 }
 
 #comment_for_question, #comment_for_answer, #question_tags {
-    width: 80%;
-    border-top: 1px solid royalblue;
-    border-bottom: 1px solid royalblue;
-    padding: 2%;
+    width: 90%;
+    border: 1px solid royalblue;
+    padding: 0.4%;
+}
+
+#comment_for_question {
+    margin-bottom: 0.1%;
 }
 
 #comment_for_question h4, #comment_for_answer h4 {
@@ -243,36 +260,26 @@ header {
 }
 
 #actual_comment #td1 {
-    width: 65%;
+    width: 68%;
 }
 #actual_comment #td2 {
-    width: 15%;
+    width: 14%;
 }
 #actual_comment #td3 {
-    width: 5%;
-}
-#actual_comment #td4 {
-    width: 10%;
+    width: 11%;
 }
 #actual_comment #td4 {
     width: 5%;
+}
+#actual_comment #td5 {
+    width: 2%;
 }
 
 #comment_submission_time {
     grid-column: 2;
 }
 
-#question-page #nav-bar {
-    border-bottom: 2px solid #0a52ee;
-}
-
-#question-page #nav-bar:after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-#question-page #nav-bar button, #home-button button{
+#home-button button{
     background-color: white;
     border: 2px solid #0a52ee;
     color: #0a52ee;
@@ -281,23 +288,14 @@ header {
     float: left;
 }
 
-#question-page #nav-bar button:hover, #home-button button:hover {
+#home-button button:hover {
     background-color: #0a52ee;
     color: white;
 }
 
-#question-page #nav-bar ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 1%;
-    overflow: hidden;
-    width: 100%;
-    margin-left: 45%;
-}
-
 #answers-header {
-    display: grid;
-    grid-template-rows: 30px 40px;
+    display: flex;
+    flex-direction: row;
     margin-bottom: 2%;
     border-bottom: 2px solid #0a52ee;
 }
@@ -389,6 +387,21 @@ header {
     border: 3px solid royalblue;
 }
 
+#answers_list {
+    background-color: white;
+}
+
+#answer_edit_button {
+    border: 1px solid royalblue;
+    background-color: skyblue;
+    border-radius: 2px;
+}
+
+#answer_edit_button:hover {
+    border: 3px solid royalblue;
+    cursor: pointer;
+}
+
 /* END OF QUESTION PAGE */
 
 /* FORMS PAGES */
@@ -464,6 +477,7 @@ header {
     border: 2px solid royalblue;
     border-radius: 10px;
     background-color: #ffffff;
+    cursor: pointer;
 }
 /* END OF SUBMIT BUTTONS */
 
