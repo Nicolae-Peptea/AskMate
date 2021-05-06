@@ -4,7 +4,7 @@
 
     <div id="search_bar">
         <form action="{{ url_for('display_searched_questions') }}" method="get">
-            <input type="text" name="q">
+            <input id="search_bar_input" type="text" name="q" placeholder="Ex: drawing canvas">
             <button id="search-button" type="submit">Search</button>
         </form>
     </div>
