@@ -52,12 +52,16 @@
                 <div id="actual_comment">
                     <table>
                         <tbody>
-                            <td>{{comment['message']}}</td>
-                            <td>{{comment['submission_time']}}</td>
-                            <td>
+                            <td id="td1">{{comment['message']}}</td>
+                            <td id="td2">{{comment['submission_time']}}</td>
+                            <td id="td3">
                                 <a href="{{ url_for('edit_comment', comment_id=comment['id']) }}">
                                     Edit
                                 </a>
+                            </td id="td4">
+                            <td>Edited: 
+                                {{ comment['edited_count'] }} 
+                                {% if comment['edited_count'] == 1 %}time{% else %}times{%endif%}
                             </td>
                         </tbody>
                     </table>
@@ -126,13 +130,17 @@
                                         <div id="actual_comment">
                                             <table>
                                                 <tbody>
-                                                    <td>{{comment['message']}}</td>
-                                                    <td>{{comment['submission_time']}}</td>
-                                                    <td>
+                                                    <td id="td1">{{comment['message']}}</td>
+                                                    <td id="td2">{{comment['submission_time']}}</td>
+                                                    <td id="td3">
                                                         <a href="{{ url_for('edit_comment', comment_id=comment['id']) }}">
                                                             Edit
                                                         </a>
-                                                     </td>
+                                                     </td id="td4">
+                                                     <td>Edited: 
+                                                        {{ comment['edited_count'] }} 
+                                                        {% if comment['edited_count'] == 1 %}time{% else %}times{%endif%}
+                                                    </td>
                                                 </tbody>
                                             </table>
                                         </div>

@@ -181,8 +181,17 @@ header {
     grid-column: 90% 10%;
 }
 
-#actual_comment td {
+#actual_comment #td1 {
     width: 70%;
+}
+#actual_comment #td2 {
+    width: 15%;
+}
+#actual_comment #td3 {
+    width: 5%;
+}
+#actual_comment #td4 {
+    width: 10%;
 }
 
 #comment_submission_time {
