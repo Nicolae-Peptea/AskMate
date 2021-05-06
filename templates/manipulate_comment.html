@@ -3,7 +3,7 @@
 {% block page_title %}Comment
     {% if question_id %}
         question
-    {% elif comment_id %}
+    {% elif comment %}
         edit
     {%else%}
         answer
@@ -14,8 +14,8 @@
     <div id="filling-form">
         <form action="{% if question_id %}
                                 {{ url_for('add_comment_to_question', question_id=question_id) }}
-                         {% elif comment_id %}
-                                {{ url_for('edit_comment', comment=comment['id']) }}
+                         {% elif comment %}
+                                {{ url_for('edit_comment', comment_id=comment['id']) }}
                          {%else%}
                                 {{ url_for('add_comment_to_answer', answer_id=answer_id) }}
                          {%endif%}" method="post" enctype="multipart/form-data">

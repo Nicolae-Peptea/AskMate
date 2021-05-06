@@ -121,6 +121,17 @@ def answer_question(question_id):
         return redirect(url_for("display_question", question_id=question_id))
 
 
+@app.route("/answer/<int:answer_id>/edit", methods=["GET", "POST"])
+def edit_answer(answer_id):
+    answer = data_handler.get_single_answer(answer_id)
+    if request.method == "GET":
+        return render_template('manipulate_answer.html', answer=answer)
+    else:
+        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_answer', prev_entry=answer)
+        data_handler.edit_answer(new_entry=new_entry, answer_id=answer_id)
+        return redirect(url_for("display_question", question_id=answer['question_id']))
+
+
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
     question_id = data_handler.get_question_id(answer_id)
@@ -136,6 +147,7 @@ def vote_answer(answer_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
+# COMMENT MANIPULATION
 @app.route("/question/<int:question_id>/new-comment", methods=["GET","POST"])
 def add_comment_to_question(question_id):
     if request.method == "GET":
@@ -157,25 +169,13 @@ def add_comment_to_answer(answer_id):
         return redirect(url_for("display_question", question_id=question_id))
 
 
-@app.route("/answer/<int:answer_id>/edit", methods=["GET", "POST"])
-def edit_answer(answer_id):
-    answer = data_handler.get_single_answer(answer_id)
-    if request.method == "GET":
-        return render_template('manipulate_answer.html', answer=answer)
-    else:
-        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_answer', prev_entry=answer)
-        data_handler.edit_answer(new_entry=new_entry, answer_id=answer_id)
-        return redirect(url_for("display_question", question_id=answer['question_id']))
-
-
 @app.route("/comment/<int:comment_id>/edit", methods=["GET", "POST"])
 def edit_comment(comment_id):
-    comment = data_handler.get_single_comment(comment_id)
-    print (comment)
+    comment, question_id = data_handler.get_comment_and_question_id(comment_id)
     if request.method == "GET":
-        return render_template('manipulate_comment.html', comment_id=comment['id'])
+        return render_template('manipulate_comment.html', comment=comment)
     else:
-        return redirect(url_for('display_question', question_id=comment['question_id']))
+        return redirect(url_for('display_question', question_id=question_id))
         pass
 
 
