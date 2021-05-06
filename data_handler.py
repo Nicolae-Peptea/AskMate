@@ -291,6 +291,11 @@ def delete_answer_image(entry_id, path):
             os.unlink(os.path.join(path, file))
 
 
+@database_common.connection_handler
+def delete_comment(cursor, comment_id):
+    edit = "DELETE FROM comment WHERE id = %(comment_id)s"
+    cursor.execute(edit, {'comment_id': comment_id})
+
 # DO
 def increment_views_algorithm(file_path, file_headers, entry):
     incremented_views = int(entry['view_number']) + 1
