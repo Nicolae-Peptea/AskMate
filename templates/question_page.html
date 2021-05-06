@@ -79,9 +79,13 @@
         </div>
         <div id="question_tags">
             {% if tags %}
-
+                <div id="tags">
+                    {%for tag in tags%}
+                    < {{tag['name']}} > 
+                    {%endfor%}
+                </div>
             {%endif%}
-            <a href="">
+            <a href="{{ url_for('add_tag_to_question', question_id=my_question['id']) }}">
                 Add tag
             </a>
         </div>

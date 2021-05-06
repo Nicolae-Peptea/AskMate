@@ -145,6 +145,17 @@ def get_question_id(cursor, answer_id):
     return cursor.fetchone()['question_id']
 
 
+@database_common.connection_handler
+def get_question_tags(cursor, question_id):
+    query = """
+    SELECT * FROM question_tag, tag
+    WHERE question_id = %(question_id)s
+    AND tag.id = question_tag.tag_id
+    """
+    cursor.execute(query, {'question_id': question_id})
+    return [dict(value) for value in cursor.fetchall()]
+
+
 # ADD
 @database_common.connection_handler
 def add_question(cursor, new_entry):
@@ -190,6 +201,38 @@ def add_comment_to_answer(cursor, new_entry, answer_id):
         'answer_id': answer_id,
         'message': new_entry['message'],
     })
+
+
+@database_common.connection_handler
+def add_question_tag(cursor, question_id, new_tag, existing_tag):
+    if new_tag:
+        add_new_tag = """INSERT INTO tag ("name")
+                    VALUES (%(name)s);
+                    SELECT id FROM tag
+                    WHERE name=%(name)s;"""
+        cursor.execute(add_new_tag, {'name': new_tag})
+        tag_id = cursor.fetchone()['id']
+        attach_tag_to_question="""
+        INSERT INTO question_tag ("question_id", "tag_id")
+                    VALUES (%(question_id)s, %(tag_id)s)"""
+        cursor.execute(attach_tag_to_question, {
+            'question_id': question_id,
+            'tag_id': tag_id
+        })
+    else:
+        select_tag = """SELECT id FROM tag WHERE name=%(name)s;"""
+        # selected_tag = cursor.fetchone()['id']
+        cursor.execute(select_tag, {'name': existing_tag})
+        tag_id = cursor.fetchone()['id']
+        print(tag_id)
+        attach_tag_to_question="""
+        INSERT INTO question_tag ("question_id", "tag_id")
+                    VALUES (%(question_id)s, %(tag_id)s)"""
+        cursor.execute(attach_tag_to_question, {
+            'question_id': question_id,
+            'tag_id': tag_id
+        })
+
 
 
 # EDIT

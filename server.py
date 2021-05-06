@@ -78,13 +78,15 @@ def display_question(question_id):
     answers = data_handler.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
     question_comments = data_handler.get_comments_by_question_id(question_id)
-    all_comments = data_handler.get_comments_for_answers_by_question_id()
+    comments = data_handler.get_comments_for_answers_by_question_id()
+    tags = data_handler.get_question_tags(question_id)
     return render_template("question_page.html",
                            my_question=my_question,
                            answers=answers,
                            files=files,
                            question_comments=question_comments,
-                           comments=all_comments)
+                           comments=comments, 
+                           tags=tags)
 
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
@@ -189,6 +191,20 @@ def delete_comment(comment_id):
     comment, question_id = data_handler.get_comment_and_question_id(comment_id)
     data_handler.delete_comment(comment_id)
     return redirect(url_for("display_question", question_id=question_id))
+
+
+# TAG MANIPULATION
+@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+def add_tag_to_question(question_id):
+    if request.method == "GET":
+        question_tags = data_handler.get_question_tags(question_id)
+        return render_template(
+            'manipulate_tag.html', question_id=question_id, question_tags=question_tags)
+    else:
+        existing_tag, new_tag  = request.form.get('tags'), request.form.get('tag_name')
+        print(existing_tag, new_tag)
+        data_handler.add_question_tag(question_id, new_tag, existing_tag)
+        return redirect(url_for("display_question", question_id=question_id))
 
 
 if __name__ == "__main__":
