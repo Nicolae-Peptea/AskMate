@@ -182,7 +182,7 @@ header {
 }
 
 #actual_comment #td1 {
-    width: 70%;
+    width: 65%;
 }
 #actual_comment #td2 {
     width: 15%;
@@ -192,6 +192,9 @@ header {
 }
 #actual_comment #td4 {
     width: 10%;
+}
+#actual_comment #td4 {
+    width: 5%;
 }
 
 #comment_submission_time {
