@@ -14,19 +14,16 @@ def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
     if order_by not in ["submission_time", "view_number", "vote_number", "title", "message"] or \
             direction not in ["desc", "asc"]:
         raise ValueError
-
     cursor.execute(
         f"""
         SELECT * FROM question 
         ORDER BY {order_by} {direction}
         """)
-
     return cursor.fetchall()
 
 
 @database_common.connection_handler
 def get_latest_5_questions(cursor: RealDictCursor):
-
     cursor.execute(
         sql.SQL("""
         SELECT * FROM {table}
@@ -35,7 +32,6 @@ def get_latest_5_questions(cursor: RealDictCursor):
             format(table=sql.Identifier('question'),
                    column=sql.Identifier('submission_time'))
     )
-
     return cursor.fetchall()
 
 
@@ -239,9 +235,9 @@ def edit_question(cursor: RealDictCursor, new_entry: dict, question_id: int):
     if new_image:
         edit = """
         UPDATE question 
-            SET title=%(new_title)s,
-            message=%(new_message)s,
-            image=%(new_image)s
+            SET title = %(new_title)s,
+            message = %(new_message)s,
+            image = %(new_image)s
         WHERE id = %(question_id)s
         """
         cursor.execute(edit, {
@@ -253,8 +249,8 @@ def edit_question(cursor: RealDictCursor, new_entry: dict, question_id: int):
     else:
         edit = """
         UPDATE question 
-            SET title=%(new_title)s,
-            message=%(new_message)s
+            SET title = %(new_title)s,
+            message = %(new_message)s
         WHERE id = %(question_id)s
         """
         cursor.execute(edit, {
@@ -266,14 +262,13 @@ def edit_question(cursor: RealDictCursor, new_entry: dict, question_id: int):
 
 @database_common.connection_handler
 def edit_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int):
-    # functie cu edit
     new_image = new_entry.get('image', 0)
     if new_image:
         edit = """
         UPDATE answer 
             SET 
-            message=%(new_message)s,
-            image=%(new_image)s
+            message = %(new_message)s,
+            image = %(new_image)s
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
@@ -284,7 +279,7 @@ def edit_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int):
     else:
         edit = """
         UPDATE answer 
-            SET message=%(new_message)s
+            SET message = %(new_message)s
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
@@ -297,8 +292,8 @@ def edit_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int):
 def edit_comment(cursor: RealDictCursor, new_entry: dict, comment_id: int):
     edit = """
     UPDATE comment 
-    SET message=%(new_message)s,
-    submission_time=now()::timestamp(0),
+    SET message = %(new_message)s,
+    submission_time = now()::timestamp(0),
     edited_count = edited_count + 1
     WHERE id = %(comment_id)s
     """
@@ -353,6 +348,7 @@ def delete_answer_image(entry_id, path):
 def delete_comment(cursor, comment_id):
     delete = "DELETE FROM comment WHERE id = %(comment_id)s"
     cursor.execute(delete, {'comment_id': comment_id})
+
 
 @database_common.connection_handler
 def delete_question_tag(cursor, question_id, tag_id):
