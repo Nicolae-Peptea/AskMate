@@ -27,7 +27,7 @@ def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
             filename = operation
         uploaded_file.save(os.path.join(path, filename))
         new_entry['image'] = filename
-
+    print (new_entry)
     return new_entry
 
 
