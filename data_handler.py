@@ -17,10 +17,25 @@ def get_questions(cursor, parameters):
     cursor.execute(
         sql.SQL("""
         SELECT * FROM {table}
-        ORDER BY {order_by}
+        ORDER BY {order_by} 
         """).
             format(table=sql.Identifier('question'),
                    order_by=sql.Identifier(order_by))
+    )
+
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_latest_5_questions(cursor):
+
+    cursor.execute(
+        sql.SQL("""
+        SELECT * FROM {table}
+        ORDER BY {column} DESC LIMIT 5
+        """).
+            format(table=sql.Identifier('question'),
+                   column=sql.Identifier('submission_time'))
     )
 
     return cursor.fetchall()

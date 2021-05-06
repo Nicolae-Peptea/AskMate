@@ -48,7 +48,7 @@ def upload_image(filename):
 def route_list():
     return render_template(
         'list.html',
-        questions=data_handler.get_questions(parameters=request.args),
+        questions=data_handler.get_latest_5_questions(),
         request_param=request.args)
 
 
