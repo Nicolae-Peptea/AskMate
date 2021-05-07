@@ -152,7 +152,6 @@ def get_question_tags(cursor: RealDictCursor, question_id: int):
 # ADD
 @database_common.connection_handler
 def add_question(cursor: RealDictCursor, new_entry: dict):
-    print (new_entry)
     adding = """INSERT INTO question ("submission_time","title","message","image","view_number","vote_number")
                 VALUES (now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
                 """
@@ -316,7 +315,10 @@ def delete_entry(cursor, field_name, delete_value, table):
 
 
 def delete_question(question_id, path):
-    delete_question_images(question_id, path)
+    try:
+        delete_question_images(question_id, path)
+    except ValueError:
+        pass
     delete_entry('question_id', question_id, 'question_tag')
     delete_entry('question_id', question_id, 'answer')
     delete_entry('question_id', question_id, 'comment')
@@ -324,7 +326,10 @@ def delete_question(question_id, path):
 
 
 def delete_answer(answer_id, path):
-    delete_answer_image(answer_id, path)
+    try:
+        delete_answer_image(answer_id, path)
+    except ValueError:
+        pass
     delete_entry('answer_id', answer_id, 'comment')
     delete_entry('id', answer_id, 'answer')
 
@@ -334,6 +339,7 @@ def delete_question_images(entry_id, path):
     if file_list:
         for file in file_list:
             os.unlink(os.path.join(path, file))
+    raise ValueError
 
 
 def delete_answer_image(entry_id, path):
@@ -341,6 +347,7 @@ def delete_answer_image(entry_id, path):
     if file_list:
         for file in file_list:
             os.unlink(os.path.join(path, file))
+    raise ValueError
 
 
 @database_common.connection_handler
@@ -401,3 +408,4 @@ def highlighted_search(questions: dict, phrase: str):
                 question['message'] = question['message'].replace(to_replace, f"<mark>{to_replace}</mark>")
             for to_replace in re.findall(f'(?i){phrase}', question['title']):
                 question['title'] = question['title'].replace(to_replace, f"<mark>{to_replace}</mark>")
+    raise ValueError

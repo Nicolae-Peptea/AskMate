@@ -27,7 +27,6 @@ def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
             filename = operation
         uploaded_file.save(os.path.join(path, filename))
         new_entry['image'] = filename
-    print (new_entry)
     return new_entry
 
 
@@ -55,7 +54,10 @@ def display_latest_questions():
 def display_searched_questions():
     key_words=request.args.get('q')
     searched_questions=data_handler.get_searched_questions(key_words)
-    data_handler.highlighted_search(searched_questions, key_words)
+    try:
+        data_handler.highlighted_search(searched_questions, key_words)
+    except ValueError:
+        pass
     return render_template(
         'latest_questions.html',
         questions=searched_questions)
