@@ -1,10 +1,6 @@
 import os
 import re
-import sys
-
-import psycopg2
 import database_common
-from datetime import datetime
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 
