@@ -78,7 +78,7 @@ def get_comment(cursor: RealDictCursor, comment_id: int):
 def get_comment_and_question_id(comment_id: int):
     comment = get_comment(comment_id)
 
-    if comment['question_id'] != None:
+    if comment['question_id'] is not None:
         question_id = comment['question_id']
     elif comment['answer_id']:
         question_id = get_question_id(comment['answer_id'])
