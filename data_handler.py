@@ -20,14 +20,15 @@ def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
 
 
 @database_common.connection_handler
-def get_latest_5_questions(cursor: RealDictCursor):
+def get_latest_questions(cursor: RealDictCursor, show):
     cursor.execute(
         sql.SQL("""
         SELECT * FROM {table}
-        ORDER BY {column} DESC LIMIT 5
+        ORDER BY {column} DESC LIMIT %(show)s
         """).
             format(table=sql.Identifier('question'),
-                   column=sql.Identifier('submission_time'))
+                   column=sql.Identifier('submission_time')),
+        {"show": show}
     )
     return cursor.fetchall()
 

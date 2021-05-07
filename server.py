@@ -48,7 +48,7 @@ def upload_image(filename):
 def display_latest_questions():
     return render_template(
         'latest_questions.html',
-        questions=data_handler.get_latest_5_questions())
+        questions=data_handler.get_latest_questions(show=5))
 
 
 @app.route("/search")
