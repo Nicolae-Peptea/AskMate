@@ -398,8 +398,9 @@ def get_searched_questions(cursor: RealDictCursor, phrase: str):
 
 
 def highlighted_search(questions: dict, phrase: str):
-    for question in questions:
-        for to_replace in re.findall(f'(?i){phrase}', question['message']):
-            question['message'] = question['message'].replace(to_replace, f"<mark>{to_replace}</mark>")
-        for to_replace in re.findall(f'(?i){phrase}', question['title']):
-            question['title'] = question['title'].replace(to_replace, f"<mark>{to_replace}</mark>")
+    if phrase:
+        for question in questions:
+            for to_replace in re.findall(f'(?i){phrase}', question['message']):
+                question['message'] = question['message'].replace(to_replace, f"<mark>{to_replace}</mark>")
+            for to_replace in re.findall(f'(?i){phrase}', question['title']):
+                question['title'] = question['title'].replace(to_replace, f"<mark>{to_replace}</mark>")
