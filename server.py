@@ -12,6 +12,7 @@ app.config['UPLOAD_PATH'] = 'images'
 
 
 def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
+# function for prev entry
     uploaded_file = request.files['image']
     filename = secure_filename(uploaded_file.filename)
     if filename != '':

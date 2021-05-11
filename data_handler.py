@@ -304,13 +304,20 @@ def edit_comment(cursor: RealDictCursor, new_entry: dict, comment_id: int):
 # DELETE
 @database_common.connection_handler
 def delete_entry(cursor, field_name, delete_value, table):
+
     if field_name not in ["question_id", "id", "answer_id"]:
         raise ValueError
 
     cursor.execute(
-        sql.SQL("""DELETE FROM {table} WHERE {delete_by} = %(delete_value)s""").
-            format(delete_by=sql.Identifier(field_name),
-                   table=sql.Identifier(table)), {'delete_value': delete_value}
+        sql.SQL(
+            """
+            DELETE FROM {table} 
+            WHERE {delete_by} = %(delete_value)s
+            """
+        ).format(
+            delete_by=sql.Identifier(field_name),
+            table=sql.Identifier(table)),
+        {'delete_value': delete_value}
     )
 
 
@@ -393,11 +400,20 @@ def vote_question(cursor, entry_id, table, vote=0):
 
 @database_common.connection_handler
 def get_searched_questions(cursor: RealDictCursor, phrase: str):
-    query = f"""
-    SELECT * FROM question
-    WHERE message ILIKE '%{phrase}%' or title ILIKE '%{phrase}%'
-    """
-    cursor.execute(query)
+    cursor.execute(
+        sql.SQL(
+            """
+            SELECT * FROM {table}
+            WHERE {col_1} ILIKE %(phrase)s or {col_2} ILIKE %(phrase)s
+            """
+        ).format(
+            table=sql.Identifier('question'),
+            col_1=sql.Identifier('message'),
+            col_2=sql.Identifier('title'),
+        ),
+        {'phrase': f'%{phrase}%'}
+    )
+
     return cursor.fetchall()
 
 
