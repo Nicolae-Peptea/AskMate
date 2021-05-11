@@ -8,7 +8,7 @@ import data_handler
 load_dotenv()
 app = Flask(__name__)
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
-app.config['UPLOAD_PATH'] = 'images'
+app.config['UPLOAD_PATH'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
 
 
 def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
