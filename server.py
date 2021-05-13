@@ -75,15 +75,17 @@ def display_all_questions():
 
 
 # QUESTION MANIPULATION
-@app.route('/add-question', methods=["GET", "POST"])
+@app.route('/add-question')
 def ask_question():
-    if request.method == "GET":
-        return render_template('manipulate_question.html')
-    elif request.method == "POST":
-        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_question')
-        data_handler.add_question(new_entry)
-        question_id = data_handler.get_last_added_question_id()
-        return redirect(url_for("display_question", question_id=question_id))
+    return render_template('manipulate_question.html')
+
+
+@app.route('/add-question', methods=["POST"])
+def post_question():
+    new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_question')
+    data_handler.add_question(new_entry)
+    question_id = data_handler.get_last_added_question_id()
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<int:question_id>")
