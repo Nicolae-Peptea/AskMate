@@ -149,15 +149,18 @@ def post_answer(question_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
-@app.route("/answer/<int:answer_id>/edit", methods=["GET", "POST"])
+@app.route("/answer/<int:answer_id>/edit")
 def edit_answer(answer_id):
     answer = data_handler.get_answer(answer_id)
-    if request.method == "GET":
-        return render_template('manipulate_answer.html', answer=answer)
-    else:
-        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_answer', prev_entry=answer)
-        data_handler.edit_answer(new_entry=new_entry, answer_id=answer_id)
-        return redirect(url_for("display_question", question_id=answer['question_id']))
+    return render_template('manipulate_answer.html', answer=answer)
+
+
+@app.route("/answer/<int:answer_id>/edit", methods=["POST"])
+def post_edited_answer(answer_id):
+    answer = data_handler.get_answer(answer_id)
+    new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_answer', prev_entry=answer)
+    data_handler.edit_answer(new_entry=new_entry, answer_id=answer_id)
+    return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
