@@ -29,8 +29,8 @@
             <pre>{{ my_question['message'] }}</pre>
             {% if my_question['image'] %}
                 <div id="image">
-                    <a href="{{ url_for('upload_image', filename=my_question['image']) }}">
-                        <img src="{{ url_for('upload_image', filename=my_question['image']) }}">
+                    <a href="{{ url_for('display_image', filename=my_question['image']) }}">
+                        <img src="{{ url_for('display_image', filename=my_question['image']) }}">
                     </a>
                 </div>
             {%endif%}
@@ -140,8 +140,8 @@
                         <p>{% autoescape false %}{{ answer['message'] }}{% endautoescape %}</p>
                         {% if answer['image'] %}
                             <div id="image">
-                                <a href="{{ url_for('upload_image', filename=answer['image']) }}">
-                                    <img src="{{ url_for('upload_image', filename=answer['image']) }}">
+                                <a href="{{ url_for('display_image', filename=answer['image']) }}">
+                                    <img src="{{ url_for('display_image', filename=answer['image']) }}">
                                 </a>
                             </div>
                         {%endif%}

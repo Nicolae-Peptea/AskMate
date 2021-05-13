@@ -12,35 +12,50 @@ app.config['UPLOAD_PATH'] = os.path.join(os.path.dirname(os.path.realpath(__file
 
 
 def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
-# function for prev entry
     uploaded_file = request.files['image']
-    filename = secure_filename(uploaded_file.filename)
-    if filename != '':
-        if operation == 'new_question':
-            filename = 'question' + str(data_handler.get_last_added_question_id()+1)
-        elif operation == 'new_answer':
-            filename = 'answer' + str(data_handler.get_last_added_answer_id()+1)
-        elif operation == 'edit_question':
-            filename = 'question' + str(prev_entry['id'])
-        elif operation == 'edit_answer':
-            filename = 'answer' + str(prev_entry['id'])
-        else:
-            filename = operation
-        uploaded_file.save(os.path.join(path, filename))
-        new_entry['image'] = filename
+    new_file_name = generate_file_name(operation, prev_entry)
+    save_file(uploaded_file, path, new_file_name)
+    new_entry['image'] = new_file_name
     return new_entry
+
+
+def generate_file_name(operation, prev_entry):
+    if operation == 'new_question':
+        filename = f'question{data_handler.get_last_added_question_id()+1}'
+    elif operation == 'new_answer':
+        filename = f'answer{data_handler.get_last_added_answer()+1}'
+    elif operation == 'edit_question':
+        if prev_entry['image']:
+            filename = prev_entry['image']
+        else:
+            filename = f"question{prev_entry['id']}"
+    elif operation == 'edit_answer':
+        if prev_entry['image']:
+            filename = prev_entry['image']
+        else:
+            filename = f"answer{prev_entry['id']}"
+    return filename
+
+
+def save_file(uploaded_file, path, file_name):
+    complete_path = os.path.join(path, file_name)
+    uploaded_file.save(complete_path)
 
 
 def generate_new_entry(path, operation, prev_entry=''):
-    if request.files:
-        new_entry = generate_entry_with_image(dict(request.form), path, operation, prev_entry)
-    else:
-        new_entry = dict(request.form)
+    new_entry = dict(request.form)
+    if is_file_in_entry():
+        entry_with_image = generate_entry_with_image(new_entry, path, operation, prev_entry)
+        return entry_with_image
     return new_entry
 
 
+def is_file_in_entry():
+    return True if request.files else False
+
+
 @app.route('/images/<filename>')
-def upload_image(filename):
+def display_image(filename):
     return send_from_directory(app.config['UPLOAD_PATH'], filename)
 
 
@@ -82,7 +97,7 @@ def ask_question():
 
 @app.route('/add-question', methods=["POST"])
 def post_question():
-    new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_question')
+    new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='new_question')
     data_handler.add_question(new_entry)
     question_id = data_handler.get_last_added_question_id()
     return redirect(url_for("display_question", question_id=question_id))
@@ -144,7 +159,7 @@ def answer_question(question_id):
 
 @app.route("/question/<int:question_id>/new-answer", methods=["POST"])
 def post_answer(question_id):
-    new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_answer')
+    new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='new_answer')
     data_handler.add_answer(new_entry=new_entry, question_id=question_id)
     return redirect(url_for("display_question", question_id=question_id))
 

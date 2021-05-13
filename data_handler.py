@@ -91,13 +91,13 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int):
 
 
 @database_common.connection_handler
-def get_last_added_question_id(cursor: RealDictCursor):
+def get_last_added_question(cursor: RealDictCursor):
     cursor.execute('SELECT MAX(id) FROM question')
     return cursor.fetchone()['max']
 
 
 @database_common.connection_handler
-def get_last_added_answer_id(cursor: RealDictCursor):
+def get_last_added_answer(cursor: RealDictCursor):
     cursor.execute('SELECT MAX(id) FROM answer')
     return cursor.fetchone()['max']
 
