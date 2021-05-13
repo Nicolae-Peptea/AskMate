@@ -326,9 +326,6 @@ def delete_question(question_id, path):
         delete_question_images(question_id, path)
     except ValueError:
         pass
-    delete_entry('question_id', question_id, 'question_tag')
-    delete_entry('question_id', question_id, 'answer')
-    delete_entry('question_id', question_id, 'comment')
     delete_entry('id', question_id, 'question')
 
 
@@ -337,7 +334,6 @@ def delete_answer(answer_id, path):
         delete_answer_image(answer_id, path)
     except ValueError:
         pass
-    delete_entry('answer_id', answer_id, 'comment')
     delete_entry('id', answer_id, 'answer')
 
 
