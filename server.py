@@ -137,14 +137,16 @@ def vote_question(question_id):
 
 
 # ANSWER MANIPULATION
-@app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
+@app.route("/question/<int:question_id>/new-answer")
 def answer_question(question_id):
-    if request.method == "GET":
-        return render_template("manipulate_answer.html", question_id=question_id)
-    elif request.method == "POST":
-        new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_answer')
-        data_handler.add_answer(new_entry=new_entry, question_id=question_id)
-        return redirect(url_for("display_question", question_id=question_id))
+    return render_template("manipulate_answer.html", question_id=question_id)
+
+
+@app.route("/question/<int:question_id>/new-answer", methods=["POST"])
+def post_answer(question_id):
+    new_entry = generate_new_entry(app.config['UPLOAD_PATH'], 'new_answer')
+    data_handler.add_answer(new_entry=new_entry, question_id=question_id)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/answer/<int:answer_id>/edit", methods=["GET", "POST"])
