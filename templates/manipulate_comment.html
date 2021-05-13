@@ -13,7 +13,7 @@
 {% block right_section %}
     <div id="filling-form">
         <form action="{% if question_id %}
-                                {{ url_for('add_comment_to_question', question_id=question_id) }}
+                                {{ url_for('post_comment_to_question', question_id=question_id) }}
                          {% elif comment %}
                                 {{ url_for('edit_comment', comment_id=comment['id']) }}
                          {%else%}

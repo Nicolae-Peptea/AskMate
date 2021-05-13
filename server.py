@@ -179,14 +179,16 @@ def vote_answer(answer_id):
 
 
 # COMMENT MANIPULATION
-@app.route("/question/<int:question_id>/new-comment", methods=["GET","POST"])
-def add_comment_to_question(question_id):
-    if request.method == "GET":
-        return render_template('manipulate_comment.html', question_id=question_id)
-    else:
-        comment = request.form
-        data_handler.add_comment_to_question(comment, question_id)
-        return redirect(url_for("display_question", question_id=question_id))
+@app.route("/question/<int:question_id>/new-comment")
+def comment_on_question(question_id):
+    return render_template('manipulate_comment.html', question_id=question_id)
+
+
+@app.route("/question/<int:question_id>/new-comment", methods=["POST"])
+def post_comment_to_question(question_id):
+    comment = request.form
+    data_handler.add_comment_to_question(comment, question_id)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/answer/<int:answer_id>/new-comment", methods=["GET", "POST"])

@@ -64,7 +64,7 @@
                 </div>
             {% endfor %}
             {% endif %}
-            <a href="{{ url_for('add_comment_to_question', question_id=my_question['id']) }}">
+            <a href="{{ url_for('comment_on_question', question_id=my_question['id']) }}">
                 Add comment
             </a>
         </div>
