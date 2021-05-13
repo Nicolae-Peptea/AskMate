@@ -226,17 +226,19 @@ def delete_comment(comment_id):
 
 
 # TAG MANIPULATION
-@app.route("/question/<question_id>/new-tag", methods=["GET", "POST"])
+@app.route("/question/<question_id>/new-tag")
 def add_tag_to_question(question_id):
-    if request.method == "GET":
-        question_tags = data_handler.get_question_tags(question_id)
-        return render_template(
-            'manipulate_tag.html', question_id=question_id, question_tags=question_tags)
-    else:
-        existing_tag, new_tag  = request.form.get('tags'), request.form.get('tag_name')
-        print(existing_tag, new_tag)
-        data_handler.add_question_tag(question_id, new_tag, existing_tag)
-        return redirect(url_for("display_question", question_id=question_id))
+    question_tags = data_handler.get_question_tags(question_id)
+    return render_template(
+        'manipulate_tag.html', question_id=question_id, question_tags=question_tags)
+
+
+@app.route("/question/<question_id>/new-tag", methods=["POST"])
+def post_tag_to_question(question_id):
+    existing_tag, new_tag  = request.form.get('tags'), request.form.get('tag_name')
+    print(existing_tag, new_tag)
+    data_handler.add_question_tag(question_id, new_tag, existing_tag)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete', methods=["POST"])
