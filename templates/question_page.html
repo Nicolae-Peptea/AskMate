@@ -109,18 +109,19 @@
                                 <button name="upvote" type="submit"><i class="arrow up"></i></button>
                             </form>
                             <p>
-                                <p>{{ answer["vote_number"] }}</p>
+                                <p><strong>{{ answer["vote_number"] }}</strong></p>
                                 <p>{% if answer["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p>
                             </p>
                             <form action="{{ url_for('vote_answer', answer_id=answer['id']) }}" method="post">
                                 <button name="downvote" type="submit"><i class="arrow down"></i></button>
                             </form>
                         </div>
-                        <form action="{{ url_for('edit_answer', answer_id=answer['id']) }}">
-                            <button id="answer_edit_button" type="submit">Edit</button>
-                        </form>
+                        <div id="edit_answer">
+                            <form action="{{ url_for('edit_answer', answer_id=answer['id']) }}">
+                                <button id="answer_edit_button" type="submit">Edit</button>
+                            </form>
+                        </div>
                         <br>
-
                         
                         <form id="delete-answer" action="{{ url_for('delete_answer', answer_id=answer['id']) }}" method="post">
                             <button type="submit">

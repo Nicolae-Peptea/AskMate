@@ -85,7 +85,7 @@ nav .middle_nav {
 #right-section  {
     width: 85%;
     background-color: #f1f1f1;
-    margin-top: 1%;
+    margin-top: 80px;
     margin-left: 16%;
 }
 
@@ -329,14 +329,25 @@ nav .middle_nav {
 #answer_edit_button:hover {
     border: 3px solid royalblue;
     cursor: pointer;
+    background-color: #ffffff;
 }
+
+#edit_answer {
+    border-bottom: 2px solid royalblue;
+    padding: 10%;
+    margin-bottom: 5%;
+}
+
 /* END OF ANSWERS */
 
 /* VOTING */
 #voting button {
     background-color: #7ec5ff;
     border: 1px solid royalblue;
-    border-radius: 5px;
+    border-radius: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
 }
 
 #voting {
@@ -416,11 +427,12 @@ nav .middle_nav {
 #delete-answer button {
     border: 1px solid royalblue;
     border-radius: 10px;
-    background-color: transparent
+    background-color: transparent;
+    margin-top: 5%;
 }
 
 #delete-answer button:hover {
-    border: 2px solid royalblue;
+    border: 3px solid royalblue;
     border-radius: 10px;
     background-color: #ffffff;
     cursor: pointer;

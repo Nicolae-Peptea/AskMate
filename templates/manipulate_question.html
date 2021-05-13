@@ -3,7 +3,6 @@
 {% block page_title %}{%if question %}Edit{%else%}Add new{%endif%} question{% endblock %}
 
 {% block right_section %}
-
     <div id="filling-form">
         <form action="{%if question %}{{ url_for('edit_question', question_id=question['id']) }}{%else%}{{ url_for('ask_question') }}{%endif%}" method="post" enctype="multipart/form-data">
 
@@ -20,11 +19,4 @@
 
         </form>
     </div>
-
-    <div class="home-button">
-        <form id="home-button" action="{{ url_for('display_latest_questions') }}">
-            <button>Home</button>
-        </form>
-    </div>
-
 {% endblock %}
