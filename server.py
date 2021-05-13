@@ -204,15 +204,18 @@ def post_comment_to_answer(answer_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
-@app.route("/comment/<int:comment_id>/edit", methods=["GET", "POST"])
+@app.route("/comment/<int:comment_id>/edit")
 def edit_comment(comment_id):
     comment, question_id = data_handler.get_comment_and_question_id(comment_id)
-    if request.method == "GET":
-        return render_template('manipulate_comment.html', comment=comment)
-    else:
-        new_entry = dict(request.form)
-        data_handler.edit_comment(new_entry, comment_id)
-        return redirect(url_for('display_question', question_id=question_id))
+    return render_template('manipulate_comment.html', comment=comment)
+
+
+@app.route("/comment/<int:comment_id>/edit", methods=["POST"])
+def post_edited_comment(comment_id):
+    comment, question_id = data_handler.get_comment_and_question_id(comment_id)
+    new_entry = dict(request.form)
+    data_handler.edit_comment(new_entry, comment_id)
+    return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route('/comments/<comment_id>/delete', methods=["POST"])
