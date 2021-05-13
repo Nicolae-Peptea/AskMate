@@ -2,7 +2,7 @@
 
 {% block page_title %}{%if answer %}Edit{%else%}Add new{%endif%} answer{% endblock %}
 
-{% block content %}
+{% block right_section %}
     <div id="filling-form">
         <form action="{%if answer %}{{ url_for('edit_answer', answer_id=answer['id']) }}{%else%}{{ url_for('answer_question', question_id=question_id) }}{%endif%}" method="post" enctype="multipart/form-data">
 

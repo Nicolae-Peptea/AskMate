@@ -10,7 +10,7 @@
     {%endif%}
 {% endblock %}
 
-{% block content %}
+{% block right_section %}
     <div id="filling-form">
         <form action="{% if question_id %}
                                 {{ url_for('add_comment_to_question', question_id=question_id) }}

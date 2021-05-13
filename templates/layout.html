@@ -9,20 +9,43 @@
     </head>
 
     <body>
-        <header>
-            <h1 class="header" id="header-title">ASK MATE</h1>
-            <div id="header_and_nav">
-                <h2>{{ self.page_title() }}</h2>
+        <nav>
+            <div class="logo">
+                <a href="{{ url_for('display_latest_questions') }}">ASK MATE</a>
             </div>
-        </header>
+            <div class="middle_nav"></div>
+            <div id="search_bar">
+                <form action="{{ url_for('display_searched_questions') }}" method="get">
+                    <input id="search_bar_input" type="text" name="q" placeholder="Search...">
+                    <button id="search-button" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
 
         <div class="content-wrapper">         
-            
-            <section>
+            <div id="left-section">
+                <form action="{{ url_for('display_latest_questions') }}">
+                    <button id="ask-button">Home</button>
+                </form><br>
+        
+                <form action="{{ url_for('display_all_questions') }}">
+                    <button id="ask-button" >Questions</button>
+                </form><br>
+        
+                <form action="{{ url_for('ask_question') }}">
+                    <button id="ask-button" >Ask Question</button>
+                </form>
 
-                {% block content %}{% endblock %}
-                
-            </section>
+                {% block left_section %}{% endblock %}
+            </div>
+
+            <div id="right-section">
+                <div id="header_and_nav">
+                    <h2>{{ self.page_title() }}</h2>
+                </div><br>
+
+                {% block right_section %}{% endblock %}
+            </div>
 
         </div>
     </body>

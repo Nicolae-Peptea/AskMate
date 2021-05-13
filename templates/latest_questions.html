@@ -1,60 +1,42 @@
 {% extends "layout.html" %}
+
 {% block page_title %}Latest questions{% endblock %}
-{% block content %}
 
-    <div id="search_bar">
-        <form action="{{ url_for('display_searched_questions') }}" method="get">
-            <input id="search_bar_input" type="text" name="q" placeholder="Ex: drawing canvas">
-            <button id="search-button" type="submit">Search</button>
-        </form>
-    </div>
+{% block right_section %}
+    <ul>
+        {% for question in questions %}
+            <li>
 
-    <div id="left-section">
-        <form action="{{ url_for('ask_question') }}">
-            <button id="ask-button" >Ask Question</button>
-        </form>
-        <br>
-        <form action="{{ url_for('display_all_questions') }}">
-            <button id="ask-button" >Show all questions</button>
-        </form>
-    </div>
-
-    <div id="main_page_list">
-        <ul>
-            {% for question in questions %}
-                <li>
-
-                    <div id="question_views_votes">
-                        
-                        <div id="question-votes">
-                            <p>
-                                <p>{{ question["vote_number"] }}</p>
-                                <p>{% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p> 
-                            </p>
-                        </div>
-
-                        <div id="question-views">
-                            <p>{{ question["view_number"] }}</p>
-                            <p>{% if question["view_number"] == '1' %}view{% else %}views{%endif%}</p>
-                        </div>
-                    </div>
-
-                    <div id="question-block">
-                        <a id="title-link" href="{{ url_for('display_question', question_id=question['id']) }}">
-                            {% autoescape false %}{{ question['title'] }}{% endautoescape %}
-                        </a>
-                        <p>{% autoescape false %}
-                            {% if question['message']|length > 200 %}
-                                {{ question['message'][:200] }}...
-                            {% else %}
-                                {{ question['message'] }}
-                            {%endif%}
-                            {% endautoescape %}
+                <div id="question_views_votes">
+                    
+                    <div id="question-votes">
+                        <p>
+                            <p>{{ question["vote_number"] }}</p>
+                            <p>{% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p> 
                         </p>
                     </div>
 
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+                    <div id="question-views">
+                        <p>{{ question["view_number"] }}</p>
+                        <p>{% if question["view_number"] == '1' %}view{% else %}views{%endif%}</p>
+                    </div>
+                </div>
+
+                <div id="question-block">
+                    <a id="title-link" href="{{ url_for('display_question', question_id=question['id']) }}">
+                        {% autoescape false %}{{ question['title'] }}{% endautoescape %}
+                    </a>
+                    <p>{% autoescape false %}
+                        {% if question['message']|length > 200 %}
+                            {{ question['message'][:200] }}...
+                        {% else %}
+                            {{ question['message'] }}
+                        {%endif%}
+                        {% endautoescape %}
+                    </p>
+                </div>
+
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block page_title %}Add Question Tag{% endblock %}
 
-{% block content %}
+{% block right_section %}
     <div id="filling-form">
         <form action="{{ url_for('add_tag_to_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
 
