@@ -191,15 +191,17 @@ def post_comment_to_question(question_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
-@app.route("/answer/<int:answer_id>/new-comment", methods=["GET", "POST"])
-def add_comment_to_answer(answer_id):
-    if request.method == "GET":
-        return render_template('manipulate_comment.html', answer_id=answer_id)
-    else:
-        question_id = data_handler.get_question_id(answer_id)
-        comment = request.form
-        data_handler.add_comment_to_answer(comment, answer_id)
-        return redirect(url_for("display_question", question_id=question_id))
+@app.route("/answer/<int:answer_id>/new-comment")
+def comment_on_answer(answer_id):
+    return render_template('manipulate_comment.html', answer_id=answer_id)
+
+
+@app.route("/answer/<int:answer_id>/new-comment", methods=["POST"])
+def post_comment_to_answer(answer_id):
+    question_id = data_handler.get_question_id(answer_id)
+    comment = request.form
+    data_handler.add_comment_to_answer(comment, answer_id)
+    return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/comment/<int:comment_id>/edit", methods=["GET", "POST"])

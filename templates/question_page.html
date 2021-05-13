@@ -176,7 +176,7 @@
                                 {%endif%}
                             {% endfor %}
                             {% endif %}
-                            <a href="{{ url_for('add_comment_to_answer', answer_id=answer['id']) }}">
+                            <a href="{{ url_for('comment_on_answer', answer_id=answer['id']) }}">
                                 Add comment
                             </a>
                         </div>
