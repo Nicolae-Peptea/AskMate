@@ -247,9 +247,9 @@ def delete_comment(comment_id):
 # TAG MANIPULATION
 @app.route("/question/<question_id>/new-tag")
 def add_tag_to_question(question_id):
-    question_tags = data_handler_tags.get_question_tags(question_id)
+    tags = data_handler_tags.get_tags()
     return render_template(
-        'manipulate_tag.html', question_id=question_id, question_tags=question_tags)
+        'manipulate_tag.html', question_id=question_id, tags=tags)
 
 
 @app.route("/question/<question_id>/new-tag", methods=["POST"])

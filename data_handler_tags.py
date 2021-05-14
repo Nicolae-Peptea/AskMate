@@ -4,6 +4,13 @@ from psycopg2.extras import RealDictCursor
 
 
 @database_common.connection_handler
+def get_tags(cursor: RealDictCursor):
+    query = """SELECT * FROM tag"""
+    cursor.execute(query)
+    return [dict(value) for value in cursor.fetchall()]
+
+
+@database_common.connection_handler
 def get_question_tags(cursor: RealDictCursor, question_id: int):
     query = """
     SELECT * FROM question_tag, tag
