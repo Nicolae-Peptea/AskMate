@@ -3,7 +3,7 @@ from flask import (Flask, redirect, render_template, request,
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import os
-import data_handler
+import data_handler_tags
 import data_handler_questions
 import data_handler_answers
 import data_handler_comments
@@ -114,7 +114,7 @@ def display_question(question_id):
     answers = data_handler_answers.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
     comments = data_handler_comments.get_comments()
-    tags = data_handler.get_question_tags(question_id)
+    tags = data_handler_tags.get_question_tags(question_id)
     return render_template("question_page.html",
                            my_question=my_question,
                            answers=answers,
@@ -247,7 +247,7 @@ def delete_comment(comment_id):
 # TAG MANIPULATION
 @app.route("/question/<question_id>/new-tag")
 def add_tag_to_question(question_id):
-    question_tags = data_handler.get_question_tags(question_id)
+    question_tags = data_handler_tags.get_question_tags(question_id)
     return render_template(
         'manipulate_tag.html', question_id=question_id, question_tags=question_tags)
 
@@ -256,13 +256,13 @@ def add_tag_to_question(question_id):
 def post_tag_to_question(question_id):
     existing_tag, new_tag  = request.form.get('tags'), request.form.get('tag_name')
     print(existing_tag, new_tag)
-    data_handler.add_question_tag(question_id, new_tag, existing_tag)
+    data_handler_tags.add_question_tag(question_id, new_tag, existing_tag)
     return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete', methods=["POST"])
 def delete_question_tag(question_id, tag_id):
-    data_handler.delete_question_tag(question_id, tag_id)
+    data_handler_tags.delete_question_tag(question_id, tag_id)
     return redirect(url_for("display_question", question_id=question_id))
 
 

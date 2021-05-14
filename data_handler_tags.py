@@ -1,16 +1,6 @@
-import os
-import re
 import database_common
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
-
-
-# GET
-
-
-
-
-
 
 
 @database_common.connection_handler
@@ -22,9 +12,6 @@ def get_question_tags(cursor: RealDictCursor, question_id: int):
     """
     cursor.execute(query, {'question_id': question_id})
     return [dict(value) for value in cursor.fetchall()]
-
-
-# ADD
 
 
 @database_common.connection_handler
@@ -54,10 +41,6 @@ def add_question_tag(cursor: RealDictCursor, question_id: int, new_tag, existing
             'question_id': question_id,
             'tag_id': tag_id
         })
-
-
-# EDIT
-
 
 
 @database_common.connection_handler
