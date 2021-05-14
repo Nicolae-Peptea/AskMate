@@ -12,16 +12,17 @@ app.config['UPLOAD_PATH'] = os.path.join(os.path.dirname(os.path.realpath(__file
 
 
 def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
-    uploaded_file = request.files['image']
     new_file_name = generate_file_name(operation, prev_entry)
-    save_file(uploaded_file, path, new_file_name)
+    uploaded_file = request.files['image']
+    if uploaded_file:
+        save_file(uploaded_file, path, new_file_name)
     new_entry['image'] = new_file_name
     return new_entry
 
 
 def generate_file_name(operation, prev_entry):
     if operation == 'new_question':
-        filename = f'question{data_handler.get_last_added_question_id()+1}'
+        filename = f'question{data_handler.get_last_added_question()+1}'
     elif operation == 'new_answer':
         filename = f'answer{data_handler.get_last_added_answer()+1}'
     elif operation == 'edit_question':
@@ -99,7 +100,7 @@ def ask_question():
 def post_question():
     new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='new_question')
     data_handler.add_question(new_entry)
-    question_id = data_handler.get_last_added_question_id()
+    question_id = data_handler.get_last_added_question()
     return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -132,7 +133,8 @@ def edit_question(question_id):
 def post_edited_question(question_id):
     question = data_handler.get_question(question_id)
     new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_question', prev_entry=question)
-    data_handler.edit_question(new_entry=new_entry, question_id=question_id)
+    new_entry['id'] = question_id
+    data_handler.edit_question(new_entry=new_entry)
     return redirect(url_for("display_question", question_id=question_id))
 
 

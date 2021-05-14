@@ -67,7 +67,7 @@ def get_comment(cursor: RealDictCursor, comment_id: int):
 def get_comment_and_question_id(comment_id: int):
     comment = get_comment(comment_id)
 
-    if comment['question_id'] is not None:
+    if comment['question_id']:
         question_id = comment['question_id']
     elif comment['answer_id']:
         question_id = get_question_id_from_answer(comment['answer_id'])
@@ -208,7 +208,6 @@ def add_question_tag(cursor: RealDictCursor, question_id: int, new_tag, existing
         select_tag = """SELECT id FROM tag WHERE name=%(name)s;"""
         cursor.execute(select_tag, {'name': existing_tag})
         tag_id = cursor.fetchone()['id']
-        print(tag_id)
         attach_tag_to_question="""
         INSERT INTO question_tag ("question_id", "tag_id")
                     VALUES (%(question_id)s, %(tag_id)s)"""
@@ -219,35 +218,45 @@ def add_question_tag(cursor: RealDictCursor, question_id: int, new_tag, existing
 
 
 # EDIT
+def edit_question(new_entry: dict):
+    image = new_entry.get('image', 0)
+    print (image)
+    if image:
+        edit_question_receiving_image(new_entry, image)
+    else:
+        edit_question_receiving_no_image(new_entry)
+
+
 @database_common.connection_handler
-def edit_question(cursor: RealDictCursor, new_entry: dict, question_id: int):
-    new_image = new_entry.get('image', 0)
-    if new_image:
-        edit = """
-        UPDATE question 
+def edit_question_receiving_image(cursor: RealDictCursor, new_entry: dict, new_image: str):
+    edit = """
+        UPDATE question
             SET title = %(new_title)s,
             message = %(new_message)s,
             image = %(new_image)s
         WHERE id = %(question_id)s
-        """
-        cursor.execute(edit, {
-            'new_title': new_entry['title'],
-            'new_message': new_entry['message'],
-            'new_image': new_image,
-            'question_id': question_id
-        })
-    else:
-        edit = """
-        UPDATE question 
-            SET title = %(new_title)s,
-            message = %(new_message)s
-        WHERE id = %(question_id)s
-        """
-        cursor.execute(edit, {
-            'new_title': new_entry['title'],
-            'new_message': new_entry['message'],
-            'question_id': question_id
-        })
+    """
+    cursor.execute(edit, {
+        'new_title': new_entry['title'],
+        'new_message': new_entry['message'],
+        'new_image': new_image,
+        'question_id': new_entry['id']
+    })
+
+
+@database_common.connection_handler
+def edit_question_receiving_no_image(cursor: RealDictCursor, new_entry: dict):
+    edit = """
+         UPDATE question 
+             SET title = %(new_title)s,
+             message = %(new_message)s
+         WHERE id = %(question_id)s
+    """
+    cursor.execute(edit, {
+        'new_title': new_entry['title'],
+        'new_message': new_entry['message'],
+        'question_id': new_entry['id']
+    })
 
 
 @database_common.connection_handler
