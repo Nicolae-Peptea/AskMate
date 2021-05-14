@@ -21,7 +21,6 @@ def get_question_tags(cursor: RealDictCursor, question_id: int):
     return [dict(value) for value in cursor.fetchall()]
 
 
-
 def add_question_tag(question_id: int, new_tag, existing_tag):
     if new_tag:
         tag_question_receiving_new_tag(question_id, new_tag)

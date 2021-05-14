@@ -1,6 +1,5 @@
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
-from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import os
 import data_handler_tags
@@ -78,9 +77,7 @@ def display_searched_questions():
         data_handler_questions.highlight_search(searched_questions, key_words)
     except ValueError:
         pass
-    return render_template(
-        'latest_questions.html',
-        questions=searched_questions)
+    return render_template('latest_questions.html', questions=searched_questions)
 
 
 @app.route("/list")
