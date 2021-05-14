@@ -66,7 +66,8 @@ def display_image(filename):
 def display_latest_questions():
     return render_template(
         'latest_questions.html',
-        questions=data_handler_questions.get_latest_questions(show=5))
+        questions=data_handler_questions.get_latest_questions(show=5)
+    )
 
 
 @app.route("/search")
@@ -84,10 +85,9 @@ def display_searched_questions():
 def display_all_questions():
     order_by = request.args.get('order_by', 'submission_time')
     direction = request.args.get('order_direction', 'desc')
-    return render_template(
-        'questions.html',
-        questions=data_handler_questions.get_questions(order_by, direction),
-        request_param=request.args)
+    return render_template('questions.html',
+                           questions=data_handler_questions.get_questions(order_by, direction),
+                           request_param=request.args)
 
 
 # QUESTION MANIPULATION
@@ -112,21 +112,15 @@ def display_question(question_id):
     files = os.listdir(app.config['UPLOAD_PATH'])
     comments = data_handler_comments.get_comments()
     tags = data_handler_tags.get_question_tags(question_id)
-    return render_template("question_page.html",
-                           my_question=my_question,
-                           answers=answers,
-                           files=files,
-                           comments=comments, 
-                           tags=tags)
+    return render_template("question_page.html", my_question=my_question,
+                           answers=answers, files=files,
+                           comments=comments, tags=tags)
 
 
 @app.route("/question/<int:question_id>/edit")
 def edit_question(question_id):
     question = data_handler_questions.get_question(question_id)
-    return render_template(
-        "manipulate_question.html",
-        question=question
-    )
+    return render_template("manipulate_question.html", question=question)
 
 
 @app.route("/question/<int:question_id>/edit", methods=["POST"])
@@ -245,8 +239,7 @@ def delete_comment(comment_id):
 @app.route("/question/<question_id>/new-tag")
 def add_tag_to_question(question_id):
     tags = data_handler_tags.get_tags()
-    return render_template(
-        'manipulate_tag.html', question_id=question_id, tags=tags)
+    return render_template('manipulate_tag.html', question_id=question_id, tags=tags)
 
 
 @app.route("/question/<question_id>/new-tag", methods=["POST"])
