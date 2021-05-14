@@ -4,7 +4,11 @@
 
 {% block right_section %}
     <div id="filling-form">
-        <form action="{%if question %}{{ url_for('post_edited_question', question_id=question['id']) }}{%else%}{{ url_for('post_question') }}{%endif%}" method="post" enctype="multipart/form-data">
+        <form action="{%if question %}
+                            {{ url_for('post_edited_question', question_id=question['id']) }}
+                        {%else%}
+                            {{ url_for('post_question') }}
+                        {%endif%}" method="post" enctype="multipart/form-data">
 
             <label for="question_title">Title:</label><br>
             <textarea id="question_title" name="title" required>{{ question['title'] if question }}</textarea><br>
