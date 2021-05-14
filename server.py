@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import data_handler
 import data_handler_questions
+import data_handler_answers
 
 load_dotenv()
 app = Flask(__name__)
@@ -25,7 +26,7 @@ def generate_file_name(operation, prev_entry):
     if operation == 'new_question':
         filename = f'question{data_handler_questions.get_last_added_question()+1}'
     elif operation == 'new_answer':
-        filename = f'answer{data_handler.get_last_added_answer()+1}'
+        filename = f'answer{data_handler_answers.get_last_added_answer_id()+1}'
     elif operation == 'edit_question':
         if prev_entry['image']:
             filename = prev_entry['image']
@@ -109,7 +110,7 @@ def post_question():
 def display_question(question_id):
     data_handler_questions.update_views(question_id)
     my_question = data_handler_questions.get_question(question_id)
-    answers = data_handler.get_answers_for_question(question_id)
+    answers = data_handler_answers.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
     comments = data_handler.get_comments()
     tags = data_handler.get_question_tags(question_id)
@@ -161,28 +162,29 @@ def answer_question(question_id):
 @app.route("/question/<int:question_id>/new-answer", methods=["POST"])
 def post_answer(question_id):
     new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='new_answer')
-    data_handler.add_answer(new_entry=new_entry, question_id=question_id)
+    data_handler_answers.add_answer(new_entry=new_entry, question_id=question_id)
     return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/answer/<int:answer_id>/edit")
 def edit_answer(answer_id):
-    answer = data_handler.get_answer(answer_id)
+    answer = data_handler_answers.get_answer(answer_id)
     return render_template('manipulate_answer.html', answer=answer)
 
 
 @app.route("/answer/<int:answer_id>/edit", methods=["POST"])
 def post_edited_answer(answer_id):
-    answer = data_handler.get_answer(answer_id)
+    answer = data_handler_answers.get_answer(answer_id)
     new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_answer', prev_entry=answer)
-    data_handler.edit_answer(new_entry=new_entry, answer_id=answer_id)
+    new_entry['id'] = answer_id
+    data_handler_answers.edit_answer(new_entry)
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
     question_id = data_handler.get_question_id_from_answer(answer_id)
-    data_handler.delete_answer(answer_id, app.config['UPLOAD_PATH'])
+    data_handler_answers.delete_answer(answer_id, app.config['UPLOAD_PATH'])
     return redirect(url_for("display_question", question_id=question_id))
 
 
