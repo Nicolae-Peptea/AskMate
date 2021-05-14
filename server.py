@@ -90,7 +90,6 @@ def display_all_questions():
                            request_param=request.args)
 
 
-# QUESTION MANIPULATION
 @app.route('/add-question')
 def ask_question():
     return render_template('manipulate_question.html')
@@ -145,7 +144,6 @@ def vote_question(question_id):
     return redirect(url_for('display_all_questions'))
 
 
-# ANSWER MANIPULATION
 @app.route("/question/<int:question_id>/new-answer")
 def answer_question(question_id):
     return render_template("manipulate_answer.html", question_id=question_id)
@@ -188,7 +186,6 @@ def vote_answer(answer_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
-# COMMENT MANIPULATION
 @app.route("/question/<int:question_id>/new-comment")
 def comment_on_question(question_id):
     return render_template('manipulate_comment.html', question_id=question_id)
@@ -235,7 +232,6 @@ def delete_comment(comment_id):
     return redirect(url_for("display_question", question_id=question_id))
 
 
-# TAG MANIPULATION
 @app.route("/question/<question_id>/new-tag")
 def add_tag_to_question(question_id):
     tags = data_handler_tags.get_tags()
