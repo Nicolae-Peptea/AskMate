@@ -34,17 +34,9 @@ def get_latest_questions(cursor: RealDictCursor, show):
 
 
 @database_common.connection_handler
-def get_comments_for_answers_by_question_id(cursor: RealDictCursor):
+def get_comments(cursor: RealDictCursor):
     query = "SELECT * FROM comment"
     cursor.execute(query)
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
-def get_comments_by_question_id(cursor: RealDictCursor, question_id: int):
-    query = """SELECT * FROM comment
-                WHERE question_id = %(question_id)s"""
-    cursor.execute(query, {"question_id": question_id})
     return cursor.fetchall()
 
 
@@ -78,7 +70,7 @@ def get_comment_and_question_id(comment_id: int):
     if comment['question_id'] is not None:
         question_id = comment['question_id']
     elif comment['answer_id']:
-        question_id = get_question_id(comment['answer_id'])
+        question_id = get_question_id_from_answer(comment['answer_id'])
     return comment, question_id
 
 
@@ -129,7 +121,7 @@ def get_image_names_for_answers(cursor: RealDictCursor, entry_id: int):
 
 
 @database_common.connection_handler
-def get_question_id(cursor: RealDictCursor, answer_id: int):
+def get_question_id_from_answer(cursor: RealDictCursor, answer_id: int):
     query = """
     SELECT question_id FROM answer
     WHERE id = %(answer_id)s

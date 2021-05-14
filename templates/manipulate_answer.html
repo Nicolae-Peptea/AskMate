@@ -10,7 +10,7 @@
                             {{ url_for('post_answer', question_id=question_id) }}
                       {%endif%}" method="post" enctype="multipart/form-data">
 
-            <label for="answer">Answer:</label><br>
+            <label for="answer_text">Answer:</label><br>
             <textarea id="answer_text" name="message" required>{{ answer['message'] if answer }}</textarea><br>
 
             <label for="image">Click on the "Choose File" button to upload an image:</label><br>

@@ -109,14 +109,12 @@ def display_question(question_id):
     my_question = data_handler.get_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
-    question_comments = data_handler.get_comments_by_question_id(question_id)
-    comments = data_handler.get_comments_for_answers_by_question_id()
+    comments = data_handler.get_comments()
     tags = data_handler.get_question_tags(question_id)
     return render_template("question_page.html",
                            my_question=my_question,
                            answers=answers,
                            files=files,
-                           question_comments=question_comments,
                            comments=comments, 
                            tags=tags)
 
@@ -180,14 +178,14 @@ def post_edited_answer(answer_id):
 
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
-    question_id = data_handler.get_question_id(answer_id)
+    question_id = data_handler.get_question_id_from_answer(answer_id)
     data_handler.delete_answer(answer_id, app.config['UPLOAD_PATH'])
     return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route('/answer/<int:answer_id>/vote', methods=["POST"])
 def vote_answer(answer_id):
-    question_id = data_handler.get_question_id(answer_id)
+    question_id = data_handler.get_question_id_from_answer(answer_id)
     vote_type = ''.join(dict(request.form).keys())
     data_handler.vote_question(answer_id, 'answer', vote_type)
     return redirect(url_for("display_question", question_id=question_id))
@@ -213,7 +211,7 @@ def comment_on_answer(answer_id):
 
 @app.route("/answer/<int:answer_id>/new-comment", methods=["POST"])
 def post_comment_to_answer(answer_id):
-    question_id = data_handler.get_question_id(answer_id)
+    question_id = data_handler.get_question_id_from_answer(answer_id)
     comment = request.form
     data_handler.add_comment_to_answer(comment, answer_id)
     return redirect(url_for("display_question", question_id=question_id))
