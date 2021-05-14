@@ -14,33 +14,48 @@ def get_question_tags(cursor: RealDictCursor, question_id: int):
     return [dict(value) for value in cursor.fetchall()]
 
 
-@database_common.connection_handler
-def add_question_tag(cursor: RealDictCursor, question_id: int, new_tag, existing_tag):
+
+def add_question_tag(question_id: int, new_tag, existing_tag):
     if new_tag:
-        add_new_tag = """INSERT INTO tag ("name")
-                    VALUES (%(name)s);
-                    SELECT id FROM tag
-                    WHERE name=%(name)s;"""
-        cursor.execute(add_new_tag, {'name': new_tag})
-        tag_id = cursor.fetchone()['id']
-        attach_tag_to_question="""
-        INSERT INTO question_tag ("question_id", "tag_id")
-                    VALUES (%(question_id)s, %(tag_id)s)"""
-        cursor.execute(attach_tag_to_question, {
-            'question_id': question_id,
-            'tag_id': tag_id
-        })
+        tag_question_receiving_new_tag(question_id, new_tag)
     else:
-        select_tag = """SELECT id FROM tag WHERE name=%(name)s;"""
-        cursor.execute(select_tag, {'name': existing_tag})
-        tag_id = cursor.fetchone()['id']
-        attach_tag_to_question="""
-        INSERT INTO question_tag ("question_id", "tag_id")
-                    VALUES (%(question_id)s, %(tag_id)s)"""
-        cursor.execute(attach_tag_to_question, {
-            'question_id': question_id,
-            'tag_id': tag_id
-        })
+        tag_question_receiving_existing_tag(question_id, existing_tag)
+
+
+def tag_question_receiving_new_tag(question_id: int, new_tag):
+    add_new_tag(new_tag)
+    tag_id = generate_tag_id_by_name(new_tag)
+    attach_tag_to_question(question_id, tag_id)
+
+
+def tag_question_receiving_existing_tag(question_id: int, existing_tag):
+    tag_id = generate_tag_id_by_name(existing_tag)
+    attach_tag_to_question(question_id, tag_id)
+
+
+@database_common.connection_handler
+def add_new_tag(cursor: RealDictCursor, new_tag):
+    query = """INSERT INTO tag ("name")
+                VALUES (%(name)s);"""
+    cursor.execute(query, {'name': new_tag})
+
+
+@database_common.connection_handler
+def generate_tag_id_by_name(cursor: RealDictCursor, tag_name):
+    query = """SELECT id FROM tag
+                WHERE name=%(name)s;"""
+    cursor.execute(query, {'name': tag_name})
+    return cursor.fetchone()['id']
+
+
+@database_common.connection_handler
+def attach_tag_to_question(cursor: RealDictCursor, question_id: int, tag_id):
+    query = """INSERT INTO question_tag ("question_id", "tag_id")
+                VALUES (%(question_id)s, %(tag_id)s)"""
+    cursor.execute(query, {
+        'question_id': question_id,
+        'tag_id': tag_id
+    })
 
 
 @database_common.connection_handler
