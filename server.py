@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import os
 import data_handler
+import data_handler_questions
 
 load_dotenv()
 app = Flask(__name__)
@@ -22,7 +23,7 @@ def generate_entry_with_image(new_entry, path, operation, prev_entry=''):
 
 def generate_file_name(operation, prev_entry):
     if operation == 'new_question':
-        filename = f'question{data_handler.get_last_added_question()+1}'
+        filename = f'question{data_handler_questions.get_last_added_question()+1}'
     elif operation == 'new_answer':
         filename = f'answer{data_handler.get_last_added_answer()+1}'
     elif operation == 'edit_question':
@@ -52,7 +53,7 @@ def generate_new_entry(path, operation, prev_entry=''):
 
 
 def is_file_in_entry():
-    return True if request.files else False
+    return True if request.files['image'] else False
 
 
 @app.route('/images/<filename>')
@@ -64,15 +65,15 @@ def display_image(filename):
 def display_latest_questions():
     return render_template(
         'latest_questions.html',
-        questions=data_handler.get_latest_questions(show=5))
+        questions=data_handler_questions.get_latest_questions(show=5))
 
 
 @app.route("/search")
 def display_searched_questions():
     key_words=request.args.get('q')
-    searched_questions=data_handler.get_searched_questions(key_words)
+    searched_questions=data_handler_questions.get_searched_questions(key_words)
     try:
-        data_handler.highlighted_search(searched_questions, key_words)
+        data_handler_questions.highlight_search(searched_questions, key_words)
     except ValueError:
         pass
     return render_template(
@@ -86,7 +87,7 @@ def display_all_questions():
     direction = request.args.get('order_direction', 'desc')
     return render_template(
         'questions.html',
-        questions=data_handler.get_questions(order_by, direction),
+        questions=data_handler_questions.get_questions(order_by, direction),
         request_param=request.args)
 
 
@@ -99,15 +100,15 @@ def ask_question():
 @app.route('/add-question', methods=["POST"])
 def post_question():
     new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='new_question')
-    data_handler.add_question(new_entry)
-    question_id = data_handler.get_last_added_question()
+    data_handler_questions.add_question(new_entry)
+    question_id = data_handler_questions.get_last_added_question()
     return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/question/<int:question_id>")
 def display_question(question_id):
-    data_handler.update_views(question_id)
-    my_question = data_handler.get_question(question_id)
+    data_handler_questions.update_views(question_id)
+    my_question = data_handler_questions.get_question(question_id)
     answers = data_handler.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
     comments = data_handler.get_comments()
@@ -122,7 +123,7 @@ def display_question(question_id):
 
 @app.route("/question/<int:question_id>/edit")
 def edit_question(question_id):
-    question = data_handler.get_question(question_id)
+    question = data_handler_questions.get_question(question_id)
     return render_template(
         "manipulate_question.html",
         question=question
@@ -131,23 +132,23 @@ def edit_question(question_id):
 
 @app.route("/question/<int:question_id>/edit", methods=["POST"])
 def post_edited_question(question_id):
-    question = data_handler.get_question(question_id)
+    question = data_handler_questions.get_question(question_id)
     new_entry = generate_new_entry(app.config['UPLOAD_PATH'], operation='edit_question', prev_entry=question)
     new_entry['id'] = question_id
-    data_handler.edit_question(new_entry=new_entry)
+    data_handler_questions.edit_question(new_entry=new_entry)
     return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route('/question/<int:question_id>/delete', methods=["POST"])
 def delete_question(question_id):
-    data_handler.delete_question(question_id, app.config['UPLOAD_PATH'])
+    data_handler_questions.delete_question(question_id, app.config['UPLOAD_PATH'])
     return redirect(url_for('display_all_questions'))
 
 
 @app.route('/question/<int:question_id>/vote', methods=["POST"])
 def vote_question(question_id):
     vote_type = ''.join(dict(request.form).keys())
-    data_handler.vote_question(question_id, 'question', vote_type)
+    data_handler_questions.vote_question(question_id, 'question', vote_type)
     return redirect(url_for('display_all_questions'))
 
 
@@ -189,7 +190,7 @@ def delete_answer(answer_id):
 def vote_answer(answer_id):
     question_id = data_handler.get_question_id_from_answer(answer_id)
     vote_type = ''.join(dict(request.form).keys())
-    data_handler.vote_question(answer_id, 'answer', vote_type)
+    data_handler_questions.vote_question(answer_id, 'answer', vote_type)
     return redirect(url_for("display_question", question_id=question_id))
 
 
