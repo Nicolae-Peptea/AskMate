@@ -8,7 +8,8 @@ import database_common
 @database_common.connection_handler
 def get_answer(cursor: RealDictCursor, answer_id: int):
     query = """SELECT * FROM answer
-                WHERE id = %(answer_id)s"""
+                WHERE id = %(answer_id)s
+            """
     cursor.execute(query, {"answer_id": answer_id})
     return dict(cursor.fetchone())
 
@@ -16,7 +17,8 @@ def get_answer(cursor: RealDictCursor, answer_id: int):
 @database_common.connection_handler
 def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     query = """SELECT * FROM answer
-                WHERE question_id = %(question_id)s"""
+                WHERE question_id = %(question_id)s
+                ORDER BY vote_number DESC"""
     cursor.execute(query, {"question_id": question_id})
     return cursor.fetchall()
 
