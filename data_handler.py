@@ -220,7 +220,6 @@ def add_question_tag(cursor: RealDictCursor, question_id: int, new_tag, existing
 # EDIT
 def edit_question(new_entry: dict):
     image = new_entry.get('image', 0)
-    print (image)
     if image:
         edit_question_receiving_image(new_entry, image)
     else:
@@ -266,8 +265,8 @@ def edit_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int):
         edit = """
         UPDATE answer 
             SET 
-            message = %(new_message)s,
-            image = %(new_image)s
+                message = %(new_message)s,
+                image = %(new_image)s
         WHERE id = %(answer_id)s
         """
         cursor.execute(edit, {
@@ -291,9 +290,9 @@ def edit_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int):
 def edit_comment(cursor: RealDictCursor, new_entry: dict, comment_id: int):
     edit = """
     UPDATE comment 
-    SET message = %(new_message)s,
-    submission_time = now()::timestamp(0),
-    edited_count = edited_count + 1
+        SET message = %(new_message)s,
+            submission_time = now()::timestamp(0),
+            edited_count = edited_count + 1
     WHERE id = %(comment_id)s
     """
     cursor.execute(edit, {
@@ -322,12 +321,21 @@ def delete_entry(cursor, field_name, delete_value, table):
     )
 
 
-def delete_question(question_id, path):
+@database_common.connection_handler
+def delete_question(cursor: RealDictCursor, question_id: int, path):
     try:
         delete_question_images(question_id, path)
     except ValueError:
         pass
-    delete_entry('id', question_id, 'question')
+
+    cursor.execute(
+        sql.SQL(
+            """
+            DELETE FROM question
+            WHERE id = %(delete_value)s
+            """
+        ), {'delete_value': question_id}
+    )
 
 
 def delete_answer(answer_id, path):
@@ -363,9 +371,10 @@ def delete_comment(cursor, comment_id):
 @database_common.connection_handler
 def delete_question_tag(cursor, question_id, tag_id):
     delete = """
-        DELETE FROM question_tag 
-        WHERE question_id = %(question_id)s
-        AND tag_id = %(tag_id)s"""
+    DELETE FROM question_tag 
+        WHERE 
+            question_id = %(question_id)s AND tag_id = %(tag_id)s
+    """
     cursor.execute(delete, {'question_id': question_id, 'tag_id': tag_id})
 
 
@@ -375,7 +384,7 @@ def delete_question_tag(cursor, question_id, tag_id):
 def update_views(cursor: RealDictCursor, question_id: int):
     update = """
     UPDATE question 
-    SET view_number = view_number + 1
+        SET view_number = view_number + 1
     WHERE id = %(question_id)s
     """
     cursor.execute(update, {
@@ -389,9 +398,10 @@ def vote_question(cursor, entry_id, table, vote=0):
 
     cursor.execute(
         sql.SQL("""
-                UPDATE {table} SET 
-                vote_number = vote_number + %(increase)s
-                WHERE id = %(entry_id)s""").
+                UPDATE {table} 
+                    SET vote_number = vote_number + %(increase)s
+                WHERE id = %(entry_id)s
+                """).
             format(table=sql.Identifier(table)), {"entry_id": entry_id, "increase": to_increase})
 
 
