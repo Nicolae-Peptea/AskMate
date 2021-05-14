@@ -6,6 +6,7 @@ import os
 import data_handler
 import data_handler_questions
 import data_handler_answers
+import data_handler_comments
 
 load_dotenv()
 app = Flask(__name__)
@@ -112,7 +113,7 @@ def display_question(question_id):
     my_question = data_handler_questions.get_question(question_id)
     answers = data_handler_answers.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
-    comments = data_handler.get_comments()
+    comments = data_handler_comments.get_comments()
     tags = data_handler.get_question_tags(question_id)
     return render_template("question_page.html",
                            my_question=my_question,
@@ -183,14 +184,14 @@ def post_edited_answer(answer_id):
 
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
-    question_id = data_handler.get_question_id_from_answer(answer_id)
+    question_id = data_handler_comments.get_question_id_from_answer(answer_id)
     data_handler_answers.delete_answer(answer_id, app.config['UPLOAD_PATH'])
     return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route('/answer/<int:answer_id>/vote', methods=["POST"])
 def vote_answer(answer_id):
-    question_id = data_handler.get_question_id_from_answer(answer_id)
+    question_id = data_handler_comments.get_question_id_from_answer(answer_id)
     vote_type = ''.join(dict(request.form).keys())
     data_handler_questions.vote_question(answer_id, 'answer', vote_type)
     return redirect(url_for("display_question", question_id=question_id))
@@ -205,7 +206,7 @@ def comment_on_question(question_id):
 @app.route("/question/<int:question_id>/new-comment", methods=["POST"])
 def post_comment_to_question(question_id):
     comment = request.form
-    data_handler.add_comment_to_question(comment, question_id)
+    data_handler_comments.add_comment_to_question(comment, question_id)
     return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -216,30 +217,30 @@ def comment_on_answer(answer_id):
 
 @app.route("/answer/<int:answer_id>/new-comment", methods=["POST"])
 def post_comment_to_answer(answer_id):
-    question_id = data_handler.get_question_id_from_answer(answer_id)
+    question_id = data_handler_comments.get_question_id_from_answer(answer_id)
     comment = request.form
-    data_handler.add_comment_to_answer(comment, answer_id)
+    data_handler_comments.add_comment_to_answer(comment, answer_id)
     return redirect(url_for("display_question", question_id=question_id))
 
 
 @app.route("/comment/<int:comment_id>/edit")
 def edit_comment(comment_id):
-    comment, question_id = data_handler.get_comment_and_question_id(comment_id)
+    comment, question_id = data_handler_comments.get_comment_and_question_id(comment_id)
     return render_template('manipulate_comment.html', comment=comment)
 
 
 @app.route("/comment/<int:comment_id>/edit", methods=["POST"])
 def post_edited_comment(comment_id):
-    comment, question_id = data_handler.get_comment_and_question_id(comment_id)
+    comment, question_id = data_handler_comments.get_comment_and_question_id(comment_id)
     new_entry = dict(request.form)
-    data_handler.edit_comment(new_entry, comment_id)
+    data_handler_comments.edit_comment(new_entry, comment_id)
     return redirect(url_for('display_question', question_id=question_id))
 
 
 @app.route('/comments/<comment_id>/delete', methods=["POST"])
 def delete_comment(comment_id):
-    comment, question_id = data_handler.get_comment_and_question_id(comment_id)
-    data_handler.delete_comment(comment_id)
+    comment, question_id = data_handler_comments.get_comment_and_question_id(comment_id)
+    data_handler_comments.delete_comment(comment_id)
     return redirect(url_for("display_question", question_id=question_id))
 
 
