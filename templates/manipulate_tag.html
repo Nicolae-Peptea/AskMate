@@ -7,10 +7,10 @@
         <form action="{{ url_for('post_tag_to_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
 
             <label for="answer">Choose an existing tag:</label><br>
-            {%if question_tags%}
+            {%if tags%}
                 <select name="tags" id="tags">
-                    {%for tag in question_tags%}
-                    <option value="name">{{tag['name']}}</option>
+                    {%for tag in tags%}
+                    <option value="{{tag['name']}}">{{tag['name']}}</option>
                     {%endfor%}
                 </select><br>
             {%else%}
