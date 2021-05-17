@@ -70,6 +70,16 @@ def display_latest_questions():
     )
 
 
+@app.route("/registration")
+def register_user():
+    pass
+
+
+@app.route("/registration", methods=["POST"])
+def add_user():
+    pass
+
+
 @app.route("/search")
 def display_searched_questions():
     key_words=request.args.get('q')
