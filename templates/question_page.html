@@ -3,6 +3,7 @@
 {% block page_title %}{{ my_question['title'] }}{% endblock %}
 
 {% block left_section %}
+{% if 'email' in session %}
 <br>
 <div id="manipulate_question_buttons">
     <form action="{{ url_for('answer_question', question_id=my_question['id']) }}">
@@ -15,6 +16,9 @@
         <button id="ask-button">Delete Question</button>
     </form>
 </div>
+{% else %}
+<br>
+{% endif%}
 {% endblock %}
         
 {% block right_section %}
@@ -35,6 +39,7 @@
                 </div>
             {%endif%}
         </div>
+        {% if 'email' in session %}
         <br>
         <div id="comment_for_question">
             <h4>Comments</h4>
@@ -88,12 +93,14 @@
                 Add tag
             </a>
         </div>
+        {% else %}
+        <br>
+        {% endif %}
     </div>
 
     <br>
 
     <div id="answers-header">
-        <h3>Answers</h3>
         <p>
             {{ answers|length }} {% if answers|length == 1 %}Answer{% else %}Answers{%endif%}
         </p>
@@ -116,6 +123,7 @@
                                 <button name="downvote" type="submit"><i class="arrow down"></i></button>
                             </form>
                         </div>
+                        {% if 'email' in session %}
                         <div id="edit_answer">
                             <form action="{{ url_for('edit_answer', answer_id=answer['id']) }}">
                                 <button id="answer_edit_button" type="submit">Edit</button>
@@ -134,6 +142,9 @@
                                 </div>
                             </button>
                         </form>
+                        {% else %}
+                        <br>
+                        {% endif %}
                         
                     </div>
                     <div id="answer-right-side">
@@ -145,6 +156,7 @@
                                 </a>
                             </div>
                         {%endif%}
+                        {% if 'email' in session %}
                         <div id="comment_for_answer">
                             {% if comments %}
                             <h4>Comments</h4>
@@ -180,6 +192,9 @@
                                 Add comment
                             </a>
                         </div>
+                        {% else %}
+                        <br>
+                        {% endif %}
                     </div>
                 </li>
             {% endfor %}
