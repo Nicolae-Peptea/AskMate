@@ -61,19 +61,6 @@ def save_file(uploaded_file, file_name):
     uploaded_file.save(complete_path)
 
 
-@app.route('/images/<filename>')
-def display_image(filename):
-    return send_from_directory(app.config['UPLOAD_PATH'], filename)
-
-
-@app.route("/")
-def display_latest_questions():
-    return render_template(
-        'latest_questions.html',
-        questions=data_handler_questions.get_latest_questions(show=5)
-    )
-
-
 @app.route("/registration")
 def register_user():
     return render_template('register.html')
@@ -108,10 +95,30 @@ def post_login():
         return render_template('login.html', error_message=error_message)
 
 
+@app.route("/users")
+def display_users():
+    if 'email' in session:
+        return render_template('users.html')
+    return redirect(url_for("display_login"))
+
+
 @app.route("/logout")
 def logout():
     session.pop('email', None)
     return redirect(url_for('display_latest_questions'))
+
+
+@app.route('/images/<filename>')
+def display_image(filename):
+    return send_from_directory(app.config['UPLOAD_PATH'], filename)
+
+
+@app.route("/")
+def display_latest_questions():
+    return render_template(
+        'latest_questions.html',
+        questions=data_handler_questions.get_latest_questions(show=5)
+    )
 
 
 @app.route("/search")
