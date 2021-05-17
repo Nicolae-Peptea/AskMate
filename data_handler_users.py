@@ -54,4 +54,4 @@ def get_user_id(cursor, email):
             """),
         {'email': email})
 
-    return cursor.fetchone()['email']
+    return cursor.fetchone()['id']
