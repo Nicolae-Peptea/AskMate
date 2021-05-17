@@ -13,11 +13,17 @@
             <div class="logo">
                 <a href="{{ url_for('display_latest_questions') }}">ASK MATE</a>
             </div>
-            <div class="middle_nav"></div>
+            <div class="between_logo_and_search"></div>
             <div id="search_bar">
                 <form action="{{ url_for('display_searched_questions') }}" method="get">
                     <input id="search_bar_input" type="text" name="q" placeholder="Search...">
                     <button id="search-button" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="between_search_and_join"></div>
+            <div class="join-buttons">
+                <form action="{{ url_for('register_user') }}">
+                    <button id="register-button" type="submit">Sign up</button>
                 </form>
             </div>
         </nav>

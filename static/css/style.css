@@ -65,7 +65,7 @@ nav .nav-items {
 
 nav #search_bar {
     position: relative;
-    width: 30%;
+    width: 50%;
 }
 
 nav #search_bar input[type="text"] {
@@ -76,8 +76,16 @@ nav #search_bar input[type="text"] {
     width: 80%;
 }
 
-nav .middle_nav {
-    width: 50%;
+nav .between_logo_and_search {
+    width: 10%;
+}
+
+nav .between_search_and_join {
+    width: 10%;
+}
+
+nav .join-buttons {
+    width: 10%;
 }
 /* END OF NAV BAR */
 
