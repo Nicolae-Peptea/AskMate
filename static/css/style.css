@@ -311,10 +311,13 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 
 /* ANSWERS */
 #answers-header {
-    display: flex;
-    flex-direction: row;
     margin-bottom: 2%;
     border-bottom: 2px solid #0a52ee;
+}
+
+#answers-header p {
+    width: fit-content;
+    margin-left: 0;
 }
 
 #answers_list li {

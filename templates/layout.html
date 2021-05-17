@@ -20,10 +20,10 @@
                     <button id="search-button" type="submit">Search</button>
                 </form>
             </div>
-            {% if session_email %}
+            {% if 'email' in session %}
             <div class="between_search_and_session_buttons"></div>
             <div class="session_buttons">
-                <p>{{ session_email }}</p>
+                <p>{{ session['email'] }}</p>
                 <form action="{{ url_for('logout') }}">
                     <button id="logout-button" type="submit">Log out</button>
                 </form>

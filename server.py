@@ -68,12 +68,6 @@ def display_image(filename):
 
 @app.route("/")
 def display_latest_questions():
-    if 'email' in session:
-        return render_template(
-            'latest_questions.html',
-            questions=data_handler_questions.get_latest_questions(show=5),
-            session_email=session['email']
-        )
     return render_template(
         'latest_questions.html',
         questions=data_handler_questions.get_latest_questions(show=5)
@@ -142,7 +136,9 @@ def display_all_questions():
 
 @app.route('/add-question')
 def ask_question():
-    return render_template('manipulate_question.html')
+    if 'email' in session:
+        return render_template('manipulate_question.html')
+    return redirect(url_for("display_login"))
 
 
 @app.route('/add-question', methods=["POST"])
@@ -168,8 +164,10 @@ def display_question(question_id):
 
 @app.route("/question/<int:question_id>/edit")
 def edit_question(question_id):
-    question = data_handler_questions.get_question(question_id)
-    return render_template("manipulate_question.html", question=question)
+    if 'email' in session:
+        question = data_handler_questions.get_question(question_id)
+        return render_template("manipulate_question.html", question=question)
+    return redirect(url_for("display_login"))
 
 
 @app.route("/question/<int:question_id>/edit", methods=["POST"])
@@ -183,20 +181,26 @@ def post_edited_question(question_id):
 
 @app.route('/question/<int:question_id>/delete', methods=["POST"])
 def delete_question(question_id):
-    data_handler_questions.delete_question(question_id, app.config['UPLOAD_PATH'])
-    return redirect(url_for('display_all_questions'))
+    if 'email' in session:
+        data_handler_questions.delete_question(question_id, app.config['UPLOAD_PATH'])
+        return redirect(url_for('display_all_questions'))
+    return redirect(url_for("display_login"))
 
 
 @app.route('/question/<int:question_id>/vote', methods=["POST"])
 def vote_question(question_id):
-    vote_type = ''.join(dict(request.form).keys())
-    data_handler_questions.vote_question(question_id, 'question', vote_type)
-    return redirect(url_for('display_all_questions'))
+    if 'email' in session:
+        vote_type = ''.join(dict(request.form).keys())
+        data_handler_questions.vote_question(question_id, 'question', vote_type)
+        return redirect(url_for('display_all_questions'))
+    return redirect(url_for("display_login"))
 
 
 @app.route("/question/<int:question_id>/new-answer")
 def answer_question(question_id):
-    return render_template("manipulate_answer.html", question_id=question_id)
+    if 'email' in session:
+        return render_template("manipulate_answer.html", question_id=question_id)
+    return redirect(url_for("display_login"))
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["POST"])
@@ -208,8 +212,10 @@ def post_answer(question_id):
 
 @app.route("/answer/<int:answer_id>/edit")
 def edit_answer(answer_id):
-    answer = data_handler_answers.get_answer(answer_id)
-    return render_template('manipulate_answer.html', answer=answer)
+    if 'email' in session:
+        answer = data_handler_answers.get_answer(answer_id)
+        return render_template('manipulate_answer.html', answer=answer)
+    return redirect(url_for("display_login"))
 
 
 @app.route("/answer/<int:answer_id>/edit", methods=["POST"])
@@ -223,22 +229,28 @@ def post_edited_answer(answer_id):
 
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
-    question_id = data_handler_comments.get_question_id_from_answer(answer_id)
-    data_handler_answers.delete_answer(answer_id, app.config['UPLOAD_PATH'])
-    return redirect(url_for("display_question", question_id=question_id))
+    if 'email' in session:
+        question_id = data_handler_comments.get_question_id_from_answer(answer_id)
+        data_handler_answers.delete_answer(answer_id, app.config['UPLOAD_PATH'])
+        return redirect(url_for("display_question", question_id=question_id))
+    return redirect(url_for("display_login"))
 
 
 @app.route('/answer/<int:answer_id>/vote', methods=["POST"])
 def vote_answer(answer_id):
-    question_id = data_handler_comments.get_question_id_from_answer(answer_id)
-    vote_type = ''.join(dict(request.form).keys())
-    data_handler_questions.vote_question(answer_id, 'answer', vote_type)
-    return redirect(url_for("display_question", question_id=question_id))
+    if 'email' in session:
+        question_id = data_handler_comments.get_question_id_from_answer(answer_id)
+        vote_type = ''.join(dict(request.form).keys())
+        data_handler_questions.vote_question(answer_id, 'answer', vote_type)
+        return redirect(url_for("display_question", question_id=question_id))
+    return redirect(url_for("display_login"))
 
 
 @app.route("/question/<int:question_id>/new-comment")
 def comment_on_question(question_id):
-    return render_template('manipulate_comment.html', question_id=question_id)
+    if 'email' in session:
+        return render_template('manipulate_comment.html', question_id=question_id)
+    return redirect(url_for("display_login"))
 
 
 @app.route("/question/<int:question_id>/new-comment", methods=["POST"])
@@ -250,7 +262,9 @@ def post_comment_to_question(question_id):
 
 @app.route("/answer/<int:answer_id>/new-comment")
 def comment_on_answer(answer_id):
-    return render_template('manipulate_comment.html', answer_id=answer_id)
+    if 'email' in session:
+        return render_template('manipulate_comment.html', answer_id=answer_id)
+    return redirect(url_for("display_login"))
 
 
 @app.route("/answer/<int:answer_id>/new-comment", methods=["POST"])
@@ -263,8 +277,10 @@ def post_comment_to_answer(answer_id):
 
 @app.route("/comment/<int:comment_id>/edit")
 def edit_comment(comment_id):
-    comment, question_id = data_handler_comments.get_comment_and_question_id(comment_id)
-    return render_template('manipulate_comment.html', comment=comment)
+    if 'email' in session:
+        comment, question_id = data_handler_comments.get_comment_and_question_id(comment_id)
+        return render_template('manipulate_comment.html', comment=comment)
+    return redirect(url_for("display_login"))
 
 
 @app.route("/comment/<int:comment_id>/edit", methods=["POST"])
@@ -277,15 +293,19 @@ def post_edited_comment(comment_id):
 
 @app.route('/comments/<comment_id>/delete', methods=["POST"])
 def delete_comment(comment_id):
-    comment, question_id = data_handler_comments.get_comment_and_question_id(comment_id)
-    data_handler_comments.delete_comment(comment_id)
-    return redirect(url_for("display_question", question_id=question_id))
+    if 'email' in session:
+        comment, question_id = data_handler_comments.get_comment_and_question_id(comment_id)
+        data_handler_comments.delete_comment(comment_id)
+        return redirect(url_for("display_question", question_id=question_id))
+    return redirect(url_for("display_login"))
 
 
 @app.route("/question/<question_id>/new-tag")
 def add_tag_to_question(question_id):
-    tags = data_handler_tags.get_tags()
-    return render_template('manipulate_tag.html', question_id=question_id, tags=tags)
+    if 'email' in session:
+        tags = data_handler_tags.get_tags()
+        return render_template('manipulate_tag.html', question_id=question_id, tags=tags)
+    return redirect(url_for("display_login"))
 
 
 @app.route("/question/<question_id>/new-tag", methods=["POST"])
@@ -297,8 +317,10 @@ def post_tag_to_question(question_id):
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete', methods=["POST"])
 def delete_question_tag(question_id, tag_id):
-    data_handler_tags.delete_question_tag(question_id, tag_id)
-    return redirect(url_for("display_question", question_id=question_id))
+    if 'email' in session:
+        data_handler_tags.delete_question_tag(question_id, tag_id)
+        return redirect(url_for("display_question", question_id=question_id))
+    return redirect(url_for("display_login"))
 
 
 if __name__ == "__main__":
