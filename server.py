@@ -148,7 +148,8 @@ def ask_question():
 @app.route('/add-question', methods=["POST"])
 def post_question():
     new_entry = generate_new_entry(operation='new_question')
-    data_handler_questions.add_question(new_entry)
+    email = session.get('email')
+    data_handler_questions.add_question(new_entry, email)
     question_id = data_handler_questions.get_last_added_question()
     return redirect(url_for("display_question", question_id=question_id))
 
