@@ -1,6 +1,7 @@
 from flask import (Flask, redirect, render_template, request,
-                   send_from_directory, url_for)
+                   send_from_directory, url_for, session)
 from dotenv import load_dotenv
+
 import os
 import data_handler_tags
 import data_handler_questions
@@ -13,6 +14,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
 app.config['UPLOAD_PATH'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 def generate_new_entry(operation, prev_entry=''):
@@ -87,6 +89,23 @@ def add_user():
         error = 'User already exists'
         return render_template('register.html', error_message=error)
     return redirect(url_for('display_latest_questions'))
+
+
+@app.route("/login")
+def login():
+    return render_template('login.html')
+
+
+@app.route("/login", methods=["POST"])
+def login_user():
+    email = request.form.get('email')
+    password = request.form.get('user_pass')
+    session['email'] = email
+    if data_handler_users.is_login_valid(email, password):
+        return redirect(url_for('login'))
+    else:
+        error_message = "Invalid login attempt"
+        return render_template('login.html', error_message=error_message)
 
 
 @app.route("/search")
