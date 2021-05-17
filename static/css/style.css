@@ -89,6 +89,20 @@ nav .join-buttons {
     display: flex;
 }
 
+nav .between_search_and_session_buttons {
+    width: 0;
+}
+
+nav .session_buttons {
+    width: 20%;
+    display: flex;
+}
+
+nav .session_buttons p {
+    color: white;
+    font-weight: bold;
+}
+
 nav #register-button, #login-button, #logout-button {
     border: 1px solid white;
     border-radius: 5px;
@@ -99,6 +113,7 @@ nav #register-button, #login-button, #logout-button {
 }
 
 #logout-button {
+    margin-left: 10px;
     background: coral;
 }
 

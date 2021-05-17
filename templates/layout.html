@@ -20,21 +20,25 @@
                     <button id="search-button" type="submit">Search</button>
                 </form>
             </div>
-            <div class="between_search_and_join"></div>
-            <div class="join-buttons">
-                {% if session_email %}
-                <form action="/logout">
+            {% if session_email %}
+            <div class="between_search_and_session_buttons"></div>
+            <div class="session_buttons">
+                <p>{{ session_email }}</p>
+                <form action="{{ url_for('logout') }}">
                     <button id="logout-button" type="submit">Log out</button>
                 </form>
-                {% else %}
-                <form action="/login">
+            </div>
+            {% else %}
+            <div class="between_search_and_join"></div>
+            <div class="join-buttons">            
+                <form action="{{ url_for('display_login') }}">
                     <button id="login-button" type="submit">Log in</button>
                 </form>
                 <form action="{{ url_for('register_user') }}">
                     <button id="register-button" type="submit">Sign up</button>
                 </form>
-                {% endif %}
             </div>
+            {% endif %}
         </nav>
 
         <div class="content-wrapper">         

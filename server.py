@@ -79,6 +79,7 @@ def display_latest_questions():
         questions=data_handler_questions.get_latest_questions(show=5)
     )
 
+
 @app.route("/registration")
 def register_user():
     return render_template('register.html')
@@ -97,12 +98,12 @@ def add_user():
 
 
 @app.route("/login")
-def login():
+def display_login():
     return render_template('login.html')
 
 
 @app.route("/login", methods=["POST"])
-def login_user():
+def post_login():
     email = request.form.get('email')
     password = request.form.get('user_pass')
     if data_handler_users.is_valid_login(email, password):
@@ -111,6 +112,12 @@ def login_user():
     else:
         error_message = "Invalid login attempt"
         return render_template('login.html', error_message=error_message)
+
+
+@app.route("/logout")
+def logout():
+    session.pop('email', None)
+    return redirect(url_for('display_latest_questions'))
 
 
 @app.route("/search")
