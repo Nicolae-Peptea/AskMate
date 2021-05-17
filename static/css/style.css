@@ -89,7 +89,7 @@ nav .join-buttons {
     display: flex;
 }
 
-nav #register-button {
+nav #register-button, #login-button {
     border: 1px solid white;
     border-radius: 5px;
     background: rgb(108, 135, 253);
@@ -98,7 +98,7 @@ nav #register-button {
     margin-right: 5px;
 }
 
-nav #register-button:hover {
+nav #register-button:hover, #login-button:hover {
     cursor: pointer;
     background: white;
     color: royalblue;
