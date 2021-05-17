@@ -6,6 +6,8 @@ import data_handler_tags
 import data_handler_questions
 import data_handler_answers
 import data_handler_comments
+import data_handler_users
+import psycopg2
 
 load_dotenv()
 app = Flask(__name__)
@@ -70,10 +72,27 @@ def display_latest_questions():
     )
 
 
+@app.route("/registration")
+def register_user():
+    return render_template('register.html')
+
+
+@app.route("/registration", methods=["POST"])
+def add_user():
+    email = request.form.get('email')
+    password = request.form.get('user_pass')
+    try:
+        data_handler_users.add_user(email, password)
+    except psycopg2.Error:
+        error = 'User already exists'
+        return render_template('register.html', error_message=error)
+    return redirect(url_for('display_latest_questions'))
+
+
 @app.route("/search")
 def display_searched_questions():
-    key_words=request.args.get('q')
-    searched_questions=data_handler_questions.get_searched_questions(key_words)
+    key_words = request.args.get('q')
+    searched_questions = data_handler_questions.get_searched_questions(key_words)
     try:
         data_handler_questions.highlight_search(searched_questions, key_words)
     except ValueError:
@@ -240,7 +259,7 @@ def add_tag_to_question(question_id):
 
 @app.route("/question/<question_id>/new-tag", methods=["POST"])
 def post_tag_to_question(question_id):
-    existing_tag, new_tag  = request.form.get('tags'), request.form.get('tag_name')
+    existing_tag, new_tag = request.form.get('tags'), request.form.get('tag_name')
     data_handler_tags.add_question_tag(question_id, new_tag, existing_tag)
     return redirect(url_for("display_question", question_id=question_id))
 

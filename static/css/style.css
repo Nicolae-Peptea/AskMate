@@ -65,7 +65,7 @@ nav .nav-items {
 
 nav #search_bar {
     position: relative;
-    width: 30%;
+    width: 50%;
 }
 
 nav #search_bar input[type="text"] {
@@ -76,8 +76,32 @@ nav #search_bar input[type="text"] {
     width: 80%;
 }
 
-nav .middle_nav {
-    width: 50%;
+nav .between_logo_and_search {
+    width: 10%;
+}
+
+nav .between_search_and_join {
+    width: 10%;
+}
+
+nav .join-buttons {
+    width: 10%;
+    display: flex;
+}
+
+nav #register-button {
+    border: 1px solid white;
+    border-radius: 5px;
+    background: rgb(108, 135, 253);
+    color: white;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+nav #register-button:hover {
+    cursor: pointer;
+    background: white;
+    color: royalblue;
 }
 /* END OF NAV BAR */
 
@@ -144,6 +168,7 @@ nav .middle_nav {
 
 #title-link:hover {
     text-decoration: underline;
+    cursor: pointer;
 }
 /* END OF RIGHT SECTION */
 
@@ -661,3 +686,41 @@ nav .middle_nav {
     border-radius: 5px;
     overflow: auto;
 }
+
+/* REGISTER PAGE */
+.register_form {
+    width: 20%;
+    margin: auto;
+    border: 2px solid royalblue;
+    padding: 10%;
+}
+
+#user_input_section {
+    width: 100%;
+    background-color: #f1f1f1;
+    margin-top: 80px;
+}
+
+.input {
+    width: 100%;
+    margin-bottom: 2%;
+    padding: 10px;
+}
+
+.join_button {
+    padding: 5px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    border-radius: 5px;
+    border: 2px solid royalblue;
+    background: royalblue;
+    color: white;
+}
+
+.join_button:hover {
+    background: white;
+    color: royalblue;
+    cursor: pointer;
+}
+/* END OF REGISTER PAGE */
