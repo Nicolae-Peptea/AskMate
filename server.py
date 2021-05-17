@@ -72,7 +72,7 @@ def display_latest_questions():
 
 @app.route("/registration")
 def register_user():
-    pass
+    return render_template('register.html')
 
 
 @app.route("/registration", methods=["POST"])
@@ -82,8 +82,8 @@ def add_user():
 
 @app.route("/search")
 def display_searched_questions():
-    key_words=request.args.get('q')
-    searched_questions=data_handler_questions.get_searched_questions(key_words)
+    key_words = request.args.get('q')
+    searched_questions = data_handler_questions.get_searched_questions(key_words)
     try:
         data_handler_questions.highlight_search(searched_questions, key_words)
     except ValueError:
@@ -250,7 +250,7 @@ def add_tag_to_question(question_id):
 
 @app.route("/question/<question_id>/new-tag", methods=["POST"])
 def post_tag_to_question(question_id):
-    existing_tag, new_tag  = request.form.get('tags'), request.form.get('tag_name')
+    existing_tag, new_tag = request.form.get('tags'), request.form.get('tag_name')
     data_handler_tags.add_question_tag(question_id, new_tag, existing_tag)
     return redirect(url_for("display_question", question_id=question_id))
 

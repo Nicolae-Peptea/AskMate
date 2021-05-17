@@ -661,3 +661,22 @@ nav .middle_nav {
     border-radius: 5px;
     overflow: auto;
 }
+
+/* REGISTER PAGE */
+.register_form {
+    width: 20%;
+    margin: auto;
+    border: 2px solid royalblue;
+    padding: 10%;
+}
+
+#user_input_section {
+    width: 100%;
+    background-color: #f1f1f1;
+    margin-top: 80px;
+}
+
+.input {
+    margin-bottom: 2%;
+}
+/* END OF REGISTER PAGE */

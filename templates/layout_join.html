@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <meta charset="UTF-8">
+        <title>{% block page_title %}{% endblock %} | ASK-MATE-1</title>
+    </head>
+
+    <body>
+        <nav>
+            <div class="logo">
+                <a href="{{ url_for('display_latest_questions') }}">ASK MATE</a>
+            </div>
+            <div class="middle_nav"></div>
+            <div id="search_bar">
+                <form action="{{ url_for('display_searched_questions') }}" method="get">
+                    <input id="search_bar_input" type="text" name="q" placeholder="Search...">
+                    <button id="search-button" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+        <div class="content-wrapper">         
+
+            <div id="user_input_section">
+                <div id="header_and_nav">
+                    <h2>{{ self.page_title() }}</h2>
+                </div><br>
+
+                {% block user_input_section %}{% endblock %}
+            </div>
+
+        </div>
+    </body>
+
+</html>
