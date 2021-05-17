@@ -101,8 +101,8 @@ def login_user():
     email = request.form.get('email')
     password = request.form.get('user_pass')
     session['email'] = email
-    if data_handler_users.is_login_valid(email, password):
-        return redirect(url_for('login'))
+    if data_handler_users.is_valid_login(email, password):
+        return redirect(url_for('display_latest_questions'))
     else:
         error_message = "Invalid login attempt"
         return render_template('login.html', error_message=error_message)

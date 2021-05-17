@@ -1,4 +1,5 @@
 import os
+import psycopg2
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 
@@ -23,13 +24,23 @@ def add_user(cursor, email, password):
     )
 
 
+def is_valid_login(email, password):
+    try:
+        db_password = get_user_password(email)
+        print (db_password)
+        return util.verify_password(password, db_password)
+    except psycopg2.Error:
+        return
+
+
 @database_common.connection_handler
-def add_question(cursor: RealDictCursor, new_entry: dict):
-    adding = """INSERT INTO question ("submission_time","title","message","image","view_number","vote_number")
-                VALUES (now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
-                """
-    cursor.execute(adding, {
-        'title': new_entry['title'],
-        'message': new_entry['message'],
-        'image': new_entry.get('image', None),
-    })
+def get_user_password(cursor, email):
+    cursor.execute(
+        sql.SQL(
+            """SELECT password FROM users
+            WHERE email = %(email)s
+            """
+        ),
+        {'email': email}
+    )
+    return cursor.fetchone()['password']

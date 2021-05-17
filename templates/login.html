@@ -4,7 +4,7 @@
 
 {% block user_input_section %}
     <div class="register_form">
-        <form method="POST" action="{{ url_for('add_user') }}">
+        <form method="POST" action="{{ url_for('login_user') }}">
             {% if error_message %}
                 <p>{{ error_message }}</p>
             {% endif %}
