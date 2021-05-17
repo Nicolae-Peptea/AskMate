@@ -750,3 +750,33 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     cursor: pointer;
 }
 /* END OF REGISTER PAGE */
+
+/* USERS PAGE */
+
+.users_table table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+.users_table td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.users_table th {
+    padding: 10px;
+    background-color: #2b6eff;
+    color: white;
+}
+
+.users_table tr:nth-child(even){background-color: #ffffff;}
+  
+.users_table tr:hover {background-color: #ddd;}
+
+.users_table table a {
+    text-decoration: none;
+}
+
+/* END OF USERS PAGE */
