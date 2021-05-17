@@ -13,7 +13,7 @@ def add_user(cursor, email, password):
                     VALUES (now()::timestamp(0), %(email)s, %(password)s)"""
                 ).format(
                         table=sql.Identifier('users'),
-                        col_1=sql.Identifier('"registration_time"'),
+                        col_1=sql.Identifier('registration_time'),
                         col_2=sql.Identifier('email'),
                         col_3=sql.Identifier('password')
         ), {

@@ -6,6 +6,8 @@ import data_handler_tags
 import data_handler_questions
 import data_handler_answers
 import data_handler_comments
+import data_handler_users
+import psycopg2
 
 load_dotenv()
 app = Flask(__name__)
@@ -79,8 +81,12 @@ def register_user():
 def add_user():
     email = request.form.get('email')
     password = request.form.get('user_pass')
-    # ceva din data handler
-    pass
+    try:
+        data_handler_users.add_user(email, password)
+    except psycopg2.Error:
+        error = 'User already exists'
+        return render_template('register.html', error_message=error)
+    return redirect(url_for('display_latest_questions'))
 
 
 @app.route("/search")
