@@ -3,6 +3,7 @@ from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 
 import database_common
+import data_handler_users
 
 
 @database_common.connection_handler
@@ -41,11 +42,12 @@ def get_image_names_for_answers(cursor: RealDictCursor, entry_id: int):
 
 
 @database_common.connection_handler
-def add_answer(cursor: RealDictCursor, new_entry: dict, question_id: int):
-    adding = """INSERT INTO answer ("submission_time","question_id","message","image","vote_number")
-                VALUES (now()::timestamp(0), %(question_id)s, %(message)s, %(image)s, 0)
+def add_answer(cursor: RealDictCursor, new_entry: dict, question_id: int, email: str):
+    adding = """INSERT INTO answer (user_id, submission_time, question_id, message, image, vote_number)
+                VALUES (%(user_id)s ,now()::timestamp(0), %(question_id)s, %(message)s, %(image)s, 0)
                 """
     cursor.execute(adding, {
+        'user_id': data_handler_users.get_user_id(email),
         'question_id': question_id,
         'message': new_entry['message'],
         'image': new_entry.get('image', None),

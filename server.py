@@ -207,7 +207,8 @@ def answer_question(question_id):
 @app.route("/question/<int:question_id>/new-answer", methods=["POST"])
 def post_answer(question_id):
     new_entry = generate_new_entry(operation='new_answer')
-    data_handler_answers.add_answer(new_entry=new_entry, question_id=question_id)
+    email = session.get('email')
+    data_handler_answers.add_answer(new_entry=new_entry, question_id=question_id, email=email)
     return redirect(url_for("display_question", question_id=question_id))
 
 
