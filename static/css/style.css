@@ -89,7 +89,7 @@ nav .join-buttons {
     display: flex;
 }
 
-nav #register-button, #login-button {
+nav #register-button, #login-button, #logout-button {
     border: 1px solid white;
     border-radius: 5px;
     background: rgb(108, 135, 253);
@@ -98,10 +98,18 @@ nav #register-button, #login-button {
     margin-right: 5px;
 }
 
-nav #register-button:hover, #login-button:hover {
+#logout-button {
+    background: coral;
+}
+
+nav #register-button:hover, #login-button:hover, #logout-button:hover {
     cursor: pointer;
     background: white;
     color: royalblue;
+}
+
+#logout-button:hover {
+    color: red;
 }
 /* END OF NAV BAR */
 

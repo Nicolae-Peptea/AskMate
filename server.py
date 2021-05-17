@@ -68,11 +68,16 @@ def display_image(filename):
 
 @app.route("/")
 def display_latest_questions():
+    if 'email' in session:
+        return render_template(
+            'latest_questions.html',
+            questions=data_handler_questions.get_latest_questions(show=5),
+            session_email=session['email']
+        )
     return render_template(
         'latest_questions.html',
         questions=data_handler_questions.get_latest_questions(show=5)
     )
-
 
 @app.route("/registration")
 def register_user():
@@ -100,8 +105,8 @@ def login():
 def login_user():
     email = request.form.get('email')
     password = request.form.get('user_pass')
-    session['email'] = email
     if data_handler_users.is_valid_login(email, password):
+        session['email'] = email
         return redirect(url_for('display_latest_questions'))
     else:
         error_message = "Invalid login attempt"
