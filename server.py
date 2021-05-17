@@ -77,6 +77,9 @@ def register_user():
 
 @app.route("/registration", methods=["POST"])
 def add_user():
+    email = request.form.get('email')
+    password = request.form.get('user_pass')
+    # ceva din data handler
     pass
 
 
