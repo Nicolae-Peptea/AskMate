@@ -97,7 +97,9 @@ def post_login():
 
 @app.route("/users")
 def display_users():
-    return render_template('users.html')
+    if 'email' in session:
+        return render_template('users.html')
+    return redirect(url_for("display_login"))
 
 
 @app.route("/logout")
