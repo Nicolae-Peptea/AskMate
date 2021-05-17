@@ -258,7 +258,8 @@ def comment_on_question(question_id):
 @app.route("/question/<int:question_id>/new-comment", methods=["POST"])
 def post_comment_to_question(question_id):
     comment = request.form
-    data_handler_comments.add_comment_to_question(comment, question_id)
+    email = session.get('email')
+    data_handler_comments.add_comment_to_question(comment, question_id, email)
     return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -273,7 +274,8 @@ def comment_on_answer(answer_id):
 def post_comment_to_answer(answer_id):
     question_id = data_handler_comments.get_question_id_from_answer(answer_id)
     comment = request.form
-    data_handler_comments.add_comment_to_answer(comment, answer_id)
+    email = session.get('email')
+    data_handler_comments.add_comment_to_answer(comment, answer_id, email)
     return redirect(url_for("display_question", question_id=question_id))
 
 
