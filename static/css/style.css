@@ -753,6 +753,10 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 
 /* USERS PAGE */
 
+.users_table, #right-section, #user_input_section {
+    background-color: #ebf3ff;
+}
+
 .users_table table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
@@ -780,3 +784,15 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 }
 
 /* END OF USERS PAGE */
+
+/* USER PAGE */
+
+#table_title {
+    font-weight: bold;
+}
+
+#id_column {
+    width: 10%;
+}
+
+/* END OF USER PAGE */
