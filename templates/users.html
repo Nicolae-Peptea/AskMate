@@ -17,14 +17,16 @@
             </thead>
 
             <tbody>
+                {% for user in users_details %}
                 <tr>
-                    <td><a href="">John Doe</a></td>
-                    <td>2021-01-25</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
+                    <td><a href="">{{ user['user_name'] }}</a></td>
+                    <td>{{ user['registration_time'] }}</td>
+                    <td>{{ user['question_number'] }}</td>
+                    <td>{{ user['answer_number'] }}</td>
+                    <td>{{ user['comments_number'] }}</td>
+                    <td>{{ user['reputation'] }}</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
