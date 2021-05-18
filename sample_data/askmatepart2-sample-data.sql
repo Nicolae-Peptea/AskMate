@@ -27,7 +27,8 @@ CREATE TABLE users (
     id serial NOT NULL,
     registration_time timestamp without time zone,
     email text UNIQUE,
-    password text
+    password text,
+    reputation int
 );
 
 DROP TABLE IF EXISTS public.question;
@@ -50,7 +51,8 @@ CREATE TABLE answer (
     vote_number integer,
     question_id integer,
     message text,
-    image text
+    image text,
+    accepted_by_user int DEFAULT 0
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -130,7 +132,7 @@ ALTER TABLE ONLY question_tag
         ON DELETE CASCADE;
 
 
-INSERT INTO users VALUES (0, '2017-04-25 14:55:00', 'ion@doe.com', 'maricica');
+INSERT INTO users VALUES (0, '2017-04-25 14:55:00', 'ion@doe.com', 'maricica', 25);
 
 INSERT INTO question VALUES (0, 0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
 INSERT INTO question VALUES (1, 0, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
