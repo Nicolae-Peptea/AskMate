@@ -36,16 +36,22 @@
         <table class="user_questions_table">
             <thead>
                 <tr>
-                    <th id="id_column">Id</th>
-                    <th id="message_column">Question</th>
+                    <th id="id_column">Link</th>
+                    <th id="message_column">Question Title</th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for user in users_details %}
+                {% for question in questions %}
                 <tr>
-                    <td><a href="">{{ user['user_name'] }}</a></td>
-                    <td>{{ user['registration_time'] }}</td>
+                    <td><a href="{{ url_for('display_question', question_id=question['id']) }}">Go to question</a></td>
+                    <td>
+                        {% if question['title']|length > 150 %}
+                            {{ question['title'][:150] }}...
+                        {% else %}
+                            {{ question['title'] }}
+                        {%endif%}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -55,15 +61,15 @@
         <table class="user_answers_table">
             <thead>
                 <tr>
-                    <th id="id_column">Id</th>
-                    <th id="message_column">Message</th>
+                    <th id="id_column">Link</th>
+                    <th id="message_column">Answer Message</th>
                 </tr>
             </thead>
 
             <tbody>
                 {% for user in users_details %}
                 <tr>
-                    <td><a href="">{{ user['user_name'] }}</a></td>
+                    <td><a href="{{ url_for('display_question', question_id=comment['id']) }}">Go to question</a></td>
                     <td>{{ user['registration_time'] }}</td>
                 </tr>
                 {% endfor %}
@@ -75,7 +81,7 @@
             <thead>
                 <tr>
                     <th id="id_column">Link</th>
-                    <th id="message_column">Message</th>
+                    <th id="message_column">Comment Message</th>
                 </tr>
             </thead>
 

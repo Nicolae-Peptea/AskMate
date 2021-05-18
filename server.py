@@ -109,13 +109,12 @@ def display_user_activity(user_id):
     if 'email' in session:
         activity_details = data_handler_users.get_user_statistics(user_id)
         questions = data_handler_questions.qet_questions_by_user_id(user_id)
-        print (questions)
         answers = {}
         comments = data_handler_comments.get_comment_by_user_id(user_id)
         return render_template(
             'user.html',
             user_details=activity_details,
-            user_id=user_id,
+            questions=questions,
             comments=comments)
     return redirect(url_for("display_login"))
 
