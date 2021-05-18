@@ -82,6 +82,28 @@ def get_searched_questions(cursor: RealDictCursor, phrase: str):
     return cursor.fetchall()
 
 
+@database_common.connection_handler
+def qet_questions_by_user_id(cursor, user_id: int):
+    cursor.execute(
+        sql.SQL(
+            """
+            SELECT {col_1}, {col_2}
+            FROM {table}
+            WHERE {col_3} = %(user_id)s
+            """
+        ).format(
+            table=sql.Identifier('question'),
+            col_1=sql.Identifier('title'),
+            col_2=sql.Identifier('id'),
+            col_3=sql.Identifier('user_id'),
+        ),
+        {
+           'user_id': user_id,
+        }
+    )
+    return cursor.fetchall()
+
+
 def highlight_search(questions: dict, phrase: str):
     if phrase:
         for question in questions:
