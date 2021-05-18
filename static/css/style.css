@@ -718,10 +718,26 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     width: 20%;
     margin: auto;
     border: 2px solid royalblue;
-    padding: 10%;
+    padding: 5%;
 }
 
 #user_input_section {
+    width: 100%;
+    background-color: #f1f1f1;
+    margin-top: 250px;
+}
+
+#user_input_section #header_and_nav {
+    margin-bottom: 20%;
+    align-self: center;
+    justify-content: center;
+}
+
+#user_input_section #header_and_nav h2 {
+    text-align: center;
+}
+
+#user_details_section {
     width: 100%;
     background-color: #f1f1f1;
     margin-top: 80px;
@@ -731,6 +747,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     width: 100%;
     margin-bottom: 2%;
     padding: 10px;
+    padding-right: 0;
 }
 
 .join_button {
@@ -748,6 +765,11 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     background: white;
     color: royalblue;
     cursor: pointer;
+}
+
+#invalid_login {
+    color: red;
+    text-align: center;
 }
 /* END OF REGISTER PAGE */
 
