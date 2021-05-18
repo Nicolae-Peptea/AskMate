@@ -49,7 +49,7 @@ def get_user_password(cursor, email):
 @database_common.connection_handler
 def get_users_details(cursor):
     script = """
-        DROP table if exists final;
+        DROP TABLE IF EXISTS final;
 
         CREATE TEMPORARY TABLE final (
             user_id int,
@@ -66,29 +66,28 @@ def get_users_details(cursor):
 
 
         UPDATE final f SET question_number=q.number_of_questions
-        FROM (SELECT count(id) as number_of_questions, user_id from question GROUP BY user_id) q
+        FROM (SELECT count(id) AS number_of_questions, user_id from question GROUP BY user_id) q
         WHERE f.user_id = q.user_id;
 
 
         UPDATE final f SET answer_number=a.number_of_answers
-        FROM (SELECT count(id) as number_of_answers, user_id from answer GROUP BY user_id) a
+        FROM (SELECT count(id) AS number_of_answers, user_id from answer GROUP BY user_id) a
         WHERE f.user_id = a.user_id;
 
 
         UPDATE final f SET comments_number=c.number_of_comments
-        FROM (SELECT count(id) as number_of_comments, user_id from comment GROUP BY user_id) c
+        FROM (SELECT count(id) AS number_of_comments, user_id from comment GROUP BY user_id) c
         WHERE f.user_id = c.user_id;
 
 
         SELECT user_name, registration_time,
-            coalesce(question_number, 0) as question_number,
-            coalesce(answer_number, 0) as answer_number,
-            coalesce(comments_number, 0) as comments_number,
-            coalesce(reputation, 0) as reputation
+            coalesce(question_number, 0) AS question_number,
+            coalesce(answer_number, 0) AS answer_number,
+            coalesce(comments_number, 0) AS comments_number,
+            coalesce(reputation, 0) AS reputation
         FROM final;
-
     """
     cursor.execute(script)
     results = cursor.fetchall()
-    cursor.execute("DROP table if exists final;")
+    cursor.execute("DROP TABLE IF EXISTS final;")
     return results
