@@ -781,6 +781,11 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 
 .users_table table a {
     text-decoration: none;
+    color: royalblue;
+}
+
+.users_table table a:hover {
+    text-decoration: underline;
 }
 
 /* END OF USERS PAGE */
