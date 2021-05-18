@@ -75,6 +75,8 @@ def add_user():
     except psycopg2.Error:
         error = 'User already exists'
         return render_template('register.html', error_message=error)
+    session['email'] = email
+    flash('You were successfully registered and automatically logged in!')
     return redirect(url_for('display_latest_questions'))
 
 
@@ -89,7 +91,7 @@ def post_login():
     password = request.form.get('user_pass')
     if data_handler_users.is_valid_login(email, password):
         session['email'] = email
-        flash('You were successfully logged in')
+        flash('You were successfully logged in!')
         return redirect(url_for('display_latest_questions'))
     else:
         error_message = "Invalid login attempt"
