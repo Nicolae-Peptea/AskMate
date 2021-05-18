@@ -22,7 +22,17 @@ def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
         raise ValueError
     cursor.execute(
         f"""
-        SELECT * FROM question 
+        SELECT 
+                q.id,
+                q.submission_time,
+                q.view_number,
+                q.vote_number,
+                q.title,
+                q.message,
+                q.image,
+                u.email
+        FROM question q
+        JOIN users u ON u.id = q.user_id
         ORDER BY {order_by} {direction}
         """)
     return cursor.fetchall()
