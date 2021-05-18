@@ -773,7 +773,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     cursor: pointer;
 }
 
-#invalid_login {
+#invalid_login, #invalid_register {
     color: red;
     text-align: center;
 }

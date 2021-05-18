@@ -73,7 +73,7 @@ def add_user():
     try:
         data_handler_users.add_user(email, password)
     except psycopg2.Error:
-        error = 'User already exists'
+        error = 'This user already exists'
         return render_template('register.html', error_message=error)
     session['email'] = email
     flash('You were successfully registered and automatically logged in!')

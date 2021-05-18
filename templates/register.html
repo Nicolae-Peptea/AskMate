@@ -6,10 +6,10 @@
     <div id="header_and_nav">
         <h2>{{ self.page_title() }}</h2>
     </div>
-    
+
     <form method="POST" action="{{ url_for('add_user') }}">
         {% if error_message %}
-            <p>{{ error_message }}</p>
+            <p id="invalid_register">{{ error_message }}</p>
         {% endif %}
 
         <div class="field">
