@@ -64,8 +64,8 @@
                         {% endautoescape %}
                     </p>
                     <div id="question_author">
-                        <p><a href="">{{ question['email'] }}</a></p>
-                        <label>asked <span id="question_submission_time">{{ question['submission_time'] }}</span></label>
+                        <p><a href="{{ url_for('display_user_activity', user_id=question['user_id']) }}">{{ question['email'] }}</a></p>
+                        <label id="question_submission_time">asked on {{ question['submission_time'] }}</label>
                     </div>
                     
                 </div>
