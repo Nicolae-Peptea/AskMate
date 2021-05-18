@@ -69,7 +69,13 @@
                 <div id="header_and_nav">
                     <h2>{{ self.page_title() }}</h2>
                 </div><br>
-
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                    <p id="login_flash">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
                 {% block right_section %}{% endblock %}
             </div>
 
