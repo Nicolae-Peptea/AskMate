@@ -90,7 +90,7 @@ def get_users_details(cursor):
         WHERE f.user_id = c.user_id;
 
 
-        SELECT user_name, registration_time,
+        SELECT user_id, user_name, registration_time,
             coalesce(question_number, 0) AS question_number,
             coalesce(answer_number, 0) AS answer_number,
             coalesce(comments_number, 0) AS comments_number,

@@ -19,7 +19,7 @@
             <tbody>
                 {% for user in users_details %}
                 <tr>
-                    <td><a href="">{{ user['user_name'] }}</a></td>
+                    <td><a href="{{ url_for('display_user', user_id=user['user_id']) }}">{{ user['user_name'] }}</a></td>
                     <td>{{ user['registration_time'] }}</td>
                     <td>{{ user['question_number'] }}</td>
                     <td>{{ user['answer_number'] }}</td>

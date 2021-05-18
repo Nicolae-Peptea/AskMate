@@ -1,0 +1,94 @@
+{% extends "layout_join.html" %}
+
+{% block page_title %}User{% endblock %}
+
+{% block user_input_section %}
+    <div class="users_table">
+        <table>
+            <thead>
+                <tr>
+                    <th>User Id</th>
+                    <th>User name</th>
+                    <th>Registration Date</th>
+                    <th>Asked Questions</th>
+                    <th>Answers</th>
+                    <th>Comments</th>
+                    <th>Reputation</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in users_details %}
+                {% if user['user_id'] == user_id %}
+                    <tr>
+                        <td>{{ user['user_id'] }}</td>
+                        <td>{{ user['user_name'] }}</td>
+                        <td>{{ user['registration_time'] }}</td>
+                        <td>{{ user['question_number'] }}</td>
+                        <td>{{ user['answer_number'] }}</td>
+                        <td>{{ user['comments_number'] }}</td>
+                        <td>{{ user['reputation'] }}</td>
+                    </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table><br>
+
+        <p>Questions</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Question</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in users_details %}
+                <tr>
+                    <td><a href="">{{ user['user_name'] }}</a></td>
+                    <td>{{ user['registration_time'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table><br>
+
+        <p>Answers</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in users_details %}
+                <tr>
+                    <td><a href="">{{ user['user_name'] }}</a></td>
+                    <td>{{ user['registration_time'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table><br>
+
+        <p>Comments</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in users_details %}
+                <tr>
+                    <td><a href="">{{ user['user_name'] }}</a></td>
+                    <td>{{ user['registration_time'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

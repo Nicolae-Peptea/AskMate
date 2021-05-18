@@ -103,6 +103,14 @@ def display_users():
     return redirect(url_for("display_login"))
 
 
+@app.route("/user/<int:user_id>")
+def display_user(user_id):
+    if 'email' in session:
+        users_details = data_handler_users.get_users_details()
+        return render_template('user.html', users_details=users_details, user_id=user_id)
+    return redirect(url_for("display_login"))
+
+
 @app.route("/logout")
 def logout():
     session.pop('email', None)
