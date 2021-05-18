@@ -31,6 +31,28 @@ def get_last_added_answer_id(cursor: RealDictCursor):
 
 
 @database_common.connection_handler
+def qet_answers_by_user_id(cursor, user_id: int):
+    cursor.execute(
+        sql.SQL(
+            """
+            SELECT {col_1}, {col_2}
+            FROM {table}
+            WHERE {col_3} = %(user_id)s
+            """
+        ).format(
+            table=sql.Identifier('answer'),
+            col_1=sql.Identifier('message'),
+            col_2=sql.Identifier('question_id'),
+            col_3=sql.Identifier('user_id'),
+        ),
+        {
+           'user_id': user_id,
+        }
+    )
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def get_image_names_for_answers(cursor: RealDictCursor, entry_id: int):
     query = """
        SELECT image
