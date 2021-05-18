@@ -4,6 +4,7 @@ from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 
 import database_common
+import data_handler_users
 
 
 @database_common.connection_handler
@@ -96,11 +97,12 @@ def highlight_entry(entry: dict, phrase: str, field):
 
 
 @database_common.connection_handler
-def add_question(cursor: RealDictCursor, new_entry: dict):
-    adding = """INSERT INTO question ("submission_time","title","message","image","view_number","vote_number")
-                VALUES (now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
+def add_question(cursor: RealDictCursor, new_entry: dict, email):
+    adding = """INSERT INTO question (user_id, submission_time, title, message, image, view_number, vote_number)
+                VALUES (%(user_id)s, now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
                 """
     cursor.execute(adding, {
+        'user_id': data_handler_users.get_user_id(email),
         'title': new_entry['title'],
         'message': new_entry['message'],
         'image': new_entry.get('image', None),

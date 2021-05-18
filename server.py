@@ -152,7 +152,8 @@ def ask_question():
 @app.route('/add-question', methods=["POST"])
 def post_question():
     new_entry = generate_new_entry(operation='new_question')
-    data_handler_questions.add_question(new_entry)
+    email = session.get('email')
+    data_handler_questions.add_question(new_entry, email)
     question_id = data_handler_questions.get_last_added_question()
     return redirect(url_for("display_question", question_id=question_id))
 
@@ -214,7 +215,8 @@ def answer_question(question_id):
 @app.route("/question/<int:question_id>/new-answer", methods=["POST"])
 def post_answer(question_id):
     new_entry = generate_new_entry(operation='new_answer')
-    data_handler_answers.add_answer(new_entry=new_entry, question_id=question_id)
+    email = session.get('email')
+    data_handler_answers.add_answer(new_entry=new_entry, question_id=question_id, email=email)
     return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -264,7 +266,8 @@ def comment_on_question(question_id):
 @app.route("/question/<int:question_id>/new-comment", methods=["POST"])
 def post_comment_to_question(question_id):
     comment = request.form
-    data_handler_comments.add_comment_to_question(comment, question_id)
+    email = session.get('email')
+    data_handler_comments.add_comment_to_question(comment, question_id, email)
     return redirect(url_for("display_question", question_id=question_id))
 
 
@@ -279,7 +282,8 @@ def comment_on_answer(answer_id):
 def post_comment_to_answer(answer_id):
     question_id = data_handler_comments.get_question_id_from_answer(answer_id)
     comment = request.form
-    data_handler_comments.add_comment_to_answer(comment, answer_id)
+    email = session.get('email')
+    data_handler_comments.add_comment_to_answer(comment, answer_id, email)
     return redirect(url_for("display_question", question_id=question_id))
 
 

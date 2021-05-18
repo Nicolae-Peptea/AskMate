@@ -27,7 +27,6 @@ def add_user(cursor, email, password):
 def is_valid_login(email, password):
     try:
         db_password = get_user_password(email)
-        print (db_password)
         return util.verify_password(password, db_password)
     except psycopg2.Error:
         return
@@ -44,6 +43,17 @@ def get_user_password(cursor, email):
         {'email': email}
     )
     return cursor.fetchone()['password']
+
+@database_common.connection_handler
+def get_user_id(cursor, email):
+    cursor.execute(
+        sql.SQL(
+            """SELECT id FROM users
+            WHERE email = %(email)s
+            """),
+        {'email': email})
+
+    return cursor.fetchone()['id']
 
 
 @database_common.connection_handler
@@ -91,3 +101,5 @@ def get_users_details(cursor):
     results = cursor.fetchall()
     cursor.execute("DROP TABLE IF EXISTS final;")
     return results
+
+
