@@ -65,7 +65,7 @@ CREATE TABLE comment (
     answer_id integer,
     message text,
     submission_time timestamp without time zone,
-    edited_count integer
+    edited_count integer default 0
 );
 
 
@@ -82,7 +82,11 @@ CREATE TABLE tag (
 );
 
 
-ALTER SEQUENCE users_id_seq RESTART with 1 increment by 1;
+ALTER SEQUENCE users_id_seq RESTART WITH 1 increment by 1;
+ALTER SEQUENCE question_id_seq RESTART WITH 1 increment by 1;
+ALTER SEQUENCE answer_id_seq RESTART WITH 1 increment by 1;
+ALTER SEQUENCE comment_id_seq RESTART WITH 1 increment by 1;
+ALTER SEQUENCE tag_id_seq RESTART WITH 1 increment by 1;
 
 
 ALTER TABLE ONLY answer
@@ -137,10 +141,17 @@ ALTER TABLE ONLY question_tag
         ON DELETE CASCADE;
 
 
-INSERT INTO users (registration_time, email, password, reputation) VALUES ('2017-04-25 14:55:00', 'ion@doe.com', 'maricica', 25);
+INSERT INTO users (registration_time, email, password, reputation)
+VALUES ('2017-04-25 14:55:00', 'ion@doe.com', 'maricica', 25);
+INSERT INTO users (registration_time, email, password, reputation)
+VALUES ('2017-04-29 14:55:00', 'gigel@doe.com', 'ioana', 25);
 
-INSERT INTO question VALUES (1, 1, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
-INSERT INTO question VALUES (2, 1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
+
+
+INSERT INTO question (user_id, submission_time, view_number, vote_number, title, message, image)
+            VALUES (1, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
+INSERT INTO question (user_id, submission_time, view_number, vote_number, title, message, image)
+            VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
 
@@ -149,22 +160,29 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 jquery
 booklet
 app.js (bundled file with webpack, including jquery)', 'images/image1.png');
-INSERT INTO question VALUES (3, 1, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
+INSERT INTO question (user_id, submission_time, view_number, vote_number, title, message, image)
+    VALUES (1, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
 ', NULL);
-SELECT pg_catalog.setval('question_id_seq', 2, true);
 
-INSERT INTO answer VALUES (1, 1, '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', NULL);
-INSERT INTO answer VALUES (2, 1, '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg');
-SELECT pg_catalog.setval('answer_id_seq', 2, true);
 
-INSERT INTO comment VALUES (1, 1, 1, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00');
-INSERT INTO comment VALUES (2, 1, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00');
-SELECT pg_catalog.setval('comment_id_seq', 2, true);
+INSERT INTO answer (user_id, submission_time, vote_number, question_id, message, image)
+                VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', NULL);
+INSERT INTO answer (user_id, submission_time, vote_number, question_id, message, image)
+                VALUES (1, '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg');
 
-INSERT INTO tag VALUES (1, 'python');
-INSERT INTO tag VALUES (2, 'sql');
-INSERT INTO tag VALUES (3, 'css');
-SELECT pg_catalog.setval('tag_id_seq', 3, true);
+
+INSERT INTO comment (user_id, question_id, answer_id, message, submission_time)
+                VALUES (1, 1, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00');
+INSERT INTO comment (user_id, question_id, answer_id, message, submission_time)
+                VALUES (1, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00');
+
+
+
+INSERT INTO tag (name) VALUES ('python');
+INSERT INTO tag (name) VALUES ('sql');
+INSERT INTO tag (name) VALUES ('css');
+
+
 
 INSERT INTO question_tag VALUES (1, 1);
 INSERT INTO question_tag VALUES (2, 3);
