@@ -105,10 +105,13 @@ def display_users():
 
 
 @app.route("/user/<int:user_id>")
-def display_user(user_id):
+def display_user_activity(user_id):
     if 'email' in session:
-        users_details = data_handler_users.get_users_details()
-        return render_template('user.html', users_details=users_details, user_id=user_id)
+        activity_details = data_handler_users.get_user_statistics(user_id)
+        questions = {}
+        answers = {}
+        comments = data_handler_comments.get_comment_by_user_id(user_id)
+        return render_template('user.html', users_details=activity_details, user_id=user_id)
     return redirect(url_for("display_login"))
 
 

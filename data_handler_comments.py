@@ -1,6 +1,7 @@
 import database_common
 import data_handler_users
 from psycopg2.extras import RealDictCursor
+from psycopg2 import sql
 
 
 @database_common.connection_handler
@@ -36,6 +37,26 @@ def get_comment_and_question_id(comment_id: int):
     elif comment['answer_id']:
         question_id = get_question_id_from_answer(comment['answer_id'])
     return comment, question_id
+
+
+@database_common.connection_handler
+def get_comment_by_user_id(cursor, user_id: int):
+    cursor.execute(
+        sql.SQL(
+            """
+            SELECT c.message, question.id FROM question
+            JOIN comment c ON question.id = c.question_id
+            WHERE c.user_id = %(user_id)s
+            UNION
+            SELECT c.message, answer.question_id FROM answer
+            JOIN comment c ON answer.id = c.answer_id
+            WHERE c.user_id = %(user_id)s;
+            """
+        ),
+        {"user_id": user_id}
+    )
+
+    return cursor.fetchall()
 
 
 @database_common.connection_handler
