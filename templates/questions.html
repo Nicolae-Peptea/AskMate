@@ -63,6 +63,11 @@
                         {%endif%}
                         {% endautoescape %}
                     </p>
+                    <div id="question_author">
+                        <p><a href="">{{ question['email'] }}</a></p>
+                        <label>asked <span id="question_submission_time">{{ question['submission_time'] }}</span></label>
+                    </div>
+                    
                 </div>
 
             </li>

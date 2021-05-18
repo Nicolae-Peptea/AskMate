@@ -199,6 +199,27 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     color: green;
     font-weight: bold;
 }
+
+#question_author {
+    float: right;
+    margin-top: 3%;
+    margin-right: 2%;
+    font-size: 14px;
+}
+
+#question_author a {
+    text-decoration: none;
+    color: royalblue;
+}
+
+#question_author a:hover {
+    text-decoration: underline;
+}
+
+#question_submission_time {
+    font-size: 12px;
+}
+
 /* END OF RIGHT SECTION */
 
 /* LEFT SECTION */
