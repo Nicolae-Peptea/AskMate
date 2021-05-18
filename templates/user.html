@@ -34,18 +34,12 @@
 
         <p id="table_title">Questions</p>
         <table class="user_questions_table">
-            <thead>
-                <tr>
-                    <th id="id_column">Link</th>
-                    <th id="message_column">Question Title</th>
-                </tr>
-            </thead>
 
             <tbody>
                 {% for question in questions %}
                 <tr>
-                    <td><a href="{{ url_for('display_question', question_id=question['id']) }}">Go to question</a></td>
-                    <td>
+                    <td id="id_column"><a href="{{ url_for('display_question', question_id=question['id']) }}">Go to question</a></td>
+                    <td id="message_column">
                         {% if question['title']|length > 150 %}
                             {{ question['title'][:150] }}...
                         {% else %}
@@ -59,18 +53,13 @@
 
         <p id="table_title">Answers</p>
         <table class="user_answers_table">
-            <thead>
-                <tr>
-                    <th id="id_column">Link</th>
-                    <th id="message_column">Answer Message</th>
-                </tr>
-            </thead>
+            
 
             <tbody>
                 {% for answer in answers %}
                 <tr>
-                    <td><a href="{{ url_for('display_question', question_id=answer['question_id']) }}">Go to question</a></td>
-                    <td>
+                    <td id="id_column"><a href="{{ url_for('display_question', question_id=answer['question_id']) }}">Go to question</a></td>
+                    <td id="message_column">
                         {% if answer['message']|length > 150 %}
                             {{ answer['message'][:150] }}...
                         {% else %}
@@ -84,18 +73,13 @@
 
         <p id="table_title">Comments</p>
         <table class="user_comments_table">
-            <thead>
-                <tr>
-                    <th id="id_column">Link</th>
-                    <th id="message_column">Comment Message</th>
-                </tr>
-            </thead>
+            
 
             <tbody>
                 {% for comment in comments %}
                 <tr>
-                    <td><a href="{{ url_for('display_question', question_id=comment['id']) }}">Go to question</a></td>
-                    <td>
+                    <td id="id_column"><a href="{{ url_for('display_question', question_id=comment['id']) }}">Go to question</a></td>
+                    <td id="message_column">
                         {% if comment['message']|length > 150 %}
                             {{ comment['message'][:150] }}...
                         {% else %}
