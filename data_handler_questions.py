@@ -42,11 +42,19 @@ def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
 def get_latest_questions(cursor: RealDictCursor, show):
     cursor.execute(
         sql.SQL("""
-        SELECT * FROM {table}
-        ORDER BY {column} DESC LIMIT %(show)s
-        """).
-            format(table=sql.Identifier('question'),
-                   column=sql.Identifier('submission_time')),
+        SELECT 
+                q.id,
+                q.submission_time,
+                q.view_number,
+                q.vote_number,
+                q.title,
+                q.message,
+                q.image,
+                u.email 
+        FROM {table} q
+        JOIN users u ON u.id = q.user_id
+        ORDER BY submission_time DESC LIMIT %(show)s
+        """).format(table=sql.Identifier('question')),
         {"show": show}
     )
     return cursor.fetchall()
