@@ -1,5 +1,5 @@
 from flask import (Flask, redirect, render_template, request,
-                   send_from_directory, url_for, session)
+                   send_from_directory, url_for, session, flash)
 from dotenv import load_dotenv
 
 import os
@@ -89,6 +89,7 @@ def post_login():
     password = request.form.get('user_pass')
     if data_handler_users.is_valid_login(email, password):
         session['email'] = email
+        flash('You were successfully logged in')
         return redirect(url_for('display_latest_questions'))
     else:
         error_message = "Invalid login attempt"

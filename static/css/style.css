@@ -193,6 +193,12 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     text-decoration: underline;
     cursor: pointer;
 }
+
+#login_flash {
+    text-align: center;
+    color: green;
+    font-weight: bold;
+}
 /* END OF RIGHT SECTION */
 
 /* LEFT SECTION */
