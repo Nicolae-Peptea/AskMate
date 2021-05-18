@@ -111,7 +111,11 @@ def display_user_activity(user_id):
         questions = {}
         answers = {}
         comments = data_handler_comments.get_comment_by_user_id(user_id)
-        return render_template('user.html', users_details=activity_details, user_id=user_id)
+        return render_template(
+            'user.html',
+            user_details=activity_details,
+            user_id=user_id,
+            comments=comments)
     return redirect(url_for("display_login"))
 
 

@@ -18,8 +18,7 @@
             </thead>
 
             <tbody>
-                {% for user in users_details %}
-                {% if user['user_id'] == user_id %}
+                {% for user in user_details %}
                     <tr>
                         <td>{{ user['user_id'] }}</td>
                         <td>{{ user['user_name'] }}</td>
@@ -29,7 +28,6 @@
                         <td>{{ user['comments_number'] }}</td>
                         <td>{{ user['reputation'] }}</td>
                     </tr>
-                {% endif %}
                 {% endfor %}
             </tbody>
         </table><br>
@@ -76,16 +74,22 @@
         <table class="user_comments_table">
             <thead>
                 <tr>
-                    <th id="id_column">Id</th>
+                    <th id="id_column">Link</th>
                     <th id="message_column">Message</th>
                 </tr>
             </thead>
 
             <tbody>
-                {% for user in users_details %}
+                {% for comment in comments %}
                 <tr>
-                    <td><a href="">{{ user['user_name'] }}</a></td>
-                    <td>{{ user['registration_time'] }}</td>
+                    <td><a href="{{ url_for('display_question', question_id=comment['id']) }}">Go to question</a></td>
+                    <td>
+                        {% if comment['message']|length > 150 %}
+                            {{ comment['message'][:150] }}...
+                        {% else %}
+                            {{ comment['message'] }}
+                        {%endif%}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
