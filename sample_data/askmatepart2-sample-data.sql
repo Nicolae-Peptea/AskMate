@@ -176,13 +176,9 @@ INSERT INTO comment (user_id, question_id, answer_id, message, submission_time)
 INSERT INTO comment (user_id, question_id, answer_id, message, submission_time)
                 VALUES (1, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00');
 
-
-
 INSERT INTO tag (name) VALUES ('python');
 INSERT INTO tag (name) VALUES ('sql');
 INSERT INTO tag (name) VALUES ('css');
-
-
 
 INSERT INTO question_tag VALUES (1, 1);
 INSERT INTO question_tag VALUES (2, 3);
