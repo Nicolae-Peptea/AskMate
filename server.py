@@ -154,6 +154,7 @@ def display_searched_questions():
 
 @app.route("/list")
 def display_all_questions():
+
     order_by = request.args.get('order_by', 'submission_time')
     direction = request.args.get('order_direction', 'desc')
     return render_template('questions.html',

@@ -31,7 +31,7 @@ def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
                 q.message,
                 q.image,
                 u.email,
-                u.id
+                u.id AS user_id
         FROM question q
         JOIN users u ON u.id = q.user_id
         ORDER BY {order_by} {direction}
@@ -52,7 +52,7 @@ def get_latest_questions(cursor: RealDictCursor, show):
                 q.message,
                 q.image,
                 u.email,
-                u.id
+                u.id AS user_id
         FROM {table} q
         JOIN users u ON u.id = q.user_id
         ORDER BY submission_time DESC LIMIT %(show)s
