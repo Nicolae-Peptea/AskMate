@@ -99,7 +99,6 @@ def post_login():
 def display_users():
     if 'email' in session:
         users_details = data_handler_users.get_users_details()
-        print(users_details)
         return render_template('users.html', users_details=users_details)
     return redirect(url_for("display_login"))
 
