@@ -67,10 +67,16 @@
             </thead>
 
             <tbody>
-                {% for user in users_details %}
+                {% for answer in answers %}
                 <tr>
-                    <td><a href="{{ url_for('display_question', question_id=comment['id']) }}">Go to question</a></td>
-                    <td>{{ user['registration_time'] }}</td>
+                    <td><a href="{{ url_for('display_question', question_id=answer['question_id']) }}">Go to question</a></td>
+                    <td>
+                        {% if answer['message']|length > 150 %}
+                            {{ answer['message'][:150] }}...
+                        {% else %}
+                            {{ answer['message'] }}
+                        {%endif%}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
