@@ -258,6 +258,21 @@ def post_edited_answer(answer_id):
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
+@app.route("/answer/<int:answer_id>/accept", methods=["POST"])
+def accept_answer(answer_id):
+    answer = data_handler_answers.get_answer(answer_id)
+    data_handler_answers.mark_answer(answer_id, 'accepted')
+    return redirect(url_for("display_question", question_id=answer['question_id']))
+
+
+@app.route("/answer/<int:answer_id>/remove_accept", methods=["POST"])
+def mark_unaccepted(answer_id):
+    answer = data_handler_answers.get_answer(answer_id)
+    data_handler_answers.mark_answer(answer_id, 'accepted')
+    return redirect(url_for("display_question", question_id=answer['question_id']))
+
+
+
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
     if 'email' in session:
