@@ -1,5 +1,7 @@
 import database_common
 import data_handler_users
+import uuid
+
 from psycopg2.extras import RealDictCursor
 from psycopg2 import sql
 
@@ -61,25 +63,27 @@ def get_comment_by_user_id(cursor, user_id: int):
 
 @database_common.connection_handler
 def add_comment_to_question(cursor: RealDictCursor, new_entry: dict, question_id: int, email: str):
-    adding = """INSERT INTO comment (user_id, submission_time, question_id, message, edited_count)
-                    VALUES (%(user_id)s, now()::timestamp(0), %(question_id)s, %(message)s, 0)
+    adding = """INSERT INTO comment (uuid, user_id, submission_time, question_id, message, edited_count)
+                    VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(question_id)s, %(message)s, 0)
                     """
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),
         'question_id': question_id,
         'message': new_entry['message'],
+        'uuid': str(uuid.uuid4()),
     })
 
 
 @database_common.connection_handler
 def add_comment_to_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int, email: str):
-    adding = """INSERT INTO comment (user_id, submission_time, answer_id, message, edited_count)
-                    VALUES (%(user_id)s, now()::timestamp(0), %(answer_id)s, %(message)s, 0)
+    adding = """INSERT INTO comment (uuid, user_id, submission_time, answer_id, message, edited_count)
+                    VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(answer_id)s, %(message)s, 0)
                     """
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),
         'answer_id': answer_id,
         'message': new_entry['message'],
+        'uuid': str(uuid.uuid4()),
     })
 
 

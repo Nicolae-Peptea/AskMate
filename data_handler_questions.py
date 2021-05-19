@@ -5,6 +5,7 @@ from psycopg2.extras import RealDictCursor
 
 import database_common
 import data_handler_users
+import uuid
 
 
 @database_common.connection_handler
@@ -36,6 +37,7 @@ def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
         f"""
         SELECT
                 q.id,
+                q.uuid,
                 q.submission_time,
                 q.view_number,
                 q.vote_number,
@@ -57,6 +59,7 @@ def get_latest_questions(cursor: RealDictCursor, show):
         sql.SQL("""
             SELECT
                 q.id,
+                q.uuid,
                 q.submission_time,
                 q.view_number,
                 q.vote_number,
@@ -152,14 +155,15 @@ def highlight_entry(entry: dict, phrase: str, field):
 
 @database_common.connection_handler
 def add_question(cursor: RealDictCursor, new_entry: dict, email):
-    adding = """INSERT INTO question (user_id, submission_time, title, message, image, view_number, vote_number)
-                VALUES (%(user_id)s, now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
+    adding = """INSERT INTO question (uuid, user_id, submission_time, title, message, image, view_number, vote_number)
+                VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
                 """
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),
         'title': new_entry['title'],
         'message': new_entry['message'],
         'image': new_entry.get('image', None),
+        'uuid': str(uuid.uuid4()),
     })
 
 

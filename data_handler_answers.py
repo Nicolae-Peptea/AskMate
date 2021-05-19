@@ -4,6 +4,7 @@ from psycopg2.extras import RealDictCursor
 
 import database_common
 import data_handler_users
+import uuid
 
 
 @database_common.connection_handler
@@ -19,6 +20,7 @@ def get_answer(cursor: RealDictCursor, answer_id: int):
 def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     query = """
                 SELECT
+                    a.uuid,
                     a.id,
                     a.submission_time,
                     a.vote_number,
@@ -31,7 +33,8 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int):
                 FROM answer a
                 JOIN users u ON u.id = a.user_id
                 WHERE a.question_id = %(question_id)s
-                ORDER BY vote_number DESC"""
+                ORDER BY vote_number DESC
+                """
     cursor.execute(query, {"question_id": question_id})
     return cursor.fetchall()
 
@@ -77,14 +80,15 @@ def get_image_names_for_answers(cursor: RealDictCursor, entry_id: int):
 
 @database_common.connection_handler
 def add_answer(cursor: RealDictCursor, new_entry: dict, question_id: int, email: str):
-    adding = """INSERT INTO answer (user_id, submission_time, question_id, message, image, vote_number)
-                VALUES (%(user_id)s ,now()::timestamp(0), %(question_id)s, %(message)s, %(image)s, 0)
+    adding = """INSERT INTO answer (uuid, user_id, submission_time, question_id, message, image, vote_number)
+                VALUES (%(uuid)s, %(user_id)s ,now()::timestamp(0), %(question_id)s, %(message)s, %(image)s, 0)
                 """
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),
         'question_id': question_id,
         'message': new_entry['message'],
         'image': new_entry.get('image', None),
+        'uuid': str(uuid.uuid4()),
     })
 
 
