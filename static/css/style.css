@@ -910,3 +910,31 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 }
 
 /* END OF USER PAGE */
+
+/* TAGS PAGE */
+#tags_table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+}
+
+#tags_table th {
+    padding: 10px;
+    background-color: #2b6eff;
+    color: white;
+}
+
+#tags_table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#tags_table tr{background-color: rgb(170, 200, 255)}
+
+#tags_table tr:nth-child(even){background-color: #ffffff;}
+  
+#tags_table tr:hover {background-color: #ddd;}
+/* END OF TAGS PAGE */

@@ -11,6 +11,21 @@ def get_tags(cursor: RealDictCursor):
 
 
 @database_common.connection_handler
+def get_tags_and_questions_count(cursor: RealDictCursor):
+    query = """
+        SELECT
+            tag.name as name,
+            COUNT(question_tag.question_id) as questions
+        FROM tag
+        JOIN question_tag
+            ON question_tag.tag_id = tag.id
+        GROUP BY
+            name;"""
+    cursor.execute(query)
+    return [dict(value) for value in cursor.fetchall()]
+
+
+@database_common.connection_handler
 def get_question_tags(cursor: RealDictCursor, question_id: int):
     query = """
     SELECT * FROM question_tag, tag
@@ -67,8 +82,8 @@ def attach_tag_to_question(cursor: RealDictCursor, question_id: int, tag_id):
 @database_common.connection_handler
 def delete_question_tag(cursor, question_id, tag_id):
     delete = """
-    DELETE FROM question_tag 
-        WHERE 
+    DELETE FROM question_tag
+        WHERE
             question_id = %(question_id)s AND tag_id = %(tag_id)s
     """
     cursor.execute(delete, {'question_id': question_id, 'tag_id': tag_id})

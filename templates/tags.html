@@ -7,15 +7,24 @@
     <hr>
     <br>
     <div id="tags">
-        {%for tag in tags%}
-        <div id="tag">
-            {{tag['name']}} 
-            {% if 'email' in session %}
-            <form action="{{ url_for('delete_question_tag', question_id=my_question['id'], tag_id=tag['id']) }}" method="post">
-                <button type="submit">x</button>
-            </form>
-            {%endif%}
-        </div>
-        {%endfor%}
+        <table id="tags_table">
+            <thead>
+                <tr>
+                    <th>Tag Name</th>
+                    <th>Questions Count</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for tag in tags %}
+                <tr>
+                    <td id="tag_name_column">{{tag['name']}}</td>
+                    <td id="questions_count_for_tag">
+                        {{tag['questions']}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
