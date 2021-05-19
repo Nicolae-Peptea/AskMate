@@ -221,7 +221,12 @@ def delete_question(question_id):
 def vote_question(question_id):
     if 'email' in session:
         vote_type = ''.join(dict(request.form).keys())
-        data_handler_questions.vote_question(question_id, 'question', vote_type)
+        if vote_type == 'upvote':
+            data_handler_questions.up_vote_question(question_id)
+            data_handler_users.change_reputation(value=5, user_email=session.get('email'))
+        else:
+            data_handler_questions.down_vote_question(question_id)
+            data_handler_users.change_reputation(value=-2, user_email=session.get('email'))
         return redirect(url_for('display_all_questions'))
     return redirect(url_for("display_login"))
 

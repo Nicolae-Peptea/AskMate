@@ -241,13 +241,21 @@ def update_views(cursor: RealDictCursor, question_id: int):
 
 
 @database_common.connection_handler
-def vote_question(cursor, entry_id, table, vote=0):
-    to_increase = 1 if vote == 'upvote' else - 1
-
+def up_vote_question(cursor, question_id):
     cursor.execute(
         sql.SQL("""
                 UPDATE {table} 
-                    SET vote_number = vote_number + %(increase)s
-                WHERE id = %(entry_id)s
-                """).
-            format(table=sql.Identifier(table)), {"entry_id": entry_id, "increase": to_increase})
+                    SET vote_number = vote_number + 1
+                WHERE id = %(entry_id)s;
+                """
+                ).format(table=sql.Identifier('question')), {"entry_id": question_id})
+
+
+def down_vote_question(cursor, question_id):
+    cursor.execute(
+        sql.SQL("""
+                UPDATE {table}
+                    SET vote_number = vote_number - 1
+                WHERE id = %(entry_id)s;
+                """
+                ).format(table=sql.Identifier('question')), {"entry_id": question_id})

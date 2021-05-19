@@ -142,3 +142,24 @@ def get_user_statistics(cursor, user_id):
     results = cursor.fetchall()
     cursor.execute("DROP TABLE IF EXISTS final;")
     return results
+
+
+@database_common.connection_handler
+def change_reputation(cursor, value, user_email):
+    cursor.execute(
+        sql.SQL(
+            """
+            UPDATE {table}
+            SET {col_1} = {col_1} + %(change)s
+            WHERE {col_2} = %(email)s;
+            """
+        ).format(
+            table=sql.Identifier('users'),
+            col_1=sql.Identifier('reputation'),
+            col_2=sql.Identifier('email')
+        ),
+        {
+            'change': value,
+            'email': user_email,
+        }
+    )
