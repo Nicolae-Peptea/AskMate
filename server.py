@@ -226,6 +226,7 @@ def vote_question(question_id):
             data_handler_users.change_reputation_based_on_question(value=5, entry_id=question_id)
         else:
             data_handler_questions.down_vote_question(question_id)
+            data_handler_users.change_reputation_based_on_question(value=-2, entry_id=question_id)
         return redirect(url_for('display_all_questions'))
     return redirect(url_for("display_login"))
 
@@ -295,6 +296,7 @@ def vote_answer(answer_id):
             data_handler_users.change_reputation_based_on_answer(value=10, entry_id=answer_id)
         else:
             data_handler_answers.down_vote_answer(answer_id)
+            data_handler_users.change_reputation_based_on_answer(value=-2, entry_id=answer_id)
         return redirect(url_for("display_question", question_id=question_id))
     return redirect(url_for("display_login"))
 
