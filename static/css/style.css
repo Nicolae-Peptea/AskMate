@@ -32,7 +32,7 @@ nav {
     margin: 0;
     padding: 1%;
     overflow: hidden;
-
+    z-index: 10;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -137,7 +137,6 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 #session_email a:hover {
     text-decoration: underline;
 }
-
 /* END OF NAV BAR */
 
 /* RIGHT SECTION */
@@ -178,14 +177,17 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     padding: 1%;
 }
 
-#right-section li:nth-child(even) #question-block {
+#right-section li:nth-child(even) 
+#question-block {
     background-color: #7ec5ff;
 }
-#right-section li:nth-child(even) #question_views_votes {
+#right-section li:nth-child(even) 
+#question_views_votes {
     background-color: #7ec5ff;
 }
 
-#right-section li:nth-child(even) #voting button {
+#right-section li:nth-child(even) 
+#voting button {
     background-color: #ffffff;
 }
 
@@ -231,7 +233,6 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 #question_submission_time {
     font-size: 12px;
 }
-
 /* END OF RIGHT SECTION */
 
 /* LEFT SECTION */
@@ -244,7 +245,6 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     margin-right: 1%;
     position: sticky;
     top: 70px;
-
     position: fixed;
     z-index: 1;
     overflow-x: hidden;
@@ -280,20 +280,18 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 	color: black;
 	font-weight: bold;
 	font-size: 20px;
-
 	position: relative;
     width: 100%;
 	padding: 10%;
     margin: 1%;
-
     border: 2px solid #0a52ee;
     border-radius: 10px;
     overflow: hidden;
-
     -webkit-transition: background-color 0.3s linear, color 0.3s linear;
     transition: background-color 0.3s linear, color 0.3s linear;
     background: rgba(255, 255, 255, 0);
 }
+
 #ask-button:hover {
     color: white;
     background-color: #0a52ee;
@@ -436,7 +434,8 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     padding: 1%;
 }
 
-#accepted_button, #accepted_check {
+#accepted_button, 
+#accepted_check {
     border: none;
     background-color: greenyellow;
     border-radius: 100px;
@@ -482,7 +481,6 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     cursor: pointer;
     background: greenyellow;
 }
-
 /* END OF ANSWERS */
 
 /* VOTING */
@@ -896,13 +894,16 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     color: white;
 }
 
-.users_table tr:nth-child(even){background-color: #ffffff;}
+.users_table tr {background-color: rgb(192, 214, 253)}
+
+.users_table tr:nth-child(even) {background-color: #ffffff;}
   
 .users_table tr:hover {background-color: #ddd;}
 
 .users_table table a {
     text-decoration: none;
     color: royalblue;
+    font-weight: bold;
 }
 
 .users_table table a:hover {
