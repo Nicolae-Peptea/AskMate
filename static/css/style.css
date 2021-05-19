@@ -113,6 +113,7 @@ nav #register-button, #login-button, #logout-button {
 }
 
 #logout-button {
+    margin-top: 7px;
     margin-left: 10px;
     background: coral;
 }
@@ -126,6 +127,17 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 #logout-button:hover {
     color: red;
 }
+
+#session_email a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+#session_email a:hover {
+    text-decoration: underline;
+}
+
 /* END OF NAV BAR */
 
 /* RIGHT SECTION */
