@@ -711,6 +711,11 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     padding: 0.4%;
     border-radius: 5px;
     background-color: whitesmoke;
+    margin-left: 3%;
+}
+
+#comment_for_answer {
+    margin-top: 1%;
 }
 
 #comment_for_question h4, #comment_for_answer h4 {
@@ -762,7 +767,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     width: 20%;
 }
 
-#question-message {
+#question-message, #answer-message {
     margin-bottom: 1%;
     background-color: white;
     padding: 1%;
