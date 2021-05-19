@@ -349,7 +349,7 @@ def delete_comment(comment_id):
 
 @app.route("/tags")
 def display_tags():
-    tags = data_handler_tags.get_tags()
+    tags = data_handler_tags.get_tags_and_questions_count()
     return render_template('tags.html', tags=tags)
 
 
