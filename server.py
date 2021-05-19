@@ -347,6 +347,12 @@ def delete_comment(comment_id):
     return redirect(url_for("display_login"))
 
 
+@app.route("/tags")
+def display_tags():
+    tags = data_handler_tags.get_tags()
+    return render_template('tags.html', tags=tags)
+
+
 @app.route("/question/<question_id>/new-tag")
 def add_tag_to_question(question_id):
     if 'email' in session:
