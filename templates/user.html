@@ -38,7 +38,7 @@
             <tbody>
                 {% for question in questions %}
                 <tr>
-                    <td id="id_column"><a href="{{ url_for('display_question', question_id=question['id']) }}">Go to question</a></td>
+                    <td id="link_column"><a href="{{ url_for('display_question', question_id=question['id']) }}">Go to question</a></td>
                     <td id="message_column">
                         {% if question['title']|length > 150 %}
                             {{ question['title'][:150] }}...
@@ -58,7 +58,7 @@
             <tbody>
                 {% for answer in answers %}
                 <tr>
-                    <td id="id_column"><a href="{{ url_for('display_question', question_id=answer['question_id']) }}">Go to question</a></td>
+                    <td id="link_column"><a href="{{ url_for('display_question', question_id=answer['question_id']) }}">Go to question</a></td>
                     <td id="message_column">
                         {% if answer['message']|length > 150 %}
                             {{ answer['message'][:150] }}...
@@ -78,7 +78,7 @@
             <tbody>
                 {% for comment in comments %}
                 <tr>
-                    <td id="id_column"><a href="{{ url_for('display_question', question_id=comment['id']) }}">Go to question</a></td>
+                    <td id="link_column"><a href="{{ url_for('display_question', question_id=comment['id']) }}">Go to question</a></td>
                     <td id="message_column">
                         {% if comment['message']|length > 150 %}
                             {{ comment['message'][:150] }}...

@@ -17,8 +17,20 @@ def get_answer(cursor: RealDictCursor, answer_id: int):
 
 @database_common.connection_handler
 def get_answers_for_question(cursor: RealDictCursor, question_id: int):
-    query = """SELECT * FROM answer
-                WHERE question_id = %(question_id)s
+    query = """
+                SELECT
+                    a.id,
+                    a.submission_time,
+                    a.vote_number,
+                    a.question_id,
+                    a.message,
+                    a.image,
+                    a.accepted_by_user,
+                    u.email,
+                    u.id AS user_id
+                FROM answer a
+                JOIN users u ON u.id = a.user_id
+                WHERE a.question_id = %(question_id)s
                 ORDER BY vote_number DESC"""
     cursor.execute(query, {"question_id": question_id})
     return cursor.fetchall()
@@ -87,8 +99,8 @@ def edit_answer(new_entry: dict):
 @database_common.connection_handler
 def edit_answer_receiving_image(cursor: RealDictCursor, new_entry: dict, image):
     edit = """
-    UPDATE answer 
-        SET 
+    UPDATE answer
+        SET
             message = %(new_message)s,
             image = %(new_image)s
     WHERE id = %(answer_id)s
@@ -103,7 +115,7 @@ def edit_answer_receiving_image(cursor: RealDictCursor, new_entry: dict, image):
 @database_common.connection_handler
 def edit_answer_receiving_no_image(cursor: RealDictCursor, new_entry: dict, answer_id: int):
     edit = """
-    UPDATE answer 
+    UPDATE answer
         SET message = %(new_message)s
     WHERE id = %(answer_id)s
     """
@@ -142,11 +154,11 @@ def mark_answer(cursor, answer_id, status: str):
     if status == 'accepted':
         to_modify = 1
     else:
-        to_modify = -1
+        to_modify = 0
 
     cursor.execute(
         sql.SQL(
-            """UPDATE {table} 
+            """UPDATE {table}
                 SET {col_1} = %(to_modify)s
                 WHERE {col_2} = %(answer_id)s;"""
         ).format(

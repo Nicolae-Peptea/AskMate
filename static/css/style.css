@@ -298,8 +298,9 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     display: flex;
     border: 1px solid royalblue;
     width: fit-content;
-    margin-right: 1px;
+    margin-right: 1%;
     border-radius: 3px;
+    padding: 2px;
 }
 
 #tag button {
@@ -416,34 +417,56 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     margin-bottom: 5%;
 }
 
-#check_selected button {
+#accept_button {
     border: none;
     background: transparent;
     border-radius: 100px;
     padding: 1%;
 }
 
-#check_selected button:before {
+#accepted_button, #accepted_check {
+    border: none;
+    background-color: greenyellow;
+    border-radius: 100px;
+    padding: 1%;
+}
+
+#accept_button:before {
     content: "\2713";
     font-size: 50px;
     font-weight: 700;
     font-style: normal;
 }
 
-#check_selected button:hover {
+#accepted_button:before,
+#accepted_check:before {
+    border: none;
+    background-color: greenyellow;
+    border-radius: 100px;
+
+    content: "\2713";
+    font-size: 50px;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#accept_button:hover {
     cursor: pointer;
     background: greenyellow;
 }
 
+#accepted_button:hover {
+    cursor: pointer;
+    background-color: coral;
+}
+
 #answers_list li:nth-child(even) 
-#answer-left-side 
-#check_selected button {
+#accept_button {
     background-color: #ffffff;
 }
 
 #answers_list li:nth-child(even) 
-#answer-left-side 
-#check_selected button:hover {
+#accept_button:hover {
     cursor: pointer;
     background: greenyellow;
 }
@@ -711,9 +734,14 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     padding: 0.4%;
     border-radius: 5px;
     background-color: whitesmoke;
+    margin-left: 3%;
 }
 
-#comment_for_question h4, #comment_for_answer h4 {
+#comment_for_answer {
+    margin-top: 1%;
+}
+
+#comment_for_question h4, #comment_for_answer h4, #question_tags h4 {
     margin-top: 0.5%;
     border-bottom: 1px solid royalblue;
 }
@@ -762,7 +790,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     width: 20%;
 }
 
-#question-message {
+#question-message, #answer-message {
     margin-bottom: 1%;
     background-color: white;
     padding: 1%;
@@ -877,7 +905,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     font-weight: bold;
 }
 
-#id_column {
+#link_column {
     width: 10%;
 }
 
