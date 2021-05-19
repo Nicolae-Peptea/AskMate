@@ -223,10 +223,9 @@ def vote_question(question_id):
         vote_type = ''.join(dict(request.form).keys())
         if vote_type == 'upvote':
             data_handler_questions.up_vote_question(question_id)
-            data_handler_users.change_reputation(value=5, user_email=session.get('email'))
+            data_handler_users.change_reputation_based_on_question(value=5, entry_id=question_id)
         else:
             data_handler_questions.down_vote_question(question_id)
-            data_handler_users.change_reputation(value=-2, user_email=session.get('email'))
         return redirect(url_for('display_all_questions'))
     return redirect(url_for("display_login"))
 

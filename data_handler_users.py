@@ -145,21 +145,40 @@ def get_user_statistics(cursor, user_id):
 
 
 @database_common.connection_handler
-def change_reputation(cursor, value, user_email):
+def change_reputation_based_on_question(cursor, value, entry_id):
     cursor.execute(
         sql.SQL(
             """
-            UPDATE {table}
-            SET {col_1} = {col_1} + %(change)s
-            WHERE {col_2} = %(email)s;
+            update users
+            set reputation = reputation + %(change)s
+            where users.email = (
+            select users.email from users
+            join question q on users.id = q.user_id
+            WHERE q.id = %(entry_id)s)
             """
-        ).format(
-            table=sql.Identifier('users'),
-            col_1=sql.Identifier('reputation'),
-            col_2=sql.Identifier('email')
         ),
         {
             'change': value,
-            'email': user_email,
+            'entry_id': entry_id,
+        }
+    )
+
+
+@database_common.connection_handler
+def change_reputation_based_on_answer(cursor, value, entry_id):
+    cursor.execute(
+        sql.SQL(
+            """
+            update users
+            set reputation = reputation + %(change)s
+            where users.email = (
+            select users.email from users
+            join answer a on users.id = a.user_id
+            WHERE a.id = %(entry_id)s)
+            """
+        ),
+        {
+            'change': value,
+            'entry_id': entry_id,
         }
     )

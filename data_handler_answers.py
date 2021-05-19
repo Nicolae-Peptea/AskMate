@@ -151,10 +151,7 @@ def delete_answer_image(entry_id, path):
 
 @database_common.connection_handler
 def mark_answer(cursor, answer_id, status: str):
-    if status == 'accepted':
-        to_modify = 1
-    else:
-        to_modify = 0
+    to_modify = 1 if status == 'accepted' else 0
 
     cursor.execute(
         sql.SQL(

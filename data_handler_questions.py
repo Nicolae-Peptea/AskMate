@@ -251,6 +251,7 @@ def up_vote_question(cursor, question_id):
                 ).format(table=sql.Identifier('question')), {"entry_id": question_id})
 
 
+@database_common.connection_handler
 def down_vote_question(cursor, question_id):
     cursor.execute(
         sql.SQL("""

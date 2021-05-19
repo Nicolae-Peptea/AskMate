@@ -28,7 +28,7 @@ CREATE TABLE users (
     registration_time timestamp without time zone,
     email text UNIQUE,
     password text,
-    reputation int
+    reputation int default 0
 );
 
 
