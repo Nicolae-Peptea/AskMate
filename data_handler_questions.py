@@ -9,8 +9,20 @@ import data_handler_users
 
 @database_common.connection_handler
 def get_question(cursor: RealDictCursor, question_id: int):
-    query = """SELECT * FROM question
-                WHERE id = %(question_id)s"""
+    query = """
+            SELECT
+                q.id,
+                q.submission_time,
+                q.view_number,
+                q.vote_number,
+                q.title,
+                q.message,
+                q.image,
+                u.email,
+                u.id AS user_id
+            FROM question q
+            JOIN users u ON u.id = q.user_id
+            WHERE q.id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
     return dict(cursor.fetchone())
 
@@ -22,7 +34,7 @@ def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
         raise ValueError
     cursor.execute(
         f"""
-        SELECT 
+        SELECT
                 q.id,
                 q.submission_time,
                 q.view_number,

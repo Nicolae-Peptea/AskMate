@@ -129,13 +129,15 @@
                                 <button id="answer_edit_button" type="submit">Edit</button>
                             </form>
                         </div>
-
+                        <br>
+                        {% if my_question['email'] == session['email'] %}
                         <div id="check_selected">
                             <form action="">
                                 <button type="submit"></button>
                             </form>
                         </div>
-
+                        <br>
+                        {% endif %}
 
                         <form id="delete-answer" action="{{ url_for('delete_answer', answer_id=answer['id']) }}" method="post">
                             <button type="submit">
