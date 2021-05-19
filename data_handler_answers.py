@@ -99,8 +99,8 @@ def edit_answer(new_entry: dict):
 @database_common.connection_handler
 def edit_answer_receiving_image(cursor: RealDictCursor, new_entry: dict, image):
     edit = """
-    UPDATE answer 
-        SET 
+    UPDATE answer
+        SET
             message = %(new_message)s,
             image = %(new_image)s
     WHERE id = %(answer_id)s
@@ -115,7 +115,7 @@ def edit_answer_receiving_image(cursor: RealDictCursor, new_entry: dict, image):
 @database_common.connection_handler
 def edit_answer_receiving_no_image(cursor: RealDictCursor, new_entry: dict, answer_id: int):
     edit = """
-    UPDATE answer 
+    UPDATE answer
         SET message = %(new_message)s
     WHERE id = %(answer_id)s
     """
@@ -158,7 +158,7 @@ def mark_answer(cursor, answer_id, status: str):
 
     cursor.execute(
         sql.SQL(
-            """UPDATE {table} 
+            """UPDATE {table}
                 SET {col_1} = %(to_modify)s
                 WHERE {col_2} = %(answer_id)s;"""
         ).format(

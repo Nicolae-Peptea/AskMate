@@ -55,7 +55,7 @@ def get_questions(cursor: RealDictCursor, order_by: str, direction: str):
 def get_latest_questions(cursor: RealDictCursor, show):
     cursor.execute(
         sql.SQL("""
-        SELECT 
+            SELECT
                 q.id,
                 q.submission_time,
                 q.view_number,
@@ -65,10 +65,10 @@ def get_latest_questions(cursor: RealDictCursor, show):
                 q.image,
                 u.email,
                 u.id AS user_id
-        FROM {table} q
-        JOIN users u ON u.id = q.user_id
-        ORDER BY submission_time DESC LIMIT %(show)s
-        """).format(table=sql.Identifier('question')),
+            FROM {table} q
+            JOIN users u ON u.id = q.user_id
+            ORDER BY submission_time DESC LIMIT %(show)s
+            """).format(table=sql.Identifier('question')),
         {"show": show}
     )
     return cursor.fetchall()
@@ -191,7 +191,7 @@ def edit_question_receiving_image(cursor: RealDictCursor, new_entry: dict, new_i
 @database_common.connection_handler
 def edit_question_receiving_no_image(cursor: RealDictCursor, new_entry: dict):
     edit = """
-         UPDATE question 
+         UPDATE question
              SET title = %(new_title)s,
              message = %(new_message)s
          WHERE id = %(question_id)s
@@ -231,7 +231,7 @@ def delete_question_images(entry_id, path):
 @database_common.connection_handler
 def update_views(cursor: RealDictCursor, question_id: int):
     update = """
-    UPDATE question 
+    UPDATE question
         SET view_number = view_number + 1
     WHERE id = %(question_id)s
     """
@@ -246,8 +246,9 @@ def vote_question(cursor, entry_id, table, vote=0):
 
     cursor.execute(
         sql.SQL("""
-                UPDATE {table} 
+                UPDATE {table}
                     SET vote_number = vote_number + %(increase)s
                 WHERE id = %(entry_id)s
-                """).
-            format(table=sql.Identifier(table)), {"entry_id": entry_id, "increase": to_increase})
+                """).format(table=sql.Identifier(table)),
+        {"entry_id": entry_id, "increase": to_increase}
+    )

@@ -905,7 +905,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     font-weight: bold;
 }
 
-#id_column {
+#link_column {
     width: 10%;
 }
 
