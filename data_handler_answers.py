@@ -135,3 +135,27 @@ def delete_answer_image(entry_id, path):
         for file in file_list:
             os.unlink(os.path.join(path, file))
     raise ValueError
+
+
+@database_common.connection_handler
+def mark_answer(cursor, answer_id, status: str):
+    if status == 'accepted':
+        to_modify = 1
+    else:
+        to_modify = -1
+
+    cursor.execute(
+        sql.SQL(
+            """UPDATE {table} 
+                SET {col_1} = %(to_modify)s
+                WHERE {col_2} = %(answer_id)s;"""
+        ).format(
+            table=sql.Identifier('answer'),
+            col_1=sql.Identifier('accepted_by_user'),
+            col_2=sql.Identifier('id'),
+        ),
+        {
+            'to_modify': to_modify,
+            'answer_id': answer_id,
+        }
+    )

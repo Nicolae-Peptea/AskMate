@@ -143,7 +143,7 @@
                         <br>
                         {% if my_question['email'] == session['email'] %}
                         <div id="check_selected">
-                            <form action="">
+                            <form action="{{ url_for('accept_answer', answer_id=answer['id']) }}" method="post">
                                 <button type="submit"></button>
                             </form>
                         </div>
