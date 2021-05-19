@@ -120,10 +120,11 @@
     <div id="answers_list">
         <ul>
             {% for answer in answers %}
-                <li>
+                <li id="{{ answer['uuid'] }}">
                     <div id="answer-left-side">
                         <div id="voting">
                             <form action="{{ url_for('vote_answer', answer_id=answer['id']) }}" method="post">
+                                <input type="hidden" name="vote" value="{{ answer['uuid'] }}">
                                 <button name="upvote" type="submit"><i class="arrow up"></i></button>
                             </form>
                             <p>
