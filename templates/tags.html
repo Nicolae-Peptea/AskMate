@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
 
-{% block page_title %}{%if answer %}Edit{%else%}Add new{%endif%} answer{% endblock %}
+{% block page_title %}Tags{% endblock %}
 
 {% block right_section %}
+    <p>A tag is a keyword or label that categorizes your question with other, similar questions. <br> Using the right tags makes it easier for others to find and answer your question.</p>
+    <hr>
+    <br>
     <div id="tags">
         {%for tag in tags%}
         <div id="tag">
