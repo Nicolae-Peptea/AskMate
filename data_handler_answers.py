@@ -17,8 +17,20 @@ def get_answer(cursor: RealDictCursor, answer_id: int):
 
 @database_common.connection_handler
 def get_answers_for_question(cursor: RealDictCursor, question_id: int):
-    query = """SELECT * FROM answer
-                WHERE question_id = %(question_id)s
+    query = """
+                SELECT
+                    a.id,
+                    a.submission_time,
+                    a.vote_number,
+                    a.question_id,
+                    a.message,
+                    a.image,
+                    a.accepted_by_user,
+                    u.email,
+                    u.id AS user_id
+                FROM answer a
+                JOIN users u ON u.id = a.user_id
+                WHERE a.question_id = %(question_id)s
                 ORDER BY vote_number DESC"""
     cursor.execute(query, {"question_id": question_id})
     return cursor.fetchall()

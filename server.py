@@ -272,7 +272,6 @@ def mark_unaccepted(answer_id):
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 
-
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
 def delete_answer(answer_id):
     if 'email' in session:
