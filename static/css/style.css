@@ -416,6 +416,38 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     margin-bottom: 5%;
 }
 
+#check_selected button {
+    border: none;
+    background: transparent;
+    border-radius: 100px;
+    padding: 1%;
+}
+
+#check_selected button:before {
+    content: "\2713";
+    font-size: 50px;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#check_selected button:hover {
+    cursor: pointer;
+    background: greenyellow;
+}
+
+#answers_list li:nth-child(even) 
+#answer-left-side 
+#check_selected button {
+    background-color: #ffffff;
+}
+
+#answers_list li:nth-child(even) 
+#answer-left-side 
+#check_selected button:hover {
+    cursor: pointer;
+    background: greenyellow;
+}
+
 /* END OF ANSWERS */
 
 /* VOTING */
