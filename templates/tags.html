@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Tags{% endblock %}
+
+{% block right_section %}
+    <p>A tag is a keyword or label that categorizes your question with other, similar questions. <br> Using the right tags makes it easier for others to find and answer your question.</p>
+    <hr>
+    <br>
+    <div id="tags">
+        {%for tag in tags%}
+        <div id="tag">
+            {{tag['name']}} 
+            {% if 'email' in session %}
+            <form action="{{ url_for('delete_question_tag', question_id=my_question['id'], tag_id=tag['id']) }}" method="post">
+                <button type="submit">x</button>
+            </form>
+            {%endif%}
+        </div>
+        {%endfor%}
+    </div>
+{% endblock %}
