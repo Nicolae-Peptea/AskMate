@@ -290,7 +290,11 @@ def vote_answer(answer_id):
     if 'email' in session:
         question_id = data_handler_comments.get_question_id_from_answer(answer_id)
         vote_type = ''.join(dict(request.form).keys())
-        data_handler_questions.vote_question(answer_id, 'answer', vote_type)
+        if vote_type == 'upvote':
+            data_handler_answers.up_vote_answer(answer_id)
+            data_handler_users.change_reputation_based_on_answer(value=10, entry_id=answer_id)
+        else:
+            data_handler_answers.down_vote_answer(answer_id)
         return redirect(url_for("display_question", question_id=question_id))
     return redirect(url_for("display_login"))
 

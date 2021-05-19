@@ -168,3 +168,25 @@ def mark_answer(cursor, answer_id, status: str):
             'answer_id': answer_id,
         }
     )
+
+
+@database_common.connection_handler
+def up_vote_answer(cursor, answer_id):
+    cursor.execute(
+        sql.SQL("""
+                UPDATE {table} 
+                    SET vote_number = vote_number + 1
+                WHERE id = %(entry_id)s;
+                """
+                ).format(table=sql.Identifier('answer')), {"entry_id": answer_id})
+
+
+@database_common.connection_handler
+def down_vote_answer(cursor, answer_id):
+    cursor.execute(
+        sql.SQL("""
+                UPDATE {table}
+                    SET vote_number = vote_number - 1
+                WHERE id = %(entry_id)s;
+                """
+                ).format(table=sql.Identifier('answer')), {"entry_id": answer_id})
