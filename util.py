@@ -1,8 +1,4 @@
-import os
-import re
-import database_common
-from psycopg2 import sql
-from psycopg2.extras import RealDictCursor
+import uuid
 import bcrypt
 
 
@@ -15,3 +11,6 @@ def verify_password(plain_text_password, hashed_password):
     hashed_bytes_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
+
+def generate_uuid():
+    return uuid.uuid4()

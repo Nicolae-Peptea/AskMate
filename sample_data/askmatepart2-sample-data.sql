@@ -36,6 +36,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS public.question;
 CREATE TABLE question (
     id serial NOT NULL,
+    uuid text NOT NULL,
     user_id integer,
     submission_time timestamp without time zone,
     view_number integer default 0,
@@ -48,6 +49,7 @@ CREATE TABLE question (
 DROP TABLE IF EXISTS public.answer;
 CREATE TABLE answer (
     id serial NOT NULL,
+    uuid text NOT NULL,
     user_id integer,
     submission_time timestamp without time zone,
     vote_number integer default 0,
@@ -60,6 +62,7 @@ CREATE TABLE answer (
 DROP TABLE IF EXISTS public.comment;
 CREATE TABLE comment (
     id serial NOT NULL,
+    uuid text NOT NULL,
     user_id integer,
     question_id integer,
     answer_id integer,
@@ -148,10 +151,10 @@ VALUES ('2017-04-29 14:55:00', 'gigel@doe.com', 'ioana', 25);
 
 
 
-INSERT INTO question (user_id, submission_time, view_number, vote_number, title, message, image)
-            VALUES (1, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
-INSERT INTO question (user_id, submission_time, view_number, vote_number, title, message, image)
-            VALUES (1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
+INSERT INTO question (uuid, user_id, submission_time, view_number, vote_number, title, message, image)
+            VALUES ('avdsabfd5864', 1, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', NULL);
+INSERT INTO question (uuid, user_id, submission_time, view_number, vote_number, title, message, image)
+            VALUES ('fvcgfdxhgfgfchgf', 1, '2017-04-29 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(".myBook").booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
 
@@ -160,21 +163,21 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 jquery
 booklet
 app.js (bundled file with webpack, including jquery)', 'images/image1.png');
-INSERT INTO question (user_id, submission_time, view_number, vote_number, title, message, image)
-    VALUES (1, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
+INSERT INTO question (uuid, user_id, submission_time, view_number, vote_number, title, message, image)
+    VALUES ('bgfbgfcvcx', 1, '2017-05-01 10:41:00', 1364, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'I''m getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I''m on IOS, it throws errors such as cross origin issue, or that I''m trying to use an unknown format.
 ', NULL);
 
 
-INSERT INTO answer (user_id, submission_time, vote_number, question_id, message, image)
-                VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', NULL);
-INSERT INTO answer (user_id, submission_time, vote_number, question_id, message, image)
-                VALUES (1, '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg');
+INSERT INTO answer (uuid, user_id, submission_time, vote_number, question_id, message, image)
+                VALUES ('kjmkjmkjkj' , 1, '2017-04-28 16:49:00', 4, 1, 'You need to use brackets: my_list = []', NULL);
+INSERT INTO answer (uuid, user_id, submission_time, vote_number, question_id, message, image)
+                VALUES ('dsdsbfsghsrhtfs', 1, '2017-04-25 14:42:00', 35, 1, 'Look it up in the Python docs', 'images/image2.jpg');
 
 
-INSERT INTO comment (user_id, question_id, answer_id, message, submission_time)
-                VALUES (1, 1, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00');
-INSERT INTO comment (user_id, question_id, answer_id, message, submission_time)
-                VALUES (1, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00');
+INSERT INTO comment (uuid, user_id, question_id, answer_id, message, submission_time)
+                VALUES ('gd0gjr9rejoifd', 1, 1, NULL, 'Please clarify the question as it is too vague!', '2017-05-01 05:49:00');
+INSERT INTO comment (uuid, user_id, question_id, answer_id, message, submission_time)
+                VALUES ('xiuhvxiug489845ur', 1, NULL, 1, 'I think you could use my_list = list() as well.', '2017-05-02 16:55:00');
 
 INSERT INTO tag (name) VALUES ('python');
 INSERT INTO tag (name) VALUES ('sql');
