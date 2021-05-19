@@ -76,6 +76,7 @@ def add_user():
         error = 'This user already exists'
         return render_template('register.html', error_message=error)
     session['email'] = email
+    session['id'] = data_handler_users.get_user_id(email)
     flash('You were successfully registered and automatically logged in!')
     return redirect(url_for('display_latest_questions'))
 
@@ -91,6 +92,7 @@ def post_login():
     password = request.form.get('user_pass')
     if data_handler_users.is_valid_login(email, password):
         session['email'] = email
+        session['id'] = data_handler_users.get_user_id(email)
         flash('You were successfully logged in!')
         return redirect(url_for('display_latest_questions'))
     else:
@@ -125,6 +127,7 @@ def display_user_activity(user_id):
 @app.route("/logout")
 def logout():
     session.pop('email', None)
+    session.pop('id', None)
     return redirect(url_for('display_latest_questions'))
 
 

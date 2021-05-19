@@ -23,7 +23,7 @@
             {% if 'email' in session %}
             <div class="between_search_and_session_buttons"></div>
             <div class="session_buttons">
-                <p>{{ session['email'] }}</p>
+                <p id="session_email"><a href="{{ url_for('display_user_activity', user_id=session['id']) }}">{{ session['email'] }}</a></p>
                 <form action="{{ url_for('logout') }}">
                     <button id="logout-button" type="submit">Log out</button>
                 </form>
