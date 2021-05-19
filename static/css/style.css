@@ -298,7 +298,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     display: flex;
     border: 1px solid royalblue;
     width: fit-content;
-    margin-right: 1px;
+    margin-right: 1%;
     border-radius: 3px;
 }
 
