@@ -83,6 +83,7 @@
         </div>
         <br>
         <div id="question_tags">
+            <h4>Tags</h4>
             {% if tags %}
                 <div id="tags">
                     {%for tag in tags%}
@@ -98,10 +99,12 @@
                     {%endfor%}
                 </div>
             {%endif%}
+            {% if 'email' in session %}
             <br>
             <a href="{{ url_for('add_tag_to_question', question_id=my_question['id']) }}">
                 Add tag
             </a>
+            {% endif %}
         </div>
         
     </div>

@@ -718,7 +718,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     margin-top: 1%;
 }
 
-#comment_for_question h4, #comment_for_answer h4 {
+#comment_for_question h4, #comment_for_answer h4, #question_tags h4 {
     margin-top: 0.5%;
     border-bottom: 1px solid royalblue;
 }
