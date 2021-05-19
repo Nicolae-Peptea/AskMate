@@ -135,34 +135,45 @@
                             </form>
                         </div>
                         {% if 'email' in session %}
-                        <div id="edit_answer">
-                            <form action="{{ url_for('edit_answer', answer_id=answer['id']) }}">
-                                <button id="answer_edit_button" type="submit">Edit</button>
-                            </form>
-                        </div>
-                        <br>
-                        {% if my_question['email'] == session['email'] %}
-                        <div id="check_selected">
-                            <form action="{{ url_for('accept_answer', answer_id=answer['id']) }}" method="post">
-                                <button type="submit"></button>
-                            </form>
-                        </div>
-                        <br>
-                        {% endif %}
-
-                        <form id="delete-answer" action="{{ url_for('delete_answer', answer_id=answer['id']) }}" method="post">
-                            <button type="submit">
-                                <div class="icon-trash" style="float: left">
-                                    <div class="trash-lid" style="background-color: #02A7D7"></div>
-                                    <div class="trash-container" style="background-color: #02A7D7"></div>
-                                    <div class="trash-line-1"></div>
-                                    <div class="trash-line-2"></div>
-                                    <div class="trash-line-3"></div>
+                            <div id="edit_answer">
+                                <form action="{{ url_for('edit_answer', answer_id=answer['id']) }}">
+                                    <button id="answer_edit_button" type="submit">Edit</button>
+                                </form>
+                            </div>
+                            <br>
+                            {% if my_question['email'] == session['email'] %}
+                                <div id="check_selected">
+                                    {% if answer['accepted_by_user'] == 0 %}
+                                        <form action="{{ url_for('accept_answer', answer_id=answer['id']) }}" method="post">
+                                            <button type="submit" id="accept_button"></button>
+                                        </form>
+                                    {% else %}
+                                        <form action="{{ url_for('mark_unaccepted', answer_id=answer['id']) }}" method="post">
+                                            <button type="submit" id="accepted_button"></button>
+                                        </form>
+                                    {% endif %}
+                                    
                                 </div>
-                            </button>
-                        </form>
+                                <br>
+                            {% endif %}
+
+                            <form id="delete-answer" action="{{ url_for('delete_answer', answer_id=answer['id']) }}" method="post">
+                                <button type="submit">
+                                    <div class="icon-trash" style="float: left">
+                                        <div class="trash-lid" style="background-color: #02A7D7"></div>
+                                        <div class="trash-container" style="background-color: #02A7D7"></div>
+                                        <div class="trash-line-1"></div>
+                                        <div class="trash-line-2"></div>
+                                        <div class="trash-line-3"></div>
+                                    </div>
+                                </button>
+                            </form>
                         {% else %}
-                        <br>
+                            <div id="checked_answer">
+                                {% if answer['accepted_by_user'] == 1 %}
+                                    <span id="accepted_check"></span>
+                                {% endif %}
+                            </div>
                         {% endif %}
                         
                     </div>

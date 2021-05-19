@@ -183,6 +183,7 @@ def display_question(question_id):
     data_handler_questions.update_views(question_id)
     my_question = data_handler_questions.get_question(question_id)
     answers = data_handler_answers.get_answers_for_question(question_id)
+    print(answers)
     files = os.listdir(app.config['UPLOAD_PATH'])
     comments = data_handler_comments.get_comments()
     tags = data_handler_tags.get_question_tags(question_id)
@@ -267,7 +268,7 @@ def accept_answer(answer_id):
 @app.route("/answer/<int:answer_id>/remove_accept", methods=["POST"])
 def mark_unaccepted(answer_id):
     answer = data_handler_answers.get_answer(answer_id)
-    data_handler_answers.mark_answer(answer_id, 'accepted')
+    data_handler_answers.mark_answer(answer_id, 'unaccepted')
     return redirect(url_for("display_question", question_id=answer['question_id']))
 
 

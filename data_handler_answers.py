@@ -142,7 +142,7 @@ def mark_answer(cursor, answer_id, status: str):
     if status == 'accepted':
         to_modify = 1
     else:
-        to_modify = -1
+        to_modify = 0
 
     cursor.execute(
         sql.SQL(

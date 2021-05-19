@@ -300,6 +300,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     width: fit-content;
     margin-right: 1%;
     border-radius: 3px;
+    padding: 2px;
 }
 
 #tag button {
@@ -416,34 +417,56 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     margin-bottom: 5%;
 }
 
-#check_selected button {
+#accept_button {
     border: none;
     background: transparent;
     border-radius: 100px;
     padding: 1%;
 }
 
-#check_selected button:before {
+#accepted_button, #accepted_check {
+    border: none;
+    background-color: greenyellow;
+    border-radius: 100px;
+    padding: 1%;
+}
+
+#accept_button:before {
     content: "\2713";
     font-size: 50px;
     font-weight: 700;
     font-style: normal;
 }
 
-#check_selected button:hover {
+#accepted_button:before,
+#accepted_check:before {
+    border: none;
+    background-color: greenyellow;
+    border-radius: 100px;
+
+    content: "\2713";
+    font-size: 50px;
+    font-weight: 700;
+    font-style: normal;
+}
+
+#accept_button:hover {
     cursor: pointer;
     background: greenyellow;
 }
 
+#accepted_button:hover {
+    cursor: pointer;
+    background-color: coral;
+}
+
 #answers_list li:nth-child(even) 
-#answer-left-side 
-#check_selected button {
+#accept_button {
     background-color: #ffffff;
 }
 
 #answers_list li:nth-child(even) 
-#answer-left-side 
-#check_selected button:hover {
+#accept_button:hover {
     cursor: pointer;
     background: greenyellow;
 }
