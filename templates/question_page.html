@@ -131,7 +131,7 @@
                                 <p><strong>{{ answer["vote_number"] }}</strong></p>
                                 <p>{% if answer["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p>
                             </p>
-                            <form action="{{ url_for('vote_answer', answer_id=answer['id']) }}" method="post">
+                            <form action="{{ url_for('vote_answer', answer_id=answer['id']) }}" method="post" onclick="false">
                                 <button name="downvote" type="submit"><i class="arrow down"></i></button>
                             </form>
                         </div>

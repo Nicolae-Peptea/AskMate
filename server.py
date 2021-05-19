@@ -223,8 +223,7 @@ def delete_question(question_id):
 @app.route('/question/<int:question_id>/vote', methods=["POST"])
 def vote_question(question_id):
     if 'email' in session:
-        vote_type = ''.join(dict(request.form).keys())
-        if vote_type == 'upvote':
+        if 'upvote' in request.form.keys():
             data_handler_questions.up_vote_question(question_id)
             data_handler_users.change_reputation_based_on_question(value=5, entry_id=question_id)
         else:
@@ -294,8 +293,7 @@ def vote_answer(answer_id):
     if 'email' in session:
         uu_id = request.form.get('vote')
         question_id = data_handler_comments.get_question_id_from_answer(answer_id)
-        vote_type = ''.join(dict(request.form).keys())
-        if vote_type == 'upvote':
+        if 'upvote' in request.form.keys():
             data_handler_answers.up_vote_answer(answer_id)
             data_handler_users.change_reputation_based_on_answer(value=10, entry_id=answer_id)
         else:
