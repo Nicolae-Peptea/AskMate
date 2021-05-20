@@ -80,8 +80,8 @@ def get_image_names_for_answers(cursor: RealDictCursor, entry_id: int):
 
 @database_common.connection_handler
 def add_answer(cursor: RealDictCursor, new_entry: dict, question_id: int, email: str):
-    adding = """INSERT INTO answer (uuid, user_id, submission_time, question_id, message, image, vote_number)
-                VALUES (%(uuid)s, %(user_id)s ,now()::timestamp(0), %(question_id)s, %(message)s, %(image)s, 0)
+    adding = """INSERT INTO answer (uuid, user_id, submission_time, question_id, message, image)
+                VALUES (%(uuid)s, %(user_id)s ,now()::timestamp(0), %(question_id)s, %(message)s, %(image)s)
                 """
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),

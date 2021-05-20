@@ -157,12 +157,13 @@ def display_searched_questions():
 
 @app.route("/list")
 def display_all_questions():
-
     order_by = request.args.get('order_by', 'submission_time')
     direction = request.args.get('order_direction', 'desc')
-    return render_template('questions.html',
-                           questions=data_handler_questions.get_questions(order_by, direction),
-                           request_param=request.args)
+    try:
+        questions = data_handler_questions.get_questions(order_by, direction)
+        return render_template('questions.html', questions=questions, request_param=request.args)
+    except ValueError:
+        return redirect(url_for('display_all_questions'))
 
 
 @app.route('/add-question')

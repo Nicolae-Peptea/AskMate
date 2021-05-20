@@ -66,8 +66,8 @@ def get_comment_by_user_id(cursor, user_id: int):
 
 @database_common.connection_handler
 def add_comment_to_question(cursor: RealDictCursor, new_entry: dict, question_id: int, email: str):
-    adding = """INSERT INTO comment (uuid, user_id, submission_time, question_id, message, edited_count)
-                    VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(question_id)s, %(message)s, 0)
+    adding = """INSERT INTO comment (uuid, user_id, submission_time, question_id, message)
+                    VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(question_id)s, %(message)s)
                     """
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),
@@ -79,8 +79,8 @@ def add_comment_to_question(cursor: RealDictCursor, new_entry: dict, question_id
 
 @database_common.connection_handler
 def add_comment_to_answer(cursor: RealDictCursor, new_entry: dict, answer_id: int, email: str):
-    adding = """INSERT INTO comment (uuid, user_id, submission_time, answer_id, message, edited_count)
-                    VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(answer_id)s, %(message)s, 0)
+    adding = """INSERT INTO comment (uuid, user_id, submission_time, answer_id, message)
+                    VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(answer_id)s, %(message)s)
                     """
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),

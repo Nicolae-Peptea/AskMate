@@ -68,10 +68,10 @@ def get_latest_questions(cursor: RealDictCursor, show):
                 q.image,
                 u.email,
                 u.id AS user_id
-            FROM {table} q
+            FROM question q
             JOIN users u ON u.id = q.user_id
             ORDER BY submission_time DESC LIMIT %(show)s
-            """).format(table=sql.Identifier('question')),
+            """),
         {"show": show}
     )
     return cursor.fetchall()
@@ -101,8 +101,7 @@ def get_image_names_for_question(cursor: RealDictCursor, entry_id: int):
 @database_common.connection_handler
 def get_searched_questions(cursor: RealDictCursor, phrase: str):
     cursor.execute(
-        sql.SQL(
-            """
+        sql.SQL("""
             SELECT
                 q.id,
                 q.uuid,
@@ -114,15 +113,10 @@ def get_searched_questions(cursor: RealDictCursor, phrase: str):
                 q.image,
                 u.email,
                 u.id AS user_id
-            FROM {table} q
+            FROM question q
             JOIN users u ON u.id = q.user_id
-            WHERE {col_1} ILIKE %(phrase)s or {col_2} ILIKE %(phrase)s
-            """
-        ).format(
-            table=sql.Identifier('question'),
-            col_1=sql.Identifier('message'),
-            col_2=sql.Identifier('title'),
-        ),
+            WHERE message ILIKE %(phrase)s or title ILIKE %(phrase)s
+            """),
         {'phrase': f'%{phrase}%'}
     )
 
@@ -134,17 +128,10 @@ def qet_questions_by_user_id(cursor, user_id: int):
     cursor.execute(
         sql.SQL(
             """
-            SELECT {col_1}, {col_2}
-            FROM {table}
-            WHERE {col_3} = %(user_id)s
-            """
-        ).format(
-            table=sql.Identifier('question'),
-            col_1=sql.Identifier('title'),
-            col_2=sql.Identifier('id'),
-            col_3=sql.Identifier('user_id'),
-        ),
-        {
+            SELECT title, id
+            FROM question
+            WHERE user_id = %(user_id)s
+            """), {
            'user_id': user_id,
         }
     )
@@ -167,8 +154,8 @@ def highlight_entry(entry: dict, phrase: str, field):
 
 @database_common.connection_handler
 def add_question(cursor: RealDictCursor, new_entry: dict, email):
-    adding = """INSERT INTO question (uuid, user_id, submission_time, title, message, image, view_number, vote_number)
-                VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(title)s, %(message)s, %(image)s, 0, 0)
+    adding = """INSERT INTO question (uuid, user_id, submission_time, title, message, image)
+                VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(title)s, %(message)s, %(image)s)
                 """
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),
