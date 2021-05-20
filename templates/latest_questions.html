@@ -3,6 +3,13 @@
 {% block page_title %}Latest questions{% endblock %}
 
 {% block right_section %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <p id="login_flash">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
     <ul>
         {% for question in questions %}
             <li>

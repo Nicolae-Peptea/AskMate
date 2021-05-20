@@ -188,7 +188,6 @@ def display_question(question_id):
     answers = data_handler_answers.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
     comments = data_handler_comments.get_comments()
-    print(comments)
     tags = data_handler_tags.get_question_tags(question_id)
     return render_template("question_page.html", my_question=my_question,
                            answers=answers, files=files,
@@ -375,8 +374,12 @@ def add_tag_to_question(question_id):
 @app.route("/question/<question_id>/new-tag", methods=["POST"])
 def post_tag_to_question(question_id):
     existing_tag, new_tag = request.form.get('tags'), request.form.get('tag_name')
-    data_handler_tags.add_question_tag(question_id, new_tag, existing_tag)
-    return redirect(url_for("display_question", question_id=question_id))
+    try:
+        data_handler_tags.add_question_tag(question_id, new_tag, existing_tag)
+        return redirect(url_for("display_question", question_id=question_id))
+    except psycopg2.Error:
+        flash('The tag is already used')
+        return redirect((url_for('post_tag_to_question', question_id=question_id)))
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete', methods=["POST"])
