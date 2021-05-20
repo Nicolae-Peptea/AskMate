@@ -998,37 +998,38 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 
 /* PASSWORD VALIDATION */
 #message {
-  display:none;
-  background: #f1f1f1;
-  color: #000;
-  position: relative;
-  padding: 20px;
-  margin-top: 10px;
+    display:none;
+    background: #ebf3ff;
+    color: #000;
+    position: relative;
+    padding: 20px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
 }
 
 #message p {
-  padding: 10px 35px;
-  font-size: 18px;
+    padding: 5px 35px;
+    font-size: 18px;
 }
 
-/* Add a green text color and a checkmark when the requirements are right */
 .valid {
-  color: green;
+    color: green;
 }
 
 .valid:before {
-  position: relative;
-  left: -35px;
-  content: "&#10004;";
+    position: relative;
+    left: -35px;
+    content: "\2713";
 }
 
-/* Add a red text color and an "x" icon when the requirements are wrong */
 .invalid {
-  color: red;
+    color: red;
 }
 
 .invalid:before {
-  position: relative;
-  left: -35px;
-  content: "&#10006;";
+    position: relative;
+    left: -35px;
+    content: "\2716";
 }
