@@ -76,6 +76,23 @@ nav #search_bar input[type="text"] {
     width: 80%;
 }
 
+nav #search_bar button {
+    width: 5%;
+    padding: 7px;
+    background: white;
+    color: royalblue;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+nav #search_bar button:hover {
+    cursor: pointer;
+    background: rgb(232, 251, 255);
+}
+
 nav .between_logo_and_search {
     width: 10%;
 }
@@ -875,6 +892,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 .join_button {
     padding: 5px;
     width: 90%;
+    margin-top: 5%;
     margin-left: 5%;
     margin-right: 5%;
     border-radius: 5px;

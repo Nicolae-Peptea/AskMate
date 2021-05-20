@@ -93,7 +93,7 @@ def add_comment_to_answer(cursor: RealDictCursor, new_entry: dict, answer_id: in
 @database_common.connection_handler
 def edit_comment(cursor: RealDictCursor, new_entry: dict, comment_id: int):
     edit = """
-    UPDATE comment 
+    UPDATE comment
         SET message = %(new_message)s,
             submission_time = now()::timestamp(0),
             edited_count = edited_count + 1
