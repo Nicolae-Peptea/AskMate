@@ -785,6 +785,12 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     text-align: center;
 }
 
+#user_input_section form{
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
 #user_details_section {
     width: 100%;
     background-color: #f1f1f1;
@@ -792,9 +798,8 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 }
 
 .input {
-    width: 300px;
+    width: 90%;
     margin-bottom: 2%;
-    margin-left: 25%;
     padding: 10px;
     padding-right: 0;
 }
@@ -803,11 +808,12 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     padding: 5px;
     width: 150px;
     margin-top: 5%;
-    margin-left: 38%;
+    margin-right: 10%;
     border-radius: 5px;
     border: 2px solid royalblue;
     background: royalblue;
     color: white;
+    float: right;
 }
 
 .join_button:hover {
