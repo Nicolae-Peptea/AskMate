@@ -18,7 +18,7 @@ def get_question_id_from_answer(cursor: RealDictCursor, answer_id: int):
 
 @database_common.connection_handler
 def get_comments(cursor: RealDictCursor):
-    query = """SELECT c.id, c.question_id, c.answer_id, c.message,
+    query = """SELECT c.id, c.user_id, c.question_id, c.answer_id, c.message,
                         c.submission_time, c.edited_count, u.email
                 FROM comment c
                 JOIN users u on u.id = c.user_id"""
@@ -93,7 +93,7 @@ def add_comment_to_answer(cursor: RealDictCursor, new_entry: dict, answer_id: in
 @database_common.connection_handler
 def edit_comment(cursor: RealDictCursor, new_entry: dict, comment_id: int):
     edit = """
-    UPDATE comment 
+    UPDATE comment
         SET message = %(new_message)s,
             submission_time = now()::timestamp(0),
             edited_count = edited_count + 1
