@@ -711,24 +711,34 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     font-size: 13px;
 }
 
-#actual_comment #td1 {
+#actual_comment th {
+    padding: 0;
+    border: none;
+}
+
+#actual_comment #th1 {
     width: 54%;
 }
-#actual_comment #td2 {
+#actual_comment #th2 {
     width: 15%;
 }
-#actual_comment #td3 {
+#actual_comment #th3 {
     width: 14%;
 }
-#actual_comment #td4 {
+#actual_comment #th4 {
     width: 11%;
 }
-#actual_comment #td5 {
+#actual_comment #th5 {
     width: 3%;
+}
+#actual_comment #th6 {
+    width: 2%;
+}
+
+#actual_comment #td5 {
     font-size: 15px;
 }
 #actual_comment #td6 {
-    width: 2%;
     font-size: 15px;
 }
 
