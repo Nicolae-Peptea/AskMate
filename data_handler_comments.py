@@ -18,7 +18,10 @@ def get_question_id_from_answer(cursor: RealDictCursor, answer_id: int):
 
 @database_common.connection_handler
 def get_comments(cursor: RealDictCursor):
-    query = "SELECT * FROM comment"
+    query = """SELECT c.id, c.question_id, c.answer_id, c.message,
+                        c.submission_time, c.edited_count, u.email
+                FROM comment c
+                JOIN users u on u.id = c.user_id"""
     cursor.execute(query)
     return cursor.fetchall()
 
