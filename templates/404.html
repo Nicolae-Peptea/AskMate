@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+
+{% block page_title %}{%if answer %}Edit{%else%}Add new{%endif%} answer{% endblock %}
+
+{% block right_section %}
+    <p>The page you are trying to access is unavailable or it doesn't exist.</p>
+    <p id="home_link_404">Would you like to go to the <a href="{{ url_for('display_latest_questions') }}">home</a> page?</p>
+{% endblock %}

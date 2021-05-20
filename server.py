@@ -61,6 +61,11 @@ def save_file(uploaded_file, file_name):
     uploaded_file.save(complete_path)
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+
 @app.route("/registration")
 def register_user():
     return render_template('register.html')

@@ -761,6 +761,17 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     margin-top: 5%;
 }
 
+#home_link_404 a {
+    text-decoration: none;
+    padding: 0;
+    color: royalblue;
+}
+
+#home_link_404 a:hover {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
 #image img{
     width: 20%;
 }
