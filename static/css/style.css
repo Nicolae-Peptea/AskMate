@@ -105,27 +105,37 @@ nav .session_buttons p {
 
 nav #register-button, #login-button, #logout-button {
     border: 1px solid white;
-    border-radius: 5px;
-    background: rgb(108, 135, 253);
-    color: white;
+    border-radius: 10px;
     padding: 5px;
     margin-right: 5px;
+}
+
+nav #register-button {
+    background: rgb(120, 152, 247);
+    color: white;
+}
+
+nav #login-button {
+    background: rgb(221, 221, 221);
+    color: royalblue;
 }
 
 #logout-button {
     margin-top: 7px;
     margin-left: 10px;
     background: coral;
+    color: white;
 }
 
 nav #register-button:hover, #login-button:hover, #logout-button:hover {
     cursor: pointer;
-    background: white;
-    color: royalblue;
+    background: royalblue;
+    color: white;
 }
 
 #logout-button:hover {
     color: red;
+    background: white;
 }
 
 #session_email a {
