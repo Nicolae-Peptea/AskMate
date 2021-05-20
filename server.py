@@ -186,7 +186,6 @@ def display_question(question_id):
     data_handler_questions.update_views(question_id)
     my_question = data_handler_questions.get_question(question_id)
     answers = data_handler_answers.get_answers_for_question(question_id)
-    print(answers)
     files = os.listdir(app.config['UPLOAD_PATH'])
     comments = data_handler_comments.get_comments()
     tags = data_handler_tags.get_question_tags(question_id)
