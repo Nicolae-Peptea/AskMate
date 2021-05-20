@@ -103,7 +103,19 @@ def get_searched_questions(cursor: RealDictCursor, phrase: str):
     cursor.execute(
         sql.SQL(
             """
-            SELECT * FROM {table}
+            SELECT
+                q.id,
+                q.uuid,
+                q.submission_time,
+                q.view_number,
+                q.vote_number,
+                q.title,
+                q.message,
+                q.image,
+                u.email,
+                u.id AS user_id
+            FROM {table} q
+            JOIN users u ON u.id = q.user_id
             WHERE {col_1} ILIKE %(phrase)s or {col_2} ILIKE %(phrase)s
             """
         ).format(
