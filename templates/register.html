@@ -14,18 +14,32 @@
 
         <div class="field">
             <div class="control">
-                <input class="input" type="email" name="email" placeholder="Your Email" autofocus="" required>
+                <input id="email" class="input" type="email" name="email" placeholder="Your Email" autofocus="" required>
             </div>
         </div>
 
         <div class="field">
             <div class="control">
-                <input class="input" type="password" name="user_pass" placeholder="Your Password"
-                required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[\]:;<>,.?/~_]).{8,32}$">
+                <input id="user_pass" class="input" type="password" name="user_pass" placeholder="Your Password"
+                required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[\]:;<>,.?/~_]).{8,32}$"
+                title="Must contain at least one number, one uppercase, one lowercase letter,
+                one special character *.!@$%^&(){}[\]:;<>,.?/~_
+                 and between 8 - 32 characters">
             </div>
         </div>
-        
-        <button class="join_button">Register</button>
+        <button class="join_button" type="submit">Register</button>
     </form>
 
+{% endblock %}
+
+{% block register_message_section %}
+<div id="message">
+  <h3>Password must contain the following:</h3>
+    <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+    <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+    <p id="number" class="invalid">A <b>number</b></p>
+    <p id="special_char" class="invalid">Special characters <b>*.!@$%^&(){}[\]:;<>,.?/~_</b></p>
+    <p id="length" class="invalid">Between <b>8 - 32 characters</b></p>
+</div>
+    <script src="{{ url_for('static', filename='validate_password.js') }}"></script>
 {% endblock %}
