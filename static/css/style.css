@@ -757,6 +757,10 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     grid-column: 2;
 }
 
+#add_comment_link {
+    margin-top: 5%;
+}
+
 #image img{
     width: 20%;
 }

@@ -95,9 +95,11 @@
                     </div>
                 {% endif %}
             {% endfor %}
-            <a href="{{ url_for('comment_on_question', question_id=my_question['id']) }}">
-                Add comment
-            </a>
+            <p id="add_comment_link">
+                <a href="{{ url_for('comment_on_question', question_id=my_question['id']) }}">
+                    Add comment
+                </a>
+            </p>
         </div>
         <br>
         <div id="question_tags">
@@ -260,9 +262,11 @@
                                 {%endif%}
                             {% endfor %}
                             {% endif %}
-                            <a href="{{ url_for('comment_on_answer', answer_id=answer['id']) }}">
-                                Add comment
-                            </a>
+                            <p id="add_comment_link">
+                                <a href="{{ url_for('comment_on_answer', answer_id=answer['id']) }}">
+                                    Add comment
+                                </a>
+                            </p>
                         </div>
                         
                     </div>
