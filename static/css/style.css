@@ -774,6 +774,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 #actual_comment {
     display: grid;
     grid-column: 90% 10%;
+    font-size: 14px;
 }
 
 #actual_comment #td1 {
