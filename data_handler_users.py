@@ -28,7 +28,7 @@ def is_valid_login(email, password):
     try:
         db_password = get_user_password(email)
         return util.verify_password(password, db_password)
-    except psycopg2.Error:
+    except TypeError:
         return
 
 
