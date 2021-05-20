@@ -241,19 +241,21 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     font-weight: bold;
 }
 
-#question_author {
+#question_author, #answer_author {
     float: right;
     margin-top: 3%;
     margin-right: 2%;
     font-size: 14px;
 }
 
-#question_author a {
+#question_author a,
+#answer_author a {
     text-decoration: none;
     color: royalblue;
 }
 
-#question_author a:hover {
+#question_author a:hover, 
+#answer_author a:hover {
     text-decoration: underline;
 }
 
@@ -438,12 +440,15 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 
 #answer_edit_button {
     border: 1px solid royalblue;
-    background-color: skyblue;
-    border-radius: 2px;
+    border-radius: 15px;
+    background-color: none;
+    margin-top: 5%;
+    font-size: 30px;
+    padding: 5px;
 }
 
 #answer_edit_button:hover {
-    border: 3px solid royalblue;
+    border: 2px solid royalblue;
     cursor: pointer;
     background-color: #ffffff;
 }
@@ -452,6 +457,19 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     border-bottom: 2px solid royalblue;
     padding: 10%;
     margin-bottom: 5%;
+}
+
+#delete-answer button {
+    border: 2px solid royalblue;
+    border-radius: 15px;
+    background-color: transparent;
+    margin-top: 5%;
+    font-size: 40px;
+}
+
+#delete-answer button:hover {
+    cursor: pointer;
+    color: red;
 }
 
 #accept_button {
@@ -593,20 +611,6 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 #post-button:hover {
     background-color: RoyalBlue;
 }
-
-#delete-answer button {
-    border: 1px solid royalblue;
-    border-radius: 10px;
-    background-color: transparent;
-    margin-top: 5%;
-}
-
-#delete-answer button:hover {
-    border: 3px solid royalblue;
-    border-radius: 10px;
-    background-color: #ffffff;
-    cursor: pointer;
-}
 /* END OF SUBMIT BUTTONS */
 
 /* VOTING ARROWS */
@@ -627,103 +631,6 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
     -webkit-transform: rotate(45deg);
 }
 /* END OF VOTING ARROWS */
-
-/* TRASH ICON */
-.icon-trash {
-    width: 48px;
-    height: 48px;
-    position: relative;
-    overflow: hidden;
-}
-  
-.icon-trash .trash-lid {
-    width: 62%;
-    height: 10%;
-    position: absolute;
-    left: 50%;
-    margin-left: -31%;
-    top: 10.5%;
-    background-color: #000;
-    border-top-left-radius: 80%;
-    border-top-right-radius: 80%;
-    -webkit-transform: rotate(-5deg);
-    -moz-transform: rotate(-5deg);
-    -ms-transform: rotate(-5deg);
-    transform: rotate(-5deg); 
-}
-  
-.icon-trash .trash-lid:after {
-    content: "";
-    width: 26%;
-    height: 100%;
-    position: absolute;
-    left: 50%;
-    margin-left: -13%;
-    margin-top: -10%;
-    background-color: inherit;
-    border-top-left-radius: 30%;
-    border-top-right-radius: 30%;
-    -webkit-transform: rotate(-1deg);
-    -moz-transform: rotate(-1deg);
-    -ms-transform: rotate(-1deg);
-    transform: rotate(-1deg); 
-}
-  
-.icon-trash .trash-container {
-    width: 56%;
-    height: 65%;
-    position: absolute;
-    left: 50%;
-    margin-left: -28%;
-    bottom: 10%;
-    background-color: #000;
-    border-bottom-left-radius: 15%;
-    border-bottom-right-radius: 15%;
-}
-  
-.icon-trash .trash-container:after {
-    content: "";
-    width: 110%;
-    height: 12%;
-    position: absolute;
-    left: 50%;
-    margin-left: -55%;
-    top: 0;
-    background-color: inherit;
-    border-bottom-left-radius: 45%;
-    border-bottom-right-radius: 45%;
-}
-  
-.icon-trash .trash-line-1 {
-    width: 4%;
-    height: 50%;
-    position: absolute;
-    left: 38%;
-    margin-left: -2%;
-    bottom: 17%;
-    background-color: #252527;
-}
-  
-.icon-trash .trash-line-2 {
-    width: 4%;
-    height: 50%;
-    position: absolute;
-    left: 50%;
-    margin-left: -2%;
-    bottom: 17%;
-    background-color: #252527;
-}
-  
-.icon-trash .trash-line-3 {
-    width: 4%;
-    height: 50%;
-    position: absolute;
-    left: 62%;
-    margin-left: -2%;
-    bottom: 17%;
-    background-color: #252527;
-}
-/* END OF TRASH ICON */
 
 #question-block {
     grid-column: 2;
@@ -801,7 +708,7 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 #actual_comment {
     display: grid;
     grid-column: 90% 10%;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 #actual_comment #td1 {
@@ -818,15 +725,17 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 }
 #actual_comment #td5 {
     width: 3%;
+    font-size: 15px;
 }
 #actual_comment #td6 {
     width: 2%;
+    font-size: 15px;
 }
 
 #delete-comment button {
     border: none;
-    background-color: whitesmoke;
     padding: 0;
+    color: royalblue;
 }
 
 #delete-comment button:hover {
