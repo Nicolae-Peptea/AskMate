@@ -1,7 +1,8 @@
-const myInput = document.getElementById("psw");
+const myInput = document.getElementById("user_pass");
 let letter = document.getElementById("letter");
 let capital = document.getElementById("capital");
 let number = document.getElementById("number");
+let specialCharacters = document.getElementById("special_char");
 let length = document.getElementById("length");
 
 // When the user clicks on the password field, show the message box
@@ -46,8 +47,18 @@ myInput.onkeyup = function() {
     number.classList.add("invalid");
   }
 
+
+   const characters = /[*!@$%^&(){}[\]:;<>,.?/~_]/g;
+  if(myInput.value.match(characters)) {
+    specialCharacters.classList.remove("invalid");
+    specialCharacters.classList.add("valid");
+  } else {
+    specialCharacters.classList.remove("valid");
+    specialCharacters.classList.add("invalid");
+  }
+
   // Validate length
-  if(myInput.value.length >= 8) {
+  if(myInput.value.length >= 8 && myInput.value.length <= 16) {
     length.classList.remove("invalid");
     length.classList.add("valid");
   } else {
