@@ -788,19 +788,33 @@ nav #register-button:hover, #login-button:hover, #logout-button:hover {
 }
 
 #actual_comment #td1 {
-    width: 68%;
+    width: 54%;
 }
 #actual_comment #td2 {
-    width: 14%;
+    width: 15%;
 }
 #actual_comment #td3 {
-    width: 11%;
+    width: 14%;
 }
 #actual_comment #td4 {
-    width: 5%;
+    width: 11%;
 }
 #actual_comment #td5 {
+    width: 3%;
+}
+#actual_comment #td6 {
     width: 2%;
+}
+
+#delete-comment button {
+    border: none;
+    background-color: whitesmoke;
+    padding: 0;
+}
+
+#delete-comment button:hover {
+    cursor: pointer;
+    color: red;
 }
 
 #comment_submission_time {

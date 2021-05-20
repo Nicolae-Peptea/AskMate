@@ -188,6 +188,7 @@ def display_question(question_id):
     answers = data_handler_answers.get_answers_for_question(question_id)
     files = os.listdir(app.config['UPLOAD_PATH'])
     comments = data_handler_comments.get_comments()
+    print(comments)
     tags = data_handler_tags.get_question_tags(question_id)
     return render_template("question_page.html", my_question=my_question,
                            answers=answers, files=files,
