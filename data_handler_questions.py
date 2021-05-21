@@ -21,9 +21,9 @@ def get_question(cursor: RealDictCursor, question_id: int):
                 q.image,
                 u.email,
                 u.id AS user_id
-            FROM question q
-            JOIN users u ON u.id = q.user_id
-            WHERE q.id = %(question_id)s"""
+                FROM question q
+                JOIN users u ON u.id = q.user_id
+                WHERE q.id = %(question_id)s"""
     cursor.execute(query, {"question_id": question_id})
     return dict(cursor.fetchone())
 

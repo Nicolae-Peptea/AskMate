@@ -1,9 +1,9 @@
 const myInput = document.getElementById("user_pass");
-let letter = document.getElementById("letter");
-let capital = document.getElementById("capital");
-let number = document.getElementById("number");
-let specialCharacters = document.getElementById("special_char");
-let length = document.getElementById("length");
+const letter = document.getElementById("letter");
+const capital = document.getElementById("capital");
+const number = document.getElementById("number");
+const specialCharacters = document.getElementById("special_char");
+const length = document.getElementById("length");
 
 myInput.onfocus = function() {
   document.getElementById("message").style.display = "block";
@@ -16,45 +16,30 @@ myInput.onblur = function() {
 myInput.onkeyup = function() {
   const lowerCaseLetters = /[a-z]/g;
   if(myInput.value.match(lowerCaseLetters)) {
-    letter.classList.remove("invalid");
-    letter.classList.add("valid");
-  } else {
-    letter.classList.remove("valid");
-    letter.classList.add("invalid");
+    letter.classList.toggle("invalid");
+    letter.classList.toggle("valid");
   }
 
   const upperCaseLetters = /[A-Z]/g;
   if(myInput.value.match(upperCaseLetters)) {
-    capital.classList.remove("invalid");
-    capital.classList.add("valid");
-  } else {
-    capital.classList.remove("valid");
-    capital.classList.add("invalid");
+    capital.classList.toggle("invalid");
+    capital.classList.toggle("valid");
   }
 
   const numbers = /[0-9]/g;
   if(myInput.value.match(numbers)) {
-    number.classList.remove("invalid");
-    number.classList.add("valid");
-  } else {
-    number.classList.remove("valid");
-    number.classList.add("invalid");
+    number.classList.toggle("invalid");
+    number.classList.toggle("valid");
   }
 
-   const characters = /[*!@$%^&(){}[\]:;<>,.?/~_]/g;
+   const characters = /[*!@$%^&\(\)\{\}\[\]:;<>,.\?/~_-]/g; // //g flag - global
   if(myInput.value.match(characters)) {
-    specialCharacters.classList.remove("invalid");
-    specialCharacters.classList.add("valid");
-  } else {
-    specialCharacters.classList.remove("valid");
-    specialCharacters.classList.add("invalid");
+    specialCharacters.classList.toggle("invalid");
+    specialCharacters.classList.toggle("valid");
   }
 
   if(myInput.value.length >= 8 && myInput.value.length <= 16) {
-    length.classList.remove("invalid");
-    length.classList.add("valid");
-  } else {
-    length.classList.remove("valid");
-    length.classList.add("invalid");
+    length.classList.toggle("invalid");
+    length.classList.toggle("valid");
   }
 }
