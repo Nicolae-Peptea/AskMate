@@ -108,7 +108,8 @@
                 <div id="tags">
                     {%for tag in tags%}
                     <div id="tag">
-                        {{tag['name']}} 
+                        <a href="{{ url_for('display_searched_question_by_tag', tag_id=tag['id']) }}">
+                            {{tag['name']}}</a>
                         {% if 'email' in session %}
                             {% if my_question['email'] == session['email'] %}
                                 <form action="{{ url_for('delete_question_tag', question_id=my_question['id'], tag_id=tag['id']) }}" method="post">

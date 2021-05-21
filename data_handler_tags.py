@@ -14,13 +14,14 @@ def get_tags(cursor: RealDictCursor):
 def get_tags_and_questions_count(cursor: RealDictCursor):
     query = """
         SELECT
+            tag.id,
             tag.name as name,
             COUNT(question_tag.question_id) as questions
         FROM tag
         JOIN question_tag
             ON question_tag.tag_id = tag.id
         GROUP BY
-            name;"""
+            tag.name, tag.id;"""
     cursor.execute(query)
     return [dict(value) for value in cursor.fetchall()]
 

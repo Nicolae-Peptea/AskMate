@@ -18,7 +18,10 @@
             <tbody>
                 {% for tag in tags %}
                 <tr>
-                    <td id="tag_name_column">{{tag['name']}}</td>
+                    <td id="tag_name_column">
+                        <a href="{{ url_for('display_searched_question_by_tag', tag_id=tag['id']) }}">
+                            {{tag['name']}}</a>
+                    </td>
                     <td id="questions_count_for_tag">
                         {{tag['questions']}}
                     </td>

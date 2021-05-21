@@ -157,7 +157,14 @@ def display_searched_questions():
         data_handler_questions.highlight_search(searched_questions, key_words)
     except ValueError:
         pass
-    return render_template('latest_questions.html', questions=searched_questions)
+    return render_template('questions.html', questions=searched_questions, request_param=request.args)
+    # return render_template('latest_questions.html', questions=searched_questions)
+
+
+@app.route("/search/<int:tag_id>")
+def display_searched_question_by_tag(tag_id):
+    questions = data_handler_questions.qet_questions_by_tag(tag_id)
+    return render_template('questions.html', questions=questions, request_param=request.args)
 
 
 @app.route("/list")
