@@ -164,6 +164,7 @@ def display_searched_questions():
 @app.route("/search/<int:tag_id>")
 def display_searched_question_by_tag(tag_id):
     questions = data_handler_questions.qet_questions_by_tag(tag_id)
+    print (questions)
     return render_template('questions.html', questions=questions, request_param=request.args)
 
 

@@ -143,7 +143,18 @@ def qet_questions_by_tag(cursor, tag_id: int):
     cursor.execute(
         sql.SQL(
             """
-           select * from question
+           select 
+           question.id as id,
+           u.id as user_id,
+           u.email,
+           question.submission_time,
+           question.view_number,
+           question.vote_number,
+           question.title,
+           question.message,
+           question.image,
+           tag.id
+           from question
             join question_tag qt on question.id = qt.question_id
             join tag on qt.tag_id = tag.id
             join users u on u.id = question.user_id
