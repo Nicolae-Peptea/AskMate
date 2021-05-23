@@ -2,8 +2,8 @@ import os
 from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 
-import database_common
-import data_handler_users
+import data_handlers.database_common as database_common
+import data_handlers.data_handler_users as data_handler_users
 import uuid
 
 

@@ -1,5 +1,4 @@
-import database_common
-from psycopg2 import sql
+import data_handlers.database_common as database_common
 from psycopg2.extras import RealDictCursor
 
 
