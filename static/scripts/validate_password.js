@@ -16,30 +16,45 @@ myInput.onblur = function() {
 myInput.onkeyup = function() {
   const lowerCaseLetters = /[a-z]/g;
   if(myInput.value.match(lowerCaseLetters)) {
-    letter.classList.toggle("invalid");
-    letter.classList.toggle("valid");
-  }
+    letter.classList.remove("invalid");
+    letter.classList.add("valid");
+  } else {
+    letter.classList.remove("valid");
+    letter.classList.add("invalid");
+}
 
   const upperCaseLetters = /[A-Z]/g;
   if(myInput.value.match(upperCaseLetters)) {
-    capital.classList.toggle("invalid");
-    capital.classList.toggle("valid");
+    capital.classList.remove("invalid");
+    capital.classList.add("valid");
+  } else {
+    capital.classList.remove("valid");
+    capital.classList.add("invalid");
   }
 
   const numbers = /[0-9]/g;
   if(myInput.value.match(numbers)) {
-    number.classList.toggle("invalid");
-    number.classList.toggle("valid");
+    number.classList.remove("invalid");
+    number.classList.add("valid");
+  } else {
+    number.classList.remove("valid");
+    number.classList.add("invalid");
   }
 
    const characters = /[*!@$%^&\(\)\{\}\[\]:;<>,.\?/~_-]/g; // //g flag - global
   if(myInput.value.match(characters)) {
-    specialCharacters.classList.toggle("invalid");
-    specialCharacters.classList.toggle("valid");
+    specialCharacters.classList.remove("invalid");
+    specialCharacters.classList.add("valid");
+  } else {
+    specialCharacters.classList.remove("valid");
+    specialCharacters.classList.add("invalid");
   }
 
   if(myInput.value.length >= 8 && myInput.value.length <= 16) {
-    length.classList.toggle("invalid");
-    length.classList.toggle("valid");
+    length.classList.remove("invalid");
+    length.classList.add("valid");
+  } else {
+    length.classList.remove("valid");
+    length.classList.add("invalid");
   }
 }
