@@ -178,7 +178,6 @@ def post_edited_question(question_id):
 
 
 @app.route('/question/<int:question_id>/delete', methods=["POST"])
-# TODO @app.route('/question/<int:question_id>/delete', methods=["DELETE"])
 def delete_question(question_id):
     if 'email' in session:
         data_handler_questions.delete_question(question_id, app.config['UPLOAD_PATH'])
@@ -239,7 +238,6 @@ def accept_answer(answer_id):
 
 
 @app.route("/answer/<int:answer_id>/remove_accept", methods=["POST"])
-# TODO @app.route("/answer/<int:answer_id>/remove_accept", methods=["DELETE"])
 def mark_unaccepted(answer_id):
     answer = data_handler_answers.get_answer(answer_id)
     data_handler_answers.mark_answer(answer_id, 'unaccepted')
@@ -247,7 +245,6 @@ def mark_unaccepted(answer_id):
 
 
 @app.route('/answer/<int:answer_id>/delete', methods=["POST"])
-# TODO @app.route('/answer/<int:answer_id>/delete', methods=["DELETE"])
 def delete_answer(answer_id):
     if 'email' in session:
         question_id = data_handler_comments.get_question_id_from_answer(answer_id)
