@@ -11,7 +11,8 @@ import psycopg2
 load_dotenv()
 app = Flask(__name__)
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
-app.config['UPLOAD_PATH'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
+image_upload_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'images')
+app.config['UPLOAD_PATH'] = image_upload_path
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 

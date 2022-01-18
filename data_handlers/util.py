@@ -1,9 +1,10 @@
+from importlib.resources import path
 import bcrypt
 import os
 import data_handlers.data_handler_questions as data_handler_questions
 import data_handlers.data_handler_answers as data_handler_answers
 from flask import request
-from server import app
+from server import image_upload_path
 
 
 def generate_new_entry(operation, prev_entry=''):
@@ -45,8 +46,8 @@ def create_img_name_when_editing(prev_entry: dict, entry_type: str):
 
 
 def save_file(uploaded_file, file_name):
-    path = app.config['UPLOAD_PATH']
-    complete_path = os.path.join(path, file_name)
+    # path = app.config['UPLOAD_PATH']
+    complete_path = os.path.join(image_upload_path, file_name)
     uploaded_file.save(complete_path)
 
 
