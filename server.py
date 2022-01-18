@@ -141,7 +141,7 @@ def ask_question():
 
 @app.route('/add-question', methods=["POST"])
 def post_question():
-    new_entry = util.generate_new_entry(operation='new_question')
+    new_entry = util.generate_new_entry(operation='new_question', path=image_upload_path)
     email = session.get('email')
     data_handler_questions.add_question(new_entry, email)
     question_id = data_handler_questions.get_last_added_question()
@@ -172,7 +172,7 @@ def edit_question(question_id):
 @app.route("/question/<int:question_id>/edit", methods=["POST"])
 def post_edited_question(question_id):
     question = data_handler_questions.get_question(question_id)
-    new_entry = util.generate_new_entry(operation='edit_question', prev_entry=question)
+    new_entry = util.generate_new_entry(operation='edit_question', path=image_upload_path, prev_entry=question)
     new_entry['id'] = question_id
     data_handler_questions.edit_question(new_entry=new_entry)
     return redirect(url_for("display_question", question_id=question_id))
@@ -208,7 +208,7 @@ def answer_question(question_id):
 
 @app.route("/question/<int:question_id>/new-answer", methods=["POST"])
 def post_answer(question_id):
-    new_entry = util.generate_new_entry(operation='new_answer')
+    new_entry = util.generate_new_entry(operation='new_answer', path=image_upload_path)
     email = session.get('email')
     data_handler_answers.add_answer(new_entry=new_entry, question_id=question_id, email=email)
     return redirect(url_for("display_question", question_id=question_id))
@@ -225,7 +225,7 @@ def edit_answer(answer_id):
 @app.route("/answer/<int:answer_id>/edit", methods=["POST"])
 def post_edited_answer(answer_id):
     answer = data_handler_answers.get_answer(answer_id)
-    new_entry = util.generate_new_entry(operation='edit_answer', prev_entry=answer)
+    new_entry = util.generate_new_entry(operation='edit_answer', path=image_upload_path, prev_entry=answer)
     new_entry['id'] = answer_id
     data_handler_answers.edit_answer(new_entry)
     return redirect(url_for("display_question", question_id=answer['question_id']))

@@ -1,16 +1,14 @@
-from importlib.resources import path
 import bcrypt
 import os
 import data_handlers.data_handler_questions as data_handler_questions
 import data_handlers.data_handler_answers as data_handler_answers
 from flask import request
-from server import image_upload_path
 
 
-def generate_new_entry(operation, prev_entry=''):
+def generate_new_entry(operation, path, prev_entry=''):
     new_entry = dict(request.form)
     if is_file_in_entry():
-        return generate_entry_with_image(new_entry, operation, prev_entry)
+        return generate_entry_with_image(new_entry, operation, prev_entry, path)
     return new_entry
 
 
@@ -18,11 +16,11 @@ def is_file_in_entry():
     return True if request.files['image'] else False
 
 
-def generate_entry_with_image(new_entry, operation, prev_entry):
+def generate_entry_with_image(new_entry, operation, prev_entry, path):
     new_file_name = generate_file_name(operation, prev_entry)
     uploaded_file = request.files['image']
     if uploaded_file:
-        save_file(uploaded_file, new_file_name)
+        save_file(uploaded_file, new_file_name, path)
     new_entry['image'] = new_file_name
     return new_entry
 
@@ -45,9 +43,8 @@ def create_img_name_when_editing(prev_entry: dict, entry_type: str):
     return f"{entry_type}{prev_entry['id']}"
 
 
-def save_file(uploaded_file, file_name):
-    # path = app.config['UPLOAD_PATH']
-    complete_path = os.path.join(image_upload_path, file_name)
+def save_file(uploaded_file, file_name, path):
+    complete_path = os.path.join(path, file_name)
     uploaded_file.save(complete_path)
 
 
