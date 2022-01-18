@@ -185,6 +185,7 @@ def add_question(cursor: RealDictCursor, new_entry: dict, email):
     adding = """INSERT INTO question (uuid, user_id, submission_time, title, message, image)
                 VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(title)s, %(message)s, %(image)s)
                 """
+    
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),
         'title': new_entry['title'],
@@ -227,6 +228,7 @@ def edit_question_receiving_no_image(cursor: RealDictCursor, new_entry: dict):
              message = %(new_message)s
          WHERE id = %(question_id)s
     """
+
     cursor.execute(edit, {
         'new_title': new_entry['title'],
         'new_message': new_entry['message'],
