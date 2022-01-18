@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 import os
 from data_handlers import data_handler_tags, data_handler_answers, data_handler_questions, data_handler_users, \
-    data_handler_comments, util
+data_handler_comments, util
 
 import psycopg2
 
