@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <meta charset="UTF-8">
+        <title>{% block page_title %}{% endblock %} | ASK-MATE-1</title>
+    </head>
+
+    <body>
+        <nav>
+            <div class="logo">
+                <a href="{{ url_for('display_latest_questions') }}">ASK MATE</a>
+            </div>
+            <div class="between_logo_and_search"></div>
+            <div id="search_bar">
+                <form action="{{ url_for('display_searched_questions') }}" method="get">
+                    <input id="search_bar_input" type="text" name="q" placeholder="Search...">
+                    <button id="search-button" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+            {% if 'email' in session %}
+            <div class="between_search_and_session_buttons"></div>
+            <div class="session_buttons">
+                <p id="session_email"><a href="{{ url_for('display_user_activity', user_id=session['id']) }}">{{ session['email'] }}</a></p>
+                <form action="{{ url_for('logout') }}">
+                    <button id="logout-button" type="submit">Log out</button>
+                </form>
+            </div>
+            {% else %}
+            <div class="between_search_and_join"></div>
+            <div class="join-buttons">            
+                <form action="{{ url_for('display_login') }}">
+                    <button id="login-button" type="submit">Log in</button>
+                </form>
+                <form action="{{ url_for('register_user') }}">
+                    <button id="register-button" type="submit">Sign up</button>
+                </form>
+            </div>
+            {% endif %}
+        </nav>
+
+        <div class="content-wrapper">         
+            <div id="left-section">
+                <form action="{{ url_for('display_latest_questions') }}">
+                    <button id="ask-button">Home</button>
+                </form><br>
+        
+                <form action="{{ url_for('display_all_questions') }}">
+                    <button id="ask-button" >Questions</button>
+                </form><br>
+
+                <form action="{{ url_for('display_tags') }}">
+                    <button id="ask-button" >Tags</button>
+                </form><br>
+        
+                <form action="{{ url_for('ask_question') }}">
+                    <button id="ask-button" >Ask Question</button>
+                </form><br>
+                {% if 'email' in session %}
+                <form action="{{ url_for('display_users') }}">
+                    <button id="ask-button" type="submit">Users</button>
+                </form>
+                {% else %}
+                <br>
+                {% endif %}
+
+                {% block left_section %}{% endblock %}
+            </div>
+
+            <div id="right-section">
+                <div id="header_and_nav">
+                    <h2>{{ self.page_title() }}</h2>
+                </div><br>
+
+                {% block right_section %}{% endblock %}
+            </div>
+
+        </div>
+    </body>
+
+</html>

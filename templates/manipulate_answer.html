@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block page_title %}{%if answer %}Edit{%else%}Add new{%endif%} answer{% endblock %}
+
+{% block right_section %}
+    <div id="filling-form">
+        <form action="{%if answer %}
+                            {{ url_for('post_edited_answer', answer_id=answer['id']) }}
+                      {%else%}
+                            {{ url_for('post_answer', question_id=question_id) }}
+                      {%endif%}" method="post" enctype="multipart/form-data">
+
+            <label for="answer_text">Answer:</label><br>
+            <textarea id="answer_text" name="message" required>{{ answer['message'] if answer }}</textarea><br>
+
+            <label for="image">Click on the "Choose File" button to upload an image:</label><br>
+            <input type="file" name="image"><br>
+
+            <button id="post-button" type="submit">POST</button>
+
+        </form>
+    </div>
+{% endblock %}

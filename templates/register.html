@@ -1,0 +1,49 @@
+{% extends "layout_join.html" %}
+
+{% block page_title %}Join the Ask Mate Community{% endblock %}
+
+{% block user_input_section %}
+    <div class="register_form"> 
+        <div id="header_and_nav">
+            <h2>{{ self.page_title() }}</h2>
+        </div>
+        <div id="user_credentials_form">
+            <form method="POST" action="{{ url_for('add_user') }}">
+                {% if error_message %}
+                    <p id="invalid_register">{{ error_message }}</p>
+                {% endif %}
+    
+                <div class="field">
+                    <div class="control">
+                        <input id="email" class="input" type="email" name="email" placeholder="Your Email" autofocus="" required>
+                    </div>
+                </div>
+    
+                <div class="field">
+                    <div class="control">
+                        <input id="user_pass" class="input" type="password" name="user_pass" placeholder="Your Password"
+                        required pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&\(\)\{\}\[\]:;<>,.?/~_-]).{8,16}$"
+                        title="Must contain at least one number, one uppercase, one lowercase letter,
+                        one special character *.!@$%^&(){}[\]:;<>,.?/~_
+                        and between 8 - 16 characters">
+                    </div>
+                </div>
+                <button class="join_button" type="submit">Register</button>
+    
+            </form>
+        </div>
+        
+        <div id="message">
+            <h3>Password must contain the following:</h3>
+            <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+            <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+            <p id="number" class="invalid">A <b>number</b></p>
+            <p id="special_char" class="invalid">Special characters <b>*.!@$%^&(){}[\]:;<>,.?/~_</b></p>
+            <p id="length" class="invalid">Between <b>8 - 16 characters</b></p>
+        </div>
+        <script src="{{ url_for('static', filename='scripts/validate_password.js') }}"></script>
+    </div>
+
+{% endblock %}
+
+

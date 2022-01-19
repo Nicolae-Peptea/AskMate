@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Comment
+    {% if question_id %}
+        question
+    {% elif comment %}
+        edit
+    {%else%}
+        answer
+    {%endif%}
+{% endblock %}
+
+{% block right_section %}
+    <div id="filling-form">
+        <form action="{% if question_id %}
+                                {{ url_for('post_comment_to_question', question_id=question_id) }}
+                         {% elif comment %}
+                                {{ url_for('post_edited_comment', comment_id=comment['id']) }}
+                         {%else%}
+                                {{ url_for('post_comment_to_answer', answer_id=answer_id) }}
+                         {%endif%}" method="post" enctype="multipart/form-data">
+
+            <label for="answer">Comment:</label><br>
+            <textarea id="answer_text" name="message" required>{{ comment['message'] if comment }}</textarea><br>
+
+            <button id="post-button" type="submit">POST</button>
+
+        </form>
+    </div>
+{% endblock %}

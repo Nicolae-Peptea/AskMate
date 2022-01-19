@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Latest questions{% endblock %}
+
+{% block right_section %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <p id="login_flash">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+    <ul>
+        {% for question in questions %}
+            <li>
+
+                <div id="question_views_votes">
+                    
+                    <div id="question-votes">
+                        <p>
+                            <p>{{ question["vote_number"] }}</p>
+                            <p>{% if question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p> 
+                        </p>
+                    </div>
+
+                    <div id="question-views">
+                        <p>{{ question["view_number"] }}</p>
+                        <p>{% if question["view_number"] == '1' %}view{% else %}views{%endif%}</p>
+                    </div>
+                </div>
+
+                <div id="question-block">
+                    <a id="title-link" href="{{ url_for('display_question', question_id=question['id']) }}">
+                        {% autoescape false %}{{ question['title'] }}{% endautoescape %}
+                    </a>
+                    <p>{% autoescape false %}
+                        {% if question['message']|length > 200 %}
+                            {{ question['message'][:200] }}...
+                        {% else %}
+                            {{ question['message'] }}
+                        {%endif%}
+                        {% endautoescape %}
+                    </p>
+                    <div id="question_author">
+                        <p><a href="{{ url_for('display_user_activity', user_id=question['user_id']) }}">{{ question['email'] }}</a></p>
+                        <label id="question_submission_time">asked on {{ question['submission_time'] }}</label>
+                    </div>
+                </div>
+
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

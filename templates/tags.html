@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Tags{% endblock %}
+
+{% block right_section %}
+    <p>A tag is a keyword or label that categorizes your question with other, similar questions. <br> Using the right tags makes it easier for others to find and answer your question.</p>
+    <hr>
+    <br>
+    <div id="tags">
+        <table id="tags_table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Occurences <br> in Questions</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for tag in tags %}
+                <tr>
+                    <td id="tag_name_column">
+                        <a href="{{ url_for('display_searched_question_by_tag', tag_id=tag['id']) }}">
+                            {{tag['name']}}</a>
+                    </td>
+                    <td id="questions_count_for_tag">
+                        {{tag['questions']}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

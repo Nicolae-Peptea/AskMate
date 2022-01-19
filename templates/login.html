@@ -1,0 +1,31 @@
+{% extends "layout_join.html" %}
+
+{% block page_title %}LOG IN{% endblock %}
+
+{% block user_input_section %}
+    <div class="register_form">
+        <div id="user_credentials_form">
+            <form method="POST" action="{{ url_for('post_login') }}">
+                {% if error_message %}
+                    <p id="invalid_login">{{ error_message }}</p>
+                {% endif %}
+    
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="email" name="email" placeholder="Your Email" autofocus="" required>
+                    </div>
+                </div>
+    
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="password" name="user_pass" placeholder="Your Password"
+                        required>
+                    </div>
+                </div>
+                
+                <button class="join_button">Log in</button>
+            </form>
+        </div>
+        
+    </div>
+{% endblock %}

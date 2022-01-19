@@ -1,0 +1,33 @@
+{% extends "layout_user.html" %}
+
+{% block page_title %}Users of the Ask Mate Community{% endblock %}
+
+{% block user_input_section %}
+    <div class="users_table">
+        <table>
+            <thead>
+                <tr>
+                    <th>User name</th>
+                    <th>Registration Date</th>
+                    <th>Asked Questions</th>
+                    <th>Answers</th>
+                    <th>Comments</th>
+                    <th>Reputation</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in users_details %}
+                <tr>
+                    <td><a href="{{ url_for('display_user_activity', user_id=user['user_id']) }}">{{ user['user_name'] }}</a></td>
+                    <td>{{ user['registration_time'] }}</td>
+                    <td>{{ user['question_number'] }}</td>
+                    <td>{{ user['answer_number'] }}</td>
+                    <td>{{ user['comments_number'] }}</td>
+                    <td>{{ user['reputation'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

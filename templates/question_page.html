@@ -1,0 +1,278 @@
+{% extends "layout.html" %}
+
+{% block page_title %}{{ my_question['title'] }}{% endblock %}
+
+{% block left_section %}
+{% if 'email' in session %}
+<br>
+<div id="manipulate_question_buttons">
+    <form action="{{ url_for('answer_question', question_id=my_question['id']) }}">
+        <button id="ask-button">Answer Question</button>
+    </form>
+    {% if my_question['email'] == session['email'] %}
+    <form action="{{ url_for('edit_question', question_id=my_question['id']) }}">
+        <button id="ask-button">Edit Question</button>
+    </form>
+    <form action="{{ url_for('delete_question', question_id=my_question['id']) }}" method="post">
+        <button id="ask-button">Delete Question</button>
+    </form>
+    {% endif %}
+</div>
+{% else %}
+<br>
+{% endif%}
+{% endblock %}
+        
+{% block right_section %}
+    <div id="question_body">
+        <div id="question_views_votes_on_question_page">
+            <p>Viewed: {{ my_question["view_number"] }} {% if my_question["view_number"] == "1" %}time{% else %}times{%endif%}</p>
+            <p>Votes: {{ my_question["vote_number"] }} {% if my_question["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p>
+        </div>
+                
+        <div id="question-message">
+            <h3>Message:</h3>
+            <pre>{{ my_question['message'] }}</pre>
+            {% if my_question['image'] %}
+                <div id="image">
+                    <a href="{{ url_for('display_image', filename=my_question['image']) }}">
+                        <img src="{{ url_for('display_image', filename=my_question['image']) }}">
+                    </a>
+                </div>
+            {%endif%}
+            <div id="question_author">
+                <p><a href="{{ url_for('display_user_activity', user_id=my_question['user_id']) }}">{{ my_question['email'] }}</a></p>
+                <label id="question_submission_time">asked on {{ my_question['submission_time'] }}</label>
+            </div>
+        </div>
+        
+        <br>
+        <div id="comment_for_question">
+            <h4>Comments</h4>
+            {% for comment in comments %}
+                {%if comment['question_id'] == my_question['id'] %}
+                    <div id="actual_comment">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th id="th1"></th>
+                                    <th id="th2"></th>
+                                    <th id="th3"></th>
+                                    <th id="th4"></th>
+                                    <th id="th5"></th>
+                                    <th id="th6"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td id="td1">{{comment['message']}}</td>
+                                <td id="td2">
+                                    <a href="{{ url_for('display_user_activity', user_id=comment['user_id']) }}">{{ comment['email'] }}</a>
+                                </td>
+                                <td id="td3">{{comment['submission_time']}}</td>
+                                
+                                <td id="td4">Edited:
+                                    {{ comment['edited_count'] }} 
+                                    {% if comment['edited_count'] == 1 %}time{% else %}times{%endif%}
+                                </td>
+                                {% if 'email' in session %}
+                                    {% if comment['email'] == session['email'] %}
+                                        <td id="td5">
+                                            <a href="{{ url_for('edit_comment', comment_id=comment['id']) }}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                    {% if comment['email'] == session['email'] or my_question['email'] == session['email']%}
+                                        <td id="td6">
+                                            <form id="delete-comment" action="{{ url_for('delete_comment', comment_id=comment['id']) }}" method="post">
+                                                <button onclick="return confirm('Are you sure you want to delete this comment?')"><i class="fa fa-trash-o"></i></button>
+                                            </form>
+                                        </td>
+                                    {% endif %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <p id="add_comment_link">
+                <a href="{{ url_for('comment_on_question', question_id=my_question['id']) }}">
+                    Add comment
+                </a>
+            </p>
+        </div>
+        <br>
+        <div id="question_tags">
+            <h4>Tags</h4>
+            {% if tags %}
+                <div id="tags">
+                    {%for tag in tags%}
+                    <div id="tag">
+                        <a href="{{ url_for('display_searched_question_by_tag', tag_id=tag['id']) }}">
+                            {{tag['name']}}</a>
+                        {% if 'email' in session %}
+                            {% if my_question['email'] == session['email'] %}
+                                <form action="{{ url_for('delete_question_tag', question_id=my_question['id'], tag_id=tag['id']) }}" method="post">
+                                    <button type="submit">x</button>
+                                </form>
+                            {%endif%}
+                        {%endif%}
+                    </div>
+                    
+                    {%endfor%}
+                </div>
+            {%endif%}
+            {% if 'email' in session %}
+                {% if my_question['email'] == session['email'] %}
+                    <br>
+                    <a href="{{ url_for('add_tag_to_question', question_id=my_question['id']) }}">
+                        Add tag
+                    </a>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+    </div>
+
+    <br>
+
+    <div id="answers-header">
+        <p>
+            {{ answers|length }} {% if answers|length == 1 %}Answer{% else %}Answers{%endif%}
+        </p>
+    </div>
+
+    <div id="answers_list">
+        <ul>
+            {% for answer in answers %}
+                <li id="{{ answer['uuid'] }}">
+                    <div id="answer-left-side">
+                        <div id="voting">
+                            <form action="{{ url_for('vote_answer', answer_id=answer['id']) }}" method="post">
+                                <button name="upvote" type="submit"><i class="arrow up"></i></button>
+                            </form>
+                            <p>
+                                <p><strong>{{ answer["vote_number"] }}</strong></p>
+                                <p>{% if answer["vote_number"] == '1' %}vote{% else %}votes{%endif%}</p>
+                            </p>
+                            <form action="{{ url_for('vote_answer', answer_id=answer['id']) }}" method="post" onclick="false">
+                                <button name="downvote" type="submit"><i class="arrow down"></i></button>
+                            </form>
+                        </div>
+                        {% if 'email' in session %}
+                            {% if answer['email'] == session['email'] %}
+                                <div id="edit_answer">
+                                    <form action="{{ url_for('edit_answer', answer_id=answer['id']) }}">
+                                        <button id="answer_edit_button" type="submit"><i class="fa fa-edit"></i></button>
+                                    </form>
+                                </div>
+                                <br>
+                            {% endif %}
+                            {% if my_question['email'] == session['email'] %}
+                                <div id="check_selected">
+                                    {% if answer['accepted_by_user'] == 0 %}
+                                        <form action="{{ url_for('accept_answer', answer_id=answer['id']) }}" method="post">
+                                            <button type="submit" id="accept_button"></button>
+                                        </form>
+                                    {% else %}
+                                        <form action="{{ url_for('mark_unaccepted', answer_id=answer['id']) }}" method="post">
+                                            <button type="submit" id="accepted_button"></button>
+                                        </form>
+                                    {% endif %}
+                                    
+                                </div>
+                                <br>
+                            {% endif %}
+                            {% if my_question['email'] == session['email'] or answer['email'] == session['email'] %}
+                                <form id="delete-answer" action="{{ url_for('delete_answer', answer_id=answer['id']) }}" method="post">
+                                    <button type="submit"><i class="fa fa-trash-o"></i></button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <div id="checked_answer">
+                                {% if answer['accepted_by_user'] == 1 %}
+                                    <span id="accepted_check"></span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                    <div id="answer-right-side">
+                        <div id="answer-message">
+                            <p>{% autoescape false %}{{ answer['message'] }}{% endautoescape %}</p>
+                            {% if answer['image'] %}
+                                <div id="image">
+                                    <a href="{{ url_for('display_image', filename=answer['image']) }}">
+                                        <img src="{{ url_for('display_image', filename=answer['image']) }}">
+                                    </a>
+                                </div>
+                            {%endif%}
+                            <div id="answer_author">
+                                <p><a href="{{ url_for('display_user_activity', user_id=answer['user_id']) }}">{{ answer['email'] }}</a></p>
+                                <label id="question_submission_time">answered on {{ answer['submission_time'] }}</label>
+                            </div>
+                        </div>
+                        
+                        <div id="comment_for_answer">
+                            {% if comments %}
+                            <h4>Comments</h4>
+                            {% for comment in comments %}
+                                {%if comment['answer_id'] == answer['id'] %}
+                                    <div id="actual_comment">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th id="th1"></th>
+                                                    <th id="th2"></th>
+                                                    <th id="th3"></th>
+                                                    <th id="th4"></th>
+                                                    <th id="th5"></th>
+                                                    <th id="th6"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <td id="td1">{{comment['message']}}</td>
+                                                <td id="td2">
+                                                    <a href="{{ url_for('display_user_activity', user_id=comment['user_id']) }}">{{ comment['email'] }}</a>
+                                                </td>
+                                                <td id="td3">{{comment['submission_time']}}</td>
+                                                
+                                                <td id="td4">Edited:
+                                                    {{ comment['edited_count'] }} 
+                                                    {% if comment['edited_count'] == 1 %}time{% else %}times{%endif%}
+                                                </td>
+                                                {% if 'email' in session %}
+                                                    {% if comment['email'] == session['email'] %}
+                                                        <td id="td5">
+                                                            <a href="{{ url_for('edit_comment', comment_id=comment['id']) }}">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                        </td>
+                                                    {% endif %}
+                                                    {% if comment['email'] == session['email'] or my_question['email'] == session['email'] %}
+                                                        <td id="td6">
+                                                            <form id="delete-comment" action="{{ url_for('delete_comment', comment_id=comment['id']) }}" method="post">
+                                                                <button onclick="return confirm('Are you sure you want to delete this comment?')"><i class="fa fa-trash-o"></i></button>
+                                                            </form>
+                                                        </td>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {%endif%}
+                            {% endfor %}
+                            {% endif %}
+                            <p id="add_comment_link">
+                                <a href="{{ url_for('comment_on_answer', answer_id=answer['id']) }}">
+                                    Add comment
+                                </a>
+                            </p>
+                        </div>
+                        
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

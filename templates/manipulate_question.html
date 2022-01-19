@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block page_title %}{%if question %}Edit{%else%}Add new{%endif%} question{% endblock %}
+
+{% block right_section %}
+    <div id="filling-form">
+        <form action="{%if question %}
+                            {{ url_for('post_edited_question', question_id=question['id']) }}
+                        {%else%}
+                            {{ url_for('post_question') }}
+                        {%endif%}" method="post" enctype="multipart/form-data">
+
+            <label for="question_title">Title:</label><br>
+            <textarea id="question_title" name="title" required>{{ question['title'] if question }}</textarea><br>
+        
+            <label for="question_text">Text:</label><br>
+            <textarea id="question_text" name="message" required>{{ question['message'] if question }}</textarea><br>
+
+            <label for="image">Click on the "Choose File" button to upload an image:</label><br>
+            <input id="file-input-button" type="file" name="image"><br>
+
+            <button id="post-button" type="submit">POST</button>
+
+        </form>
+    </div>
+{% endblock %}

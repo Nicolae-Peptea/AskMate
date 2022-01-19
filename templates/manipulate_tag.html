@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Add Question Tag{% endblock %}
+
+{% block right_section %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p id="invalid_register">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div id="filling-form">
+        <form action="{{ url_for('post_tag_to_question', question_id=question_id) }}" method="post" enctype="multipart/form-data">
+
+            <label for="answer">Choose an existing tag:</label><br>
+            {%if tags%}
+                <select name="tags" id="tags">
+                    {%for tag in tags%}
+                    <option value="{{tag['name']}}">{{tag['name']}}</option>
+                    {%endfor%}
+                </select><br>
+            {%else%}
+                <p>No Tags</p>
+            {%endif%}
+
+            <label for="add_tag">Add a New Tag Name:</label><br>
+            <input type="text" name="tag_name" placeholder="Ex: python"><br>
+            <button id="post-button" type="submit">Add Tag</button>
+
+        </form>
+    </div>
+{% endblock %}

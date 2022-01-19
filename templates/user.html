@@ -1,0 +1,94 @@
+{% extends "layout_user.html" %}
+
+{% block page_title %}User Dashboard{% endblock %}
+
+{% block user_input_section %}
+    <div class="users_table">
+        <table>
+            <thead>
+                <tr>
+                    <th>User Id</th>
+                    <th>User name</th>
+                    <th>Registration Date</th>
+                    <th>Asked Questions</th>
+                    <th>Answers</th>
+                    <th>Comments</th>
+                    <th>Reputation</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for user in user_details %}
+                    <tr>
+                        <td>{{ user['user_id'] }}</td>
+                        <td>{{ user['user_name'] }}</td>
+                        <td>{{ user['registration_time'] }}</td>
+                        <td>{{ user['question_number'] }}</td>
+                        <td>{{ user['answer_number'] }}</td>
+                        <td>{{ user['comments_number'] }}</td>
+                        <td>{{ user['reputation'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table><br>
+
+        <p id="table_title">Questions</p>
+        <table class="user_questions_table">
+
+            <tbody>
+                {% for question in questions %}
+                <tr>
+                    <td id="link_column"><a href="{{ url_for('display_question', question_id=question['id']) }}">Go to question</a></td>
+                    <td id="message_column">
+                        {% if question['title']|length > 150 %}
+                            {{ question['title'][:150] }}...
+                        {% else %}
+                            {{ question['title'] }}
+                        {%endif%}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table><br>
+
+        <p id="table_title">Answers</p>
+        <table class="user_answers_table">
+            
+
+            <tbody>
+                {% for answer in answers %}
+                <tr>
+                    <td id="link_column"><a href="{{ url_for('display_question', question_id=answer['question_id']) }}">Go to question</a></td>
+                    <td id="message_column">
+                        {% if answer['message']|length > 150 %}
+                            {{ answer['message'][:150] }}...
+                        {% else %}
+                            {{ answer['message'] }}
+                        {%endif%}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table><br>
+
+        <p id="table_title">Comments</p>
+        <table class="user_comments_table">
+            
+
+            <tbody>
+                {% for comment in comments %}
+                <tr>
+                    <td id="link_column"><a href="{{ url_for('display_question', question_id=comment['id']) }}">Go to question</a></td>
+                    <td id="message_column">
+                        {% if comment['message']|length > 150 %}
+                            {{ comment['message'][:150] }}...
+                        {% else %}
+                            {{ comment['message'] }}
+                        {%endif%}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
