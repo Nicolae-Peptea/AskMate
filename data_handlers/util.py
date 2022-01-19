@@ -5,10 +5,12 @@ import data_handlers.data_handler_answers as data_handler_answers
 from flask import request
 
 
-def generate_new_entry(operation, path, prev_entry=''):
+def generate_new_entry(operation, prev_entry=''):
     new_entry = dict(request.form)
+    
     if is_file_in_entry():
-        return generate_entry_with_image(new_entry, operation, prev_entry, path)
+        return generate_entry_with_image(new_entry, operation, prev_entry)
+    
     return new_entry
 
 
@@ -16,12 +18,14 @@ def is_file_in_entry():
     return True if request.files['image'] else False
 
 
-def generate_entry_with_image(new_entry, operation, prev_entry, path):
+def generate_entry_with_image(new_entry, operation, prev_entry):
     new_file_name = generate_file_name(operation, prev_entry)
     uploaded_file = request.files['image']
+    
     if uploaded_file:
-        save_file(uploaded_file, new_file_name, path)
+        save_file(uploaded_file, new_file_name)
     new_entry['image'] = new_file_name
+    
     return new_entry
 
 
@@ -34,17 +38,20 @@ def generate_file_name(operation, prev_entry):
         filename = create_img_name_when_editing(prev_entry, entry_type='question')
     elif operation == 'edit_answer':
         filename = create_img_name_when_editing(prev_entry, entry_type='answer')
+    
     return filename
 
 
 def create_img_name_when_editing(prev_entry: dict, entry_type: str):
     if prev_entry['image']:
         return prev_entry['image']
+    
     return f"{entry_type}{prev_entry['id']}"
 
 
-def save_file(uploaded_file, file_name, path):
-    complete_path = os.path.join(path, file_name)
+def save_file(uploaded_file, file_name):
+    image_upload_path = os.path.join(os.path.dirname(os.path.realpath("server.py")), 'images')
+    complete_path = os.path.join(image_upload_path, file_name)
     uploaded_file.save(complete_path)
 
 

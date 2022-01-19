@@ -6,6 +6,7 @@ from psycopg2.extras import RealDictCursor
 def get_tags(cursor: RealDictCursor):
     query = """SELECT * FROM tag"""
     cursor.execute(query)
+    
     return [dict(value) for value in cursor.fetchall()]
 
 
@@ -22,6 +23,7 @@ def get_tags_and_questions_count(cursor: RealDictCursor):
         GROUP BY
             tag.name, tag.id;"""
     cursor.execute(query)
+    
     return [dict(value) for value in cursor.fetchall()]
 
 
@@ -33,6 +35,7 @@ def get_question_tags(cursor: RealDictCursor, question_id: int):
     AND tag.id = question_tag.tag_id
     """
     cursor.execute(query, {'question_id': question_id})
+    
     return [dict(value) for value in cursor.fetchall()]
 
 
@@ -66,6 +69,7 @@ def generate_tag_id_by_name(cursor: RealDictCursor, tag_name):
     query = """SELECT id FROM tag
                 WHERE name=%(name)s;"""
     cursor.execute(query, {'name': tag_name})
+    
     return cursor.fetchone()['id']
 
 

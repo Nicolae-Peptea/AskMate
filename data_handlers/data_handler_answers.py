@@ -12,7 +12,9 @@ def get_answer(cursor: RealDictCursor, answer_id: int):
     query = """SELECT * FROM answer
                 WHERE id = %(answer_id)s
             """
+    
     cursor.execute(query, {"answer_id": answer_id})
+    
     return dict(cursor.fetchone())
 
 
@@ -35,7 +37,9 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int):
                 WHERE a.question_id = %(question_id)s
                 ORDER BY vote_number DESC
                 """
+    
     cursor.execute(query, {"question_id": question_id})
+    
     return cursor.fetchall()
 
 
@@ -75,6 +79,7 @@ def get_image_names_for_answers(cursor: RealDictCursor, entry_id: int):
        WHERE id= %(entry_id)s
        """
     cursor.execute(query, {'entry_id': entry_id})
+    
     return [value for e in cursor.fetchall() for key, value in e.items() if value]
 
 
@@ -94,6 +99,7 @@ def add_answer(cursor: RealDictCursor, new_entry: dict, question_id: int, email:
 
 def edit_answer(new_entry: dict):
     image = new_entry.get('image', 0)
+    
     if image:
         edit_answer_receiving_image(new_entry, image)
     else:
@@ -135,6 +141,7 @@ def delete_answer(cursor: RealDictCursor, answer_id, path):
         delete_answer_image(answer_id, path)
     except ValueError:
         pass
+    
     cursor.execute(
         sql.SQL(
             """
@@ -147,9 +154,11 @@ def delete_answer(cursor: RealDictCursor, answer_id, path):
 
 def delete_answer_image(entry_id, path):
     file_list = get_image_names_for_answers(entry_id)
+    
     if file_list:
         for file in file_list:
             os.unlink(os.path.join(path, file))
+    
     raise ValueError
 
 

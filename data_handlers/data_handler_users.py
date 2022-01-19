@@ -94,6 +94,7 @@ def get_users_details(cursor):
     cursor.execute(script)
     results = cursor.fetchall()
     cursor.execute("DROP TABLE IF EXISTS final;")
+    
     return results
 
 
@@ -135,9 +136,10 @@ def get_user_statistics(cursor, user_id):
         FROM final
         WHERE user_id = %(user_id)s;
     """
-    cursor.execute(script, {'user_id': user_id})
+    cursor.execute(script, {'user_id': user_id}) 
     results = cursor.fetchall()
     cursor.execute("DROP TABLE IF EXISTS final;")
+    
     return results
 
 

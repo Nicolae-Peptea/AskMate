@@ -41,6 +41,7 @@ def get_comment_and_question_id(comment_id: int):
         question_id = comment['question_id']
     elif comment['answer_id']:
         question_id = get_question_id_from_answer(comment['answer_id'])
+    
     return comment, question_id
 
 

@@ -119,7 +119,6 @@ def get_searched_questions(cursor: RealDictCursor, phrase: str):
             """),
         {'phrase': f'%{phrase}%'}
     )
-
     return cursor.fetchall()
 
 
@@ -171,11 +170,13 @@ def highlight_search(questions: dict, phrase: str):
         for question in questions:
             highlight_entry(question, phrase, field='title')
             highlight_entry(question, phrase, field='message')
+    
     raise ValueError
 
 
 def highlight_entry(entry: dict, phrase: str, field):
     words_to_highlight = re.findall(f'(?i){phrase}', entry[field])
+    
     for to_replace in words_to_highlight:
         entry[field] = entry[field].replace(to_replace, f"<mark>{to_replace}</mark>")
 
@@ -185,11 +186,11 @@ def add_question(cursor: RealDictCursor, new_entry: dict, email):
     adding = """INSERT INTO question (uuid, user_id, submission_time, title, message, image)
                 VALUES (%(uuid)s, %(user_id)s, now()::timestamp(0), %(title)s, %(message)s, %(image)s)
                 """
-    
+
     cursor.execute(adding, {
         'user_id': data_handler_users.get_user_id(email),
-        'title': new_entry['title'],
-        'message': new_entry['message'],
+        'title': new_entry['title'][0],
+        'message': new_entry['message'][0],
         'image': new_entry.get('image', None),
         'uuid': str(uuid.uuid4()),
     })
@@ -197,6 +198,7 @@ def add_question(cursor: RealDictCursor, new_entry: dict, email):
 
 def edit_question(new_entry: dict):
     image = new_entry.get('image', 0)
+    
     if image:
         edit_question_receiving_image(new_entry, image)
     else:
@@ -255,9 +257,11 @@ def delete_question(cursor: RealDictCursor, question_id: int, path):
 
 def delete_question_images(entry_id, path):
     file_list = get_image_names_for_question(entry_id)
+    
     if file_list:
         for file in file_list:
             os.unlink(os.path.join(path, file))
+    
     raise ValueError
 
 
@@ -268,6 +272,7 @@ def update_views(cursor: RealDictCursor, question_id: int):
         SET view_number = view_number + 1
     WHERE id = %(question_id)s
     """
+    
     cursor.execute(update, {
         'question_id': question_id
     })
