@@ -85,6 +85,10 @@ Register Form:
 
 ![register-page.png][register-page]
 
+Password validation on client side:
+
+![passwrod-validation.png][password-validation]
+
 Login Form:
 
 ![login-page.png][login-page]
@@ -205,6 +209,7 @@ Thanks for all the support to the Codecool mentors that have guided us!
 [new-question-page]: https://res.cloudinary.com/dqwtm9fw1/image/upload/v1642603336/AskMate/new_question_page_yxnw8w.png
 [new-answer-page]: https://res.cloudinary.com/dqwtm9fw1/image/upload/v1642602800/AskMate/new-answer-page_o2bi10.png
 [question-page]: https://res.cloudinary.com/dqwtm9fw1/image/upload/v1642604707/AskMate/question_page_odfvk0.png
+[password-validation]:https://res.cloudinary.com/dqwtm9fw1/image/upload/v1642602930/AskMate/password_validation_ej4pv9.png
 
 [comments-page]:https://res.cloudinary.com/dqwtm9fw1/image/upload/v1642604764/AskMate/comments_section_emlxjz.png
 [user-dashboard-page]: https://res.cloudinary.com/dqwtm9fw1/image/upload/v1642602789/AskMate/user-dashboard-page_xhg3os.png
