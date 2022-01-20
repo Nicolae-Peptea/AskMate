@@ -14,7 +14,6 @@
         <li><a href="#visuals">Visuals</a></li>
       </ul>
     </li>
-    <li><a href="#installation">Installation</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#development-team">Development Team</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -128,8 +127,20 @@ Tags Page:
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
+<!-- USAGE EXAMPLES -->
+## Usage
 
-## Installation for Windows
+### If you'd like to have a look at the application, please, follow these steps:
+
+- Go to the [web app][heroku-app] on Heroku
+- Credentials for user login
+	```
+	user_name: nick_the_brick@yolo.com
+	pass: L1nk1np@rk
+	``` 
+- Enjoy!
+
+### If you'd like to edit and test the source code on Windows OS, please, follow these steps
 
 - Install [Python 3.8 or higher][python]
  
@@ -156,19 +167,6 @@ Tags Page:
 - Run `server.py`
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-- Go to the [web app][heroku-app] on Heroku
-- Credentials for user login
-	```
-	user_name: nick_the_brick@yolo.com
-	pass: L1nk1np@rk
-	``` 
-- Enjoy!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
