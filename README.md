@@ -40,8 +40,7 @@ Ask mate is a forum where visitors can register and login, start new discussions
 - Search key terms/phrases
 - Create new question
 - Answer questions
-- Vote questions and answers
-- Comment questions and answers
+- Vote and comment on questions and answers
 - Mark questions as accepted
 - Delete questions, answers and comments
 - Access user dashboard
